@@ -7,18 +7,21 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.TimedRobot;
+
 /**
  * Add your docs here.
  */
-public class DriveTrain {
-
-public DriveTrain ()
-{
-
+public class WheelSpin extends TimedRobot
+ { 
+    Talon talon1;
+    
+    public WheelSpin ()
+        { 
+            talon1 = new Talon(1);
+        }
+        public void teleopPeriodic(){
+            talon1.set(.5);
+        } 
 }
-
-
-
-
-}
-
