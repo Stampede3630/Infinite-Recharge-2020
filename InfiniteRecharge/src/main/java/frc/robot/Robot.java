@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -8,7 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -19,79 +20,80 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
   /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
+  public static final double kMaxSpeed = 1; // 3 meters per second
+  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  public static XboxController m_controller;
+  private Drivetrain m_swerve; 
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    m_swerve = new Drivetrain();
+    m_controller = new XboxController(0);
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
+    m_swerve.postToSmartDashboard();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
   }
-
-  /**
-   * This function is called periodically during autonomous.
-   */
+  
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+  @Override
+  public void teleopInit() {
+  }
+
   @Override
   public void teleopPeriodic() {
+    driveWithJoystick(true);
+    
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
+  @Override
+  public void testInit() {
+  }
+
   @Override
   public void testPeriodic() {
+  }
+
+  private void driveWithJoystick(boolean fieldRelative) {
+    // Get the x speed. We are inverting this because Xbox controllers return
+    // negative values when we push forward.
+    var xSpeed = -m_controller.getY(Hand.kLeft)* kMaxSpeed;
+    if(Math.abs(xSpeed) < (0.2 * kMaxSpeed))
+    {
+      xSpeed = 0;
+    }
+    
+    // Get the y speed or sideways/strafe speed. We are inverting this because
+    // we want a positive value when we pull to the left. Xbox controllers
+    // return positive values when you pull to the right by default.
+    var ySpeed = -m_controller.getX(Hand.kLeft) * kMaxSpeed;
+    if(Math.abs(ySpeed) < (0.2 * kMaxSpeed))
+    {
+      ySpeed = 0;
+    }
+    // Get the rate of angular rotation. We are inverting this because we want a
+    // positive value when we pull to the left (remember, CCW is positive in
+    // mathematics). Xbox controllers return positive values when you pull to
+    // the right by default.
+    var rot = m_controller.getX(Hand.kRight) * kMaxAngularSpeed;
+    if(Math.abs(rot) < (0.2 * kMaxAngularSpeed))
+    {
+      rot = 0;
+    }
+    //System.out.println("rot: " + m_controller.getX(Hand.kRight));
+    //System.out.println("rot-c: " + rot);
+    System.out.println(xSpeed + "," + ySpeed);
+    m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
 }
