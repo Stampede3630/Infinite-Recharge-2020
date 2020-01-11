@@ -1,4 +1,5 @@
 package frc.robot;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
@@ -25,9 +26,7 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.04, 0, 0);
 
-  private final PIDController m_turningPIDController
-      = new PIDController(0.5,0.0, 0
-     );
+  private final PIDController m_turningPIDController = new PIDController(0.5,0.0, 0);
 
      // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration)
   //front left -(0,1) - PID: 0.8, 0.05
@@ -41,7 +40,7 @@ public class SwerveModule {
    * @param turningMotorChannel ID for the turning motor.
    */
   public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
-    m_driveMotor = new WPI_TalonSRX(driveMotorChannel);
+    m_driveMotor = new WPI_TalonFX(driveMotorChannel);
     m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
     if(turningMotorChannel == 6)
     {
