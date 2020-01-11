@@ -7,7 +7,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,11 +31,27 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   WheelSpin spinThing;
+  SpeedControllerGroup rightyRobo;
+  SpeedControllerGroup leftyRobo;
+  Talon talon1;
+  Talon talon2; 
+  Talon talon3;
+  Talon talon4;
+  DifferentialDrive roboGo;
+  XboxController remoty;
+
   public Robot ()
   {
     spinThing = new WheelSpin();
+    talon1 = new Talon(1);
+    talon2 = new Talon(2);
+    talon3 = new Talon(3);
+    talon4 = new Talon(4);
+    rightyRobo = new SpeedControllerGroup(talon1, talon2); 
+    leftyRobo = new SpeedControllerGroup (talon3, talon4);
+    roboGo = new DifferentialDrive(leftyRobo,rightyRobo);
+    remoty = new XboxController(0);
   }
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -51,6 +73,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
   }
 
   /**
@@ -92,9 +115,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    spinThing.teleopPeriodic();
+    //spinThing.teleopPeriodic();
+    //roboGo.arcadeDrive(xSpeed, zRotation);
+  remoty.getAButton();
+  remoty.getAButtonPressed();
+  remoty.getAButtonReleased(); 
   }
-
+    
   /**
    * This function is called periodically during test mode.
    */
@@ -102,3 +129,4 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 }
+
