@@ -7,12 +7,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SpeedController;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,7 +41,7 @@ public class Robot extends TimedRobot {
 
   public Robot ()
   {
-    spinThing = new WheelSpin();
+    //spinThing = new WheelSpin();
     talon1 = new Talon(1);
     talon2 = new Talon(2);
     talon3 = new Talon(3);
@@ -117,9 +116,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //spinThing.teleopPeriodic();
     //roboGo.arcadeDrive(xSpeed, zRotation);
-  remoty.getAButton();
-  remoty.getAButtonPressed();
-  remoty.getAButtonReleased(); 
+  roboGo.arcadeDrive(remoty.getRawAxis(1),0);
   }
     
   /**
