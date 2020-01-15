@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,22 +33,22 @@ public class Robot extends TimedRobot {
   WheelSpin spinThing;
   SpeedControllerGroup rightyRobo;
   SpeedControllerGroup leftyRobo;
-  Talon talon1;
-  Talon talon2; 
+  Talon talon0;
+  Talon talon1; 
+  Talon talon2;
   Talon talon3;
-  Talon talon4;
   DifferentialDrive roboGo;
   XboxController remoty;
 
   public Robot ()
   {
     //spinThing = new WheelSpin();
+    talon0= new Talon(0);
     talon1 = new Talon(1);
-    talon2 = new Talon(2);
     talon3 = new Talon(3);
-    talon4 = new Talon(4);
-    rightyRobo = new SpeedControllerGroup(talon1, talon2); 
-    leftyRobo = new SpeedControllerGroup (talon3, talon4);
+    talon2 = new Talon(2);
+    rightyRobo = new SpeedControllerGroup(talon0, talon1); 
+    leftyRobo = new SpeedControllerGroup (talon3, talon2);
     roboGo = new DifferentialDrive(leftyRobo,rightyRobo);
     remoty = new XboxController(0);
   }
@@ -116,7 +117,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //spinThing.teleopPeriodic();
     //roboGo.arcadeDrive(xSpeed, zRotation);
-  roboGo.arcadeDrive(remoty.getRawAxis(1),0);
+  roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
+
   }
     
   /**
