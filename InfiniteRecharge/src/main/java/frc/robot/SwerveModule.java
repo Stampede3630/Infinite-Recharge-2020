@@ -26,7 +26,7 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.04, 0, 0);
 
-  private final PIDController m_turningPIDController = new PIDController((.4/Math.PI),0.0, 0);
+  private final PIDController m_turningPIDController = new PIDController((.7/Math.PI),0.0, (.05/Math.PI));
 
      // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration)
   //front left -(0,1) - PID: 0.8, 0.05
@@ -42,9 +42,11 @@ public class SwerveModule {
   public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
     m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
-    m_turningMotor.setInverted(true);
-
-
+    if(turningMotorChannel != 4)
+    {
+      m_turningMotor.setInverted(true);
+    }
+   
     m_turningEncoder = new AnalogInput(angleEncoder);
     angleOffset = angleChange;
 
@@ -79,7 +81,7 @@ public class SwerveModule {
     angle -= Math.PI;
     return angle;
   }
-
+/*
   public double convertAngle(SwerveModuleState state)
   {
     double position = readAngle();
@@ -112,7 +114,23 @@ public class SwerveModule {
     
 
   }
+*/
 
+  public double bound (double angle)
+  {
+    if(angle > (Math.PI/2))
+    {
+      return angle - Math.PI;
+    }
+    else if (angle < (-Math.PI/2))
+    {
+      return angle + Math.PI;
+    }
+    else
+    {
+      return angle;
+    }
+  }
   /**
    * Sets the desired state for the module.
    *
@@ -124,8 +142,8 @@ public class SwerveModule {
        // 0, /*INSERT DRIVE ENCODER VALUE HERE*/ 0);
 
     // Calculate the turning motor output from the turning PID controller.
-    double setpoint = convertAngle(state);
-    double currentAngle = readAngle();
+    double setpoint = bound(state.angle.getRadians());
+    double currentAngle = bound(readAngle());
     System.out.println(m_driveMotor.getDeviceID() + "," + "Current angle" + currentAngle  + "setpoint"  +setpoint);
     var turnOutput = m_turningPIDController.calculate(
         currentAngle, setpoint);
@@ -139,7 +157,7 @@ public class SwerveModule {
     */
     // Calculate the turning motor output from the turning PID controller.
     //m_driveMotor.set(driveOutput);
-    m_turningMotor.set(turnOutput);
+    m_turningMotor.set(-turnOutput);
     m_driveMotor.set(driveOutput);
     //System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," + driveOutput );
     //SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
@@ -147,6 +165,10 @@ public class SwerveModule {
     if(state.angle.getRadians() != setpoint)
     {
         driveOutput = driveOutput * -1;
+    }
+    if(readAngle() != currentAngle)
+    {
+      driveOutput = driveOutput *-1;
     }
     /*
     if((Math.abs(setpoint - readAngle())) < 2)
