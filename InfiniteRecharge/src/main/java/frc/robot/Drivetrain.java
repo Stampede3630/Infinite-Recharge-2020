@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 public class Drivetrain {
 
-  //******************THESE locations must be in Meters per second..... SwerveDriveKinematics computes in Meters****************** */
+  //******************THESE locations must be in Meters ..... SwerveDriveKinematics computes in Meters****************** */
   //Ensure GYRo reading is not crazy (we may need to do a full long reset)
     private final Translation2d m_frontLeftLocation = new Translation2d(0.2794,0.3302);
     private final Translation2d m_frontRightLocation = new Translation2d(0.2794, -0.3302);
@@ -41,8 +41,8 @@ public class Drivetrain {
      * @return The angle of the robot.
      */
     public Rotation2d getAngle() {
-      // Negating the angle because WPILib gyros are CW positive.
-      return Rotation2d.fromDegrees(-(m_gyro.getAngle()-180));
+      // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES CHANGE
+      return Rotation2d.fromDegrees(-m_gyro.getAngle());
     }
   
     /**
@@ -100,6 +100,6 @@ public class Drivetrain {
       SmartDashboard.putNumber("front-left angle - (0,1)",m_frontLeft.readAngle());
      SmartDashboard.putNumber("back-right angle - (6,7)", m_backRight.readAngle());
       SmartDashboard.putNumber("back-left angle - (4,5)", m_backLeft.readAngle());
-      SmartDashboard.putNumber("Navx value", Math.toRadians(m_gyro.getAngle()));
+      SmartDashboard.putNumber("Navx value",getAngle().getDegrees());
     }
   }

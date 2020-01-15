@@ -18,15 +18,15 @@ public class SwerveModule {
   private static final double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
   private static final double kModuleMaxAngularAcceleration = 4 * Math.PI; // radians per second squared
 
-  private final SpeedController m_driveMotor;
-  private final SpeedController m_turningMotor;
+  private final WPI_TalonFX m_driveMotor;
+  private final WPI_TalonSRX m_turningMotor;
 
   //private final Encoder m_driveEncoder
   private final AnalogInput m_turningEncoder;
 
   private final PIDController m_drivePIDController = new PIDController(0.04, 0, 0);
 
-  private final PIDController m_turningPIDController = new PIDController(0.5,0.0, 0);
+  private final PIDController m_turningPIDController = new PIDController((.4/Math.PI),0.0, 0);
 
      // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration)
   //front left -(0,1) - PID: 0.8, 0.05
@@ -42,10 +42,9 @@ public class SwerveModule {
   public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
     m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
-    if(turningMotorChannel == 6)
-    {
-      m_turningMotor.setInverted(true);
-    }
+    m_turningMotor.setInverted(true);
+
+
     m_turningEncoder = new AnalogInput(angleEncoder);
     angleOffset = angleChange;
 
@@ -86,6 +85,8 @@ public class SwerveModule {
     double position = readAngle();
     double setpoint = state.angle.getRadians();
     double newSetpoint = state.angle.getRadians();
+    double finalSetpoint;
+   
     if(setpoint > 0)
     {
       newSetpoint -= Math.PI;
@@ -94,18 +95,22 @@ public class SwerveModule {
     {
       newSetpoint += Math.PI;
     }
-
+    
     double oldError = Math.abs(setpoint - position);
     double newError = Math.abs(newSetpoint - position);
     
-    if( oldError > newError)
+    if(oldError > newError)
     {
-      return newSetpoint;
+      finalSetpoint = newSetpoint;
     }
     else
     {
-      return setpoint;
+     finalSetpoint = setpoint;
     }
+
+      return 0; //WRONG!!!!!!!
+    
+
   }
 
   /**
@@ -120,28 +125,35 @@ public class SwerveModule {
 
     // Calculate the turning motor output from the turning PID controller.
     double setpoint = convertAngle(state);
+    double currentAngle = readAngle();
+    System.out.println(m_driveMotor.getDeviceID() + "," + "Current angle" + currentAngle  + "setpoint"  +setpoint);
     var turnOutput = m_turningPIDController.calculate(
-        readAngle(), setpoint);
+        currentAngle, setpoint);
     
     double driveOutput = state.speedMetersPerSecond / Robot.kMaxSpeed;
+   /*
     if(driveOutput == 0)
     {
       turnOutput = 0;
     }
+    */
     // Calculate the turning motor output from the turning PID controller.
     //m_driveMotor.set(driveOutput);
     m_turningMotor.set(turnOutput);
+    m_driveMotor.set(driveOutput);
+    //System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," + driveOutput );
     //SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
     
     if(state.angle.getRadians() != setpoint)
     {
         driveOutput = driveOutput * -1;
     }
+    /*
     if((Math.abs(setpoint - readAngle())) < 2)
     {
       m_driveMotor.set(driveOutput);
     }
-    
+    */
 
     
     //System.out.println(state.speedMetersPerSecond);

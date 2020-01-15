@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    driveWithJoystick(true);
+    driveWithJoystick(false);
     
   }
 
@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
     var ySpeed = -m_controller.getX(Hand.kLeft) * kMaxSpeed;
-    if(Math.abs(ySpeed) < (0.1 * kMaxSpeed))
+    if(Math.abs(ySpeed) < (0.2 * kMaxSpeed))
     {
       ySpeed = 0;
     }
