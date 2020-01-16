@@ -8,11 +8,16 @@
 package frc.robot;
 
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,18 +44,23 @@ public class Robot extends TimedRobot {
   Talon talon3;
   DifferentialDrive roboGo;
   XboxController remoty;
+  PIDController piddie;
+  AHRS veel;
+  AVA enCod;
 
   public Robot ()
   {
     //spinThing = new WheelSpin();
-    talon0= new Talon(0);
+    enCod = new AVA();
     talon1 = new Talon(1);
     talon3 = new Talon(3);
     talon2 = new Talon(2);
     rightyRobo = new SpeedControllerGroup(talon0, talon1); 
     leftyRobo = new SpeedControllerGroup (talon3, talon2);
     roboGo = new DifferentialDrive(leftyRobo,rightyRobo);
-    remoty = new XboxController(0);
+    remoty = new XboxController(0); 
+    piddie = new PIDController (0.1,0,0);
+    veel = new AHRS(SPI.Port.kMXP); 
   }
   /**
    * This function is run when the robot is first started up and should be
@@ -117,8 +127,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //spinThing.teleopPeriodic();
     //roboGo.arcadeDrive(xSpeed, zRotation);
-  roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
-
+  //roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
+  //piddie.calculate(veel.getAngle(),45);
+//roboGo.arcadeDrive(0,piddie.calculate(veel.getAngle(),45));
+enCod.aVA2();
+  
   }
     
   /**
