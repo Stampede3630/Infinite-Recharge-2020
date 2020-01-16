@@ -26,7 +26,7 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.04, 0, 0);
 
-  private final PIDController m_turningPIDController = new PIDController((.7/Math.PI),0.0, (.05/Math.PI));
+  private final PIDController m_turningPIDController = new PIDController((.8/Math.PI),0.0, (.05/Math.PI));//.5, 0, 0
 
      // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration)
   //front left -(0,1) - PID: 0.8, 0.05
