@@ -29,7 +29,6 @@ public class Drivetrain {
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
     );
 
-  
     //private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
   
     public Drivetrain() {
@@ -102,5 +101,12 @@ public class Drivetrain {
      SmartDashboard.putNumber("back-right angle - (6,7)", m_backRight.readAngle());
       SmartDashboard.putNumber("back-left angle - (4,5)", m_backLeft.readAngle());
       SmartDashboard.putNumber("Navx value",getAngle().getDegrees());
+
+      m_backRight.toSmartDashboard();
+      m_frontRight.toSmartDashboard();
+
+      
+          
+
     }
   }

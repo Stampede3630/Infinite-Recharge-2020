@@ -27,7 +27,8 @@ public class Robot extends TimedRobot {
   public static final double kMaxSpeed = 1; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   public static XboxController m_controller;
-  private Drivetrain m_swerve; 
+  private Drivetrain m_swerve;
+  SwerveModule swerveM;
   @Override
   public void robotInit() {
     m_swerve = new Drivetrain();
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     m_swerve.postToSmartDashboard();
+
   }
 
   @Override
@@ -82,7 +84,7 @@ public class Robot extends TimedRobot {
     {
       ySpeed = 0;
     }
-    // Get the rate of angular rotation. We are inverting this because we want a
+    // Get the rate of angular rotatpion. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
