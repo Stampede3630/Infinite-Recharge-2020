@@ -7,10 +7,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +29,15 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
+  double priorAutospeed = 0;
+  Number[] numberArray = new Number[10];
+  NetworkTableEntry autoSpeedEntry =
+    NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
+  NetworkTableEntry telemetryEntry =
+    NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
+  NetworkTableEntry rotateEntry =
+  NetworkTableInstance.getDefault().getEntry("/robot/rotate");
+
   public static final double kMaxSpeed = 1; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   public static XboxController m_controller;
@@ -44,11 +58,64 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    NetworkTableInstance.getDefault().setUpdateRate(0.010);
+    if (!isReal()) SmartDashboard.putData(new SimEnabler());
   }
   
   @Override
   public void autonomousPeriodic() {
+    
+    // Retrieve values to send back before telling the motors to do something
+    double now = Timer.getFPGATimestamp();
+
+    double leftPosition = -m_swerve.m_frontLeft.getTalonFXPos();  
+    double leftRate = -m_swerve.m_frontLeft.getTalonFXRate();
+    //System.out.println(m_swerve.m_frontLeft.m_driveMotor.getSelectedSensorPosition());
+
+    double rightPosition = -m_swerve.m_frontRight.getTalonFXPos();
+    double rightRate = -m_swerve.m_frontRight.getTalonFXRate();
+
+    double battery = RobotController.getBatteryVoltage();
+   
+    double leftMotorVolts = 0;//m_swerve.m_frontLeft.m_driveMotor.getMotorOutputVoltage();
+    double rightMotorVolts = 0;//m_swerve.m_frontRight.m_driveMotor.getMotorOutputVoltage();
+
+    // Retrieve the commanded speed from NetworkTables
+    double autospeed = autoSpeedEntry.getDouble(0);
+    priorAutospeed = autospeed;
+
+    // command motors to do things
+    double xspeed, yspeed, rot;
+    boolean fieldRelative;
+    if(rotateEntry.getBoolean(false)){
+
+      xspeed = 0;
+      yspeed = 0;
+      rot = autospeed;
+      fieldRelative = false;
+    } else {
+      xspeed = autospeed;
+      yspeed = 0;
+      rot = 0;      
+      fieldRelative = false;
+    }
+    m_swerve.drive(xspeed, yspeed, rot, fieldRelative);
+
+    // send telemetry data array back to NT
+    numberArray[0] = now;
+    numberArray[1] = battery;
+    numberArray[2] = autospeed;
+    numberArray[3] = leftMotorVolts;
+    numberArray[4] = rightMotorVolts;
+    numberArray[5] = leftPosition;
+    numberArray[6] = rightPosition;
+    numberArray[7] = leftRate;
+    numberArray[8] = rightRate;
+    numberArray[9] = m_swerve.getAngle().getRadians();
+
+    telemetryEntry.setNumberArray(numberArray);
   }
+  
 
   @Override
   public void teleopInit() {

@@ -18,8 +18,8 @@ public class Drivetrain {
     private final Translation2d m_backLeftLocation = new Translation2d(-0.2794, 0.3302);
     private final Translation2d m_backRightLocation = new Translation2d(-0.2794, -0.3302);
 
-    private final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET);
-    private final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET);
+    public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET);
+    public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET);
     private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER, RobotMap.BACK_LEFT_ANGLE_OFFSET);
     private final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, RobotMap.BACK_RIGHT_ANGLE_OFFSET);
   
@@ -91,12 +91,29 @@ public class Drivetrain {
           m_backLeft.getState(),
           m_backRight.getState()
       );
-      System.out.println(m_frontLeft.getState());
-      System.out.println(m_frontRight.getState());
-      System.out.println(m_backLeft.getState());
-      System.out.println(m_backRight.getState());
+      //System.out.println(m_frontLeft.getState());
+      //System.out.println(m_frontRight.getState());
+      //System.out.println(m_backLeft.getState());
+      //System.out.println(m_backRight.getState());
     }
     
+    public double getRightSidePos()
+    {
+      return m_frontRight.getTalonFXPos();
+    }
+    public double getLeftSidePos()
+    {
+      return m_frontLeft.getTalonFXPos();
+    }
+
+    public double getRightSideRate()
+    {
+      return m_frontRight.getTalonFXRate();
+    }
+    public double getLeftSideRate()
+    {
+      return m_frontLeft.getTalonFXRate();
+    }
 
 
 

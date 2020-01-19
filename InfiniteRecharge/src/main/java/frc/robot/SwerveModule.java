@@ -22,7 +22,7 @@ public class SwerveModule {
   private static final double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
   private static final double kModuleMaxAngularAcceleration = 4 * Math.PI; // radians per second squared
 
-  private final WPI_TalonFX m_driveMotor;
+  public final WPI_TalonFX m_driveMotor;
   private final WPI_TalonSRX m_turningMotor;
   private double m_steeringAngle;
   private int m_driveScalar = 1;
@@ -30,7 +30,7 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 
-  private final PIDController m_turningPIDController = new PIDController((1.2 / Math.PI), 0.0, (.05 / Math.PI));
+  private final PIDController m_turningPIDController = new PIDController(.9, 0.0, (.05 / Math.PI));
 
   // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
   // kModuleMaxAngularAcceleration)
@@ -50,6 +50,8 @@ public class SwerveModule {
     m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
+    m_driveMotor.setSelectedSensorPosition(0);
+
     
     m_turningEncoder = new AnalogInput(angleEncoder);
     angleOffset = angleChange;
@@ -70,10 +72,16 @@ public class SwerveModule {
 
 
   public double getTalonFXRate(){
-    int ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0)*10;
+    double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0)*10;
     double revsPerSec = ticksPerSec/(kEncoderResolution * 8.307692307692308);
     double metersPerSec = revsPerSec * 2 * Math.PI * kWheelRadius;
-    return metersPerSec;
+    return -metersPerSec;
+  }
+  public double getTalonFXPos(){
+    double ticks = m_driveMotor.getSelectedSensorPosition(0)*10;
+    double revs = ticks/(kEncoderResolution * 8.307692307692308);
+    double meters = revs * 2 * Math.PI * kWheelRadius;
+    return -meters;
   }
   /**
    * Returns the current state of the module.
@@ -150,7 +158,7 @@ public class SwerveModule {
       turnOutput = turnOutput * -1;
     }
 
-    //System.out.println(m_driveMotor.getDeviceID() + "," + "Current angle" + currentAngle + "setpoint" + setpoint  + ",     turn output:  " + turnOutput);
+    System.out.println(m_driveMotor.getDeviceID() + "," + "encoder position" + m_driveMotor.getSelectedSensorPosition(0));
 
     double driveOutput = state.speedMetersPerSecond / Robot.kMaxSpeed * m_driveScalar;
     /*
