@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    driveWithJoystick(false);
+    driveWithJoystick(true);
     
   }
 
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    var rot = m_controller.getX(Hand.kRight) * kMaxAngularSpeed;
+    var rot = -m_controller.getX(Hand.kRight) * kMaxAngularSpeed;
     if(Math.abs(rot) < (0.2 * kMaxAngularSpeed))
     {
       rot = 0;

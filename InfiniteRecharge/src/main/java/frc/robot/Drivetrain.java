@@ -94,16 +94,18 @@ public class Drivetrain {
     }
     */
 
+
+
     public void postToSmartDashboard()
     {
-      SmartDashboard.putNumber("front-right angle - (2,3)", m_frontRight.readAngle());
-      SmartDashboard.putNumber("front-left angle - (0,1)",m_frontLeft.readAngle());
-     SmartDashboard.putNumber("back-right angle - (6,7)", m_backRight.readAngle());
-      SmartDashboard.putNumber("back-left angle - (4,5)", m_backLeft.readAngle());
+      SmartDashboard.putNumber("front-right angle - (2,3)", m_frontRight.getAngle());
+      SmartDashboard.putNumber("front-left angle - (0,1)",m_frontLeft.getAngle());
+     SmartDashboard.putNumber("back-right angle - (6,7)", m_backRight.getAngle());
+      SmartDashboard.putNumber("back-left angle - (4,5)", m_backLeft.getAngle());
       SmartDashboard.putNumber("Navx value",getAngle().getDegrees());
 
       m_backRight.toSmartDashboard();
-      m_frontRight.toSmartDashboard();
+      m_backLeft.toSmartDashboard();
 
       
           
