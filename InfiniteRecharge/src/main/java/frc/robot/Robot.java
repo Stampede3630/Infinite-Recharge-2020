@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.PIDCommand;
+//import edu.wpi.first.wpilibj.GenericHID.Hand;
+//import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -47,6 +47,9 @@ public class Robot extends TimedRobot {
   PIDController piddie;
   AHRS veel;
   AVA enCod;
+  
+
+  
 
   public Robot ()
   {
@@ -130,8 +133,8 @@ public class Robot extends TimedRobot {
   //roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
   //piddie.calculate(veel.getAngle(),45);
 //roboGo.arcadeDrive(0,piddie.calculate(veel.getAngle(),45));
-enCod.aVA2();
-  
+enCod.piggi();
+roboGo.arcadeDrive( piddie.calculate(enCod.piggie(),48), piddie.calculate(veel.getAngle(),0));
   }
     
   /**

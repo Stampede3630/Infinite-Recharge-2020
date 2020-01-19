@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -15,15 +16,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class AVA {
 Encoder cod;
+double trouble;
+PIDController piddie; 
 
-public AVA ()
+
+public AVA()
 {
 cod = new Encoder(0,1); 
+
 }
-public void aVA2()
+public void piggi()
 
 {
 
     SmartDashboard.putNumber("encoder value", cod.getDistance());
+ trouble = cod.getDistance()/250*Math.PI*2*2.5;
+ 
+ 
 }
+public double piggie()
+
+ { return cod.getDistance()/250*Math.PI*2*2.5;
+
+}
+
 }
