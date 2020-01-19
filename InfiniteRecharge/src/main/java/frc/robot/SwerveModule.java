@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -13,9 +14,10 @@ import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 public class SwerveModule {
-  // private static final double kWheelRadius = 0.0508;
-  // private static final int kEncoderResolution = 4096;
+  private static final double kWheelRadius = 0.051;
+  private static final int kEncoderResolution = 2048;
 
   private static final double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
   private static final double kModuleMaxAngularAcceleration = 4 * Math.PI; // radians per second squared
@@ -24,7 +26,6 @@ public class SwerveModule {
   private final WPI_TalonSRX m_turningMotor;
   private double m_steeringAngle;
   private int m_driveScalar = 1;
-  // private final Encoder m_driveEncoder
   private final AnalogInput m_turningEncoder;
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
@@ -49,15 +50,13 @@ public class SwerveModule {
     m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
-
+    
     m_turningEncoder = new AnalogInput(angleEncoder);
     angleOffset = angleChange;
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
     // loolution.
-    // m_driveEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius /
-    // kEncoderResolution);
 
     // Set the distance (in this case, angle) per pulse for the turning encoder.
     // This is the the angle through an entire rotation (2 * wpi::math::pi)
@@ -69,13 +68,20 @@ public class SwerveModule {
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
+
+  public double getTalonFXRate(){
+    int ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0)*10;
+    double revsPerSec = ticksPerSec/(kEncoderResolution * 8.307692307692308);
+    double metersPerSec = revsPerSec * 2 * Math.PI * kWheelRadius;
+    return metersPerSec;
+  }
   /**
    * Returns the current state of the module.
    *
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
-    return new SwerveModuleState(0, new Rotation2d(getAngle()));
+    return new SwerveModuleState(getTalonFXRate(), new Rotation2d(getAngle()));
   }
 
   public void readAngle() {
@@ -144,8 +150,7 @@ public class SwerveModule {
       turnOutput = turnOutput * -1;
     }
 
-    System.out.println(m_driveMotor.getDeviceID() + "," + "Current angle" + currentAngle + "setpoint" + setpoint
-        + ",     turn output:  " + turnOutput);
+    //System.out.println(m_driveMotor.getDeviceID() + "," + "Current angle" + currentAngle + "setpoint" + setpoint  + ",     turn output:  " + turnOutput);
 
     double driveOutput = state.speedMetersPerSecond / Robot.kMaxSpeed * m_driveScalar;
     /*

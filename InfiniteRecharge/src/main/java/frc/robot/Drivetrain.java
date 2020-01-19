@@ -29,7 +29,7 @@ public class Drivetrain {
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
     );
 
-    //private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
+    private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
   
     public Drivetrain() {
       m_gyro.reset();
@@ -82,7 +82,7 @@ public class Drivetrain {
     /**
      * Updates the field relative position of the robot.
      */
-    /*
+    
     public void updateOdometry() {
       m_odometry.update(
           getAngle(),
@@ -91,8 +91,12 @@ public class Drivetrain {
           m_backLeft.getState(),
           m_backRight.getState()
       );
+      System.out.println(m_frontLeft.getState());
+      System.out.println(m_frontRight.getState());
+      System.out.println(m_backLeft.getState());
+      System.out.println(m_backRight.getState());
     }
-    */
+    
 
 
 
@@ -107,8 +111,8 @@ public class Drivetrain {
       m_backRight.toSmartDashboard();
       m_backLeft.toSmartDashboard();
 
-      
-          
+      SmartDashboard.putNumber("meters dist X", m_odometry.getPoseMeters().getTranslation().getX());
+      SmartDashboard.putNumber("meters dist Y", m_odometry.getPoseMeters().getTranslation().getY());
 
     }
   }
