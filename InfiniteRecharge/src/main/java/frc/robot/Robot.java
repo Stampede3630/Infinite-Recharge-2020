@@ -6,14 +6,16 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+import com.revrobotics.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.GenericHID.Hand;
 //import edu.wpi.first.wpilibj.command.PIDCommand;
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,7 +50,12 @@ public class Robot extends TimedRobot {
   PIDController piddie;
   AHRS veel;
   AVA enCod;
+  ColorSensorV3 colo; 
+  Color noColor; 
+  Ultrasonic BIGsonny;
   
+
+
 
   
 
@@ -55,6 +63,7 @@ public class Robot extends TimedRobot {
   {
     //spinThing = new WheelSpin();
     enCod = new AVA();
+    talon0 = new Talon(0);
     talon1 = new Talon(1);
     talon3 = new Talon(3);
     talon2 = new Talon(2);
@@ -62,9 +71,16 @@ public class Robot extends TimedRobot {
     leftyRobo = new SpeedControllerGroup (talon3, talon2);
     roboGo = new DifferentialDrive(leftyRobo,rightyRobo);
     remoty = new XboxController(0); 
-    piddie = new PIDController (0.1,0,0);
+    piddie = new PIDController (0.01,0,0);
     veel = new AHRS(SPI.Port.kMXP); 
-  }
+    colo = new ColorSensorV3(I2C.Port.kOnboard );
+    BIGsonny = new Ultrasonic(8,9);
+  
+    BIGsonny.setAutomaticMode(true);
+    BIGsonny.setDistanceUnits(Ultrasonic.Unit.kInches);
+    
+    
+  } 
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -133,8 +149,15 @@ public class Robot extends TimedRobot {
   //roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
   //piddie.calculate(veel.getAngle(),45);
 //roboGo.arcadeDrive(0,piddie.calculate(veel.getAngle(),45));
-enCod.piggi();
-roboGo.arcadeDrive( piddie.calculate(enCod.piggie(),48), piddie.calculate(veel.getAngle(),0));
+noColor = colo.getColor();
+
+//roboGo.arcadeDrive(piddie.calculate(enCod.piggie(),48), 0); //piddie.calculate(veel.getAngle(),0));
+//SmartDashboard.putNumber("pig",piddie.calculate(enCod.piggie(),48 ));
+SmartDashboard.putNumber("string", colo.getIR());
+//SmartDashboard.putNumber("hey", noColor.green); doesnt work as well as stringy
+SmartDashboard.putNumber("stringy", colo.getRawColor().green);
+SmartDashboard.putNumber("proximity", colo.getProximity());
+SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
   }
     
   /**
@@ -143,5 +166,11 @@ roboGo.arcadeDrive( piddie.calculate(enCod.piggie(),48), piddie.calculate(veel.g
   @Override
   public void testPeriodic() {
   }
+public void Portie() 
+{
+colo.getColor();
+colo.getRawColor();
+colo.getIR();
+}
 }
 
