@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 public class Drivetrain {
@@ -25,7 +26,7 @@ public class Drivetrain {
   
     private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
   
-    private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+    SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
     );
 
@@ -78,7 +79,15 @@ public class Drivetrain {
       m_backLeft.setDesiredState(swerveModuleStates[2]);
      m_backRight.setDesiredState(swerveModuleStates[3]);
     }
-  
+    
+    public void setModuleStates(SwerveModuleState[] swerveModuleStates)
+    {
+      SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, Robot.kMaxSpeed);
+     m_frontLeft.setDesiredState(swerveModuleStates[0]);
+     m_frontRight.setDesiredState(swerveModuleStates[1]);
+      m_backLeft.setDesiredState(swerveModuleStates[2]);
+     m_backRight.setDesiredState(swerveModuleStates[3]);
+    }
     /**
      * Updates the field relative position of the robot.
      */
