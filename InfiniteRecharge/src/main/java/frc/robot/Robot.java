@@ -43,10 +43,12 @@ public class Robot extends TimedRobot {
   public static XboxController m_controller;
   private Drivetrain m_swerve;
   SwerveModule swerveM;
+  TrajectoryFollowing autonomous;
   @Override
   public void robotInit() {
     m_swerve = new Drivetrain();
     m_controller = new XboxController(0);
+
   }
 
   @Override
@@ -133,6 +135,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    m_swerve.postToSmartDashboard();
   }
 
   private void driveWithJoystick(boolean fieldRelative) {

@@ -14,10 +14,10 @@ public class Drivetrain {
   //******************THESE locations must be in Meters ..... SwerveDriveKinematics computes in Meters****************** */
   //Ensure GYRo reading is not crazy (we may need to do a full long reset)
   // translation is (x,y) where x is forward and y is side-side
-    private final Translation2d m_frontLeftLocation = new Translation2d(0.2794, 0.3302);
-    private final Translation2d m_frontRightLocation = new Translation2d(0.2794, -0.3302);
-    private final Translation2d m_backLeftLocation = new Translation2d(-0.2794, 0.3302);
-    private final Translation2d m_backRightLocation = new Translation2d(-0.2794, -0.3302);
+    private final Translation2d m_frontLeftLocation = new Translation2d(0.3556, 0.3556);
+    private final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
+    private final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
+    private final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
 
     public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET);
     public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET);
@@ -30,7 +30,7 @@ public class Drivetrain {
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
     );
 
-    private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
+    final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
   
     public Drivetrain() {
       m_gyro.reset();

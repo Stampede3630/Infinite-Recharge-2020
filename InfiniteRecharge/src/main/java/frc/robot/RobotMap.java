@@ -4,7 +4,7 @@ public class RobotMap {
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; // CAN
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 3; // Analog
     public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 7; // CAN
-    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.03-0.22+0.089;
+    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.03-0.22+0.089+0.465;
 
     public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 2; // CAN
     public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 0; // Analog

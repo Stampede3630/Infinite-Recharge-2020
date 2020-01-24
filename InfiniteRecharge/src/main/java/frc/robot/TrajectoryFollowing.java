@@ -49,7 +49,7 @@ public class TrajectoryFollowing {
     public TrajectoryFollowing(Drivetrain drive, Trajectory traj,
     PIDController xController,
     PIDController yController,
-    ProfiledPIDController thetaController, SwerveDriveOdometry odometry)
+    ProfiledPIDController thetaController)
     {
     driveBase = drive;
     config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
@@ -62,7 +62,11 @@ public class TrajectoryFollowing {
     m_yController = yController;
     m_thetaController = thetaController;
     m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
-    m_odometry = odometry;
+    m_odometry = driveBase.m_odometry;
+    
+    m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
+    m_timer.reset();
+    m_timer.start();
     
     }
     
@@ -106,5 +110,13 @@ public class TrajectoryFollowing {
 
     m_outputModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
 
+  }
+
+  public void setTrajectory(Trajectory newTrajectory)
+  {
+      trajectory = newTrajectory;
+      m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
+      m_timer.reset();
+      m_timer.start();
   }
 }

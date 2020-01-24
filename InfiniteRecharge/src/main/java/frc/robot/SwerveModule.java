@@ -30,7 +30,7 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 
-  private final PIDController m_turningPIDController = new PIDController(.9, 0.0, (.05 / Math.PI));
+  private final PIDController m_turningPIDController = new PIDController(1.2/Math.PI, 0.0, (.05 / Math.PI));//0.9
 
   // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
   // kModuleMaxAngularAcceleration)
@@ -46,10 +46,15 @@ public class SwerveModule {
    */
   public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
+    m_driveMotor.setInverted(false);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setInverted(true);
+    if(driveMotorChannel == 7)
+    {
+      m_driveMotor.setInverted(true);
+    }
     m_driveMotor.setSelectedSensorPosition(0);
 
     
@@ -101,6 +106,7 @@ public class SwerveModule {
   }
 
   public double getAngle() {
+    readAngle();
     return m_steeringAngle;
   }
 
@@ -161,9 +167,9 @@ public class SwerveModule {
     System.out.println(m_driveMotor.getDeviceID() + "," + "encoder position" + m_driveMotor.getSelectedSensorPosition(0));
 
     double driveOutput = state.speedMetersPerSecond / Robot.kMaxSpeed * m_driveScalar;
-    /*
-     * if(driveOutput == 0) { turnOutput = 0; }
-     */
+  
+     //if(driveOutput == 0) { turnOutput = 0; }
+    
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
