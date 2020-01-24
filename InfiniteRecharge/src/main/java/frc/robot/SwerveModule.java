@@ -20,7 +20,7 @@ public class SwerveModule {
   private static final int kEncoderResolution = 2048;
 
   private static final double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
-  private static final double kModuleMaxAngularAcceleration = 4 * Math.PI; // radians per second squared
+  private static final double kModuleMaxAngularAcceleration = 6 * Math.PI; // radians per second squared //4
 
   public final WPI_TalonFX m_driveMotor;
   private final WPI_TalonSRX m_turningMotor;
@@ -30,9 +30,10 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 
-  private final PIDController m_turningPIDController = new PIDController(1.2/Math.PI, 0.0, (.05 / Math.PI));//0.9
+  private final ProfiledPIDController m_turningPIDController = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+  kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
 
-  // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+  //new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
   // kModuleMaxAngularAcceleration)
   // front left -(0,1) - PID: 0.8, 0.05
   // (4,5) -PID: 0.8, 0.05
@@ -157,8 +158,8 @@ public class SwerveModule {
     readAngle();
     m_driveScalar = 1;
     // Calculate the turning motor output from the turning PID controller.
-    double setpoint = bound(state.angle.getRadians());
-    double currentAngle = bound(getAngle());
+    double setpoint = bound(state.angle.getRadians());//state.angle.getRadians();//
+    double currentAngle = bound(getAngle()); //getAngle();//
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
     if (m_turningMotor.getDeviceID() == 4) {
       turnOutput = turnOutput * -1;
@@ -168,23 +169,29 @@ public class SwerveModule {
 
     double driveOutput = state.speedMetersPerSecond / Robot.kMaxSpeed * m_driveScalar;
   
-     //if(driveOutput == 0) { turnOutput = 0; }
+    if(driveOutput == 0) { turnOutput = 0; }
     
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
     m_driveMotor.set(driveOutput);
+    //m_driveMotor.set(0);
     // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
     // driveOutput );
     // SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
 
-    /*
-     * if(state.angle.getRadians() != setpoint) { driveOutput = driveOutput * -1;
-     * System.out.println("State of " + m_driveMotor.getDeviceID() +
-     * " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); } if(getAngle() != currentAngle) {
-     * driveOutput = driveOutput *-1; System.out.println("Measurement of " +
-     * m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); }
-     */
+    
+      if(state.angle.getRadians() != setpoint) 
+      { 
+        driveOutput = driveOutput * -1;
+        System.out.println("State of " + m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
+      } 
+      if(getAngle() != currentAngle) 
+      {
+      driveOutput = driveOutput *-1; System.out.println("Measurement of " +
+      m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
+       } 
+     
     /*
      * if((Math.abs(setpoint - readAngle())) < 2) { m_driveMotor.set(driveOutput); }
      */
