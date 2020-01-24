@@ -26,6 +26,9 @@ import edu.wpi.first.wpilibj.util.Color;
  * Add your docs here.
  */
 
+enum Movements {
+    SPIKEY, SPIKEYSTOP, BOLT, BOLT123, BOLTSTOPPER, ROLLEY,
+}
 
 public class Balldigestion {
 
@@ -41,9 +44,7 @@ public class Balldigestion {
     Color noColor; 
     Ultrasonic s1;
   Ultrasonic s2;
-  
- 
-
+  Movements states = Movements.SPIKEY;
 
 public Balldigestion (){
     controlly = new XboxController(0);
@@ -59,9 +60,56 @@ public Balldigestion (){
     s1.setDistanceUnits(Ultrasonic.Unit.kInches);
     s2.setAutomaticMode(true);
     s2.setDistanceUnits(Ultrasonic.Unit.kInches);
+    
 
 }
+
+public void greggorySwitch() {
+    switch(states) {
+        case ROLLEY:
+            System.out.println("tester");
+            timmy.start();
+            //newmatty.set(true); 
+            armiedown.set(.5);
+        break;
+
+        case SPIKEY:   
+            spiceygo.set(.5);
+            System.out.println("called");
+            armiedown.set(0);
+         break;
+
+        case SPIKEYSTOP:
+            
+            System.out.println(s1.getRangeInches());
+            spiceygo.set(0);
+            System.out.println("testing");
+        break;
+
+        case BOLT:
+            upiddiego.set(.5);
+            spiceygo.set(0);
+        break;
+
+        case BOLT123:
+            upiddiego.set(.5);
+        break;
+        
+        case BOLTSTOPPER:
+        upiddiego.set(0);
+        break;
+
+        default:
+            spiceygo.set(0);
+            upiddiego.set(0);
+            armiedown.set(0);
+        break;
+    }
+}
 public void greggory (){
+    
+    
+
     if(controlly.getAButtonPressed())
     {
         System.out.println("tester");
@@ -85,6 +133,7 @@ public void greggory (){
     
     if(s2.getRangeInches()>3 && s1.getRangeInches()<3){
         upiddiego.set(.5);
+        spiceygo.set(0);
     }
         
 
@@ -102,6 +151,11 @@ public void greggory (){
     //SHOOT NOW CODE
 
     }
+    else {
+        spiceygo.set(0);
+        upiddiego.set(0);
+        armiedown.set(0);
+    }
 if (s1.getRangeInches()>3 && s2.getRangeInches()>3 && s3.getGreen()>700){
 upiddiego.set(0);
 
@@ -117,5 +171,6 @@ SmartDashboard.putNumber("ultrasonic", s2.getRangeInches());
 }}
 
     
-
+// spikey wont stop
+// color sensor = bad 
 
