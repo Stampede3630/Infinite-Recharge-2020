@@ -53,6 +53,8 @@ public class Robot extends TimedRobot {
   ColorSensorV3 colo; 
   Color noColor; 
   Ultrasonic BIGsonny;
+  Ultrasonic BIGsonny1;
+  Balldigestion testing; 
   
 
 
@@ -62,6 +64,7 @@ public class Robot extends TimedRobot {
   public Robot ()
   {
     //spinThing = new WheelSpin();
+    /*
     enCod = new AVA();
     talon0 = new Talon(0);
     talon1 = new Talon(1);
@@ -73,12 +76,15 @@ public class Robot extends TimedRobot {
     remoty = new XboxController(0); 
     piddie = new PIDController (0.01,0,0);
     veel = new AHRS(SPI.Port.kMXP); 
-    colo = new ColorSensorV3(I2C.Port.kOnboard );
-    BIGsonny = new Ultrasonic(8,9);
-  
-    BIGsonny.setAutomaticMode(true);
-    BIGsonny.setDistanceUnits(Ultrasonic.Unit.kInches);
+    */
+    //colo = new ColorSensorV3(I2C.Port.kOnboard );
+    //BIGsonny = new Ultrasonic(8,9);
+    //BIGsonny1 = new Ultrasonic(6, 7);
     
+  
+   // BIGsonny.setAutomaticMode(true);
+    //BIGsonny.setDistanceUnits(Ultrasonic.Unit.kInches);
+    testing = new Balldigestion();
     
   } 
   /**
@@ -149,16 +155,19 @@ public class Robot extends TimedRobot {
   //roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
   //piddie.calculate(veel.getAngle(),45);
 //roboGo.arcadeDrive(0,piddie.calculate(veel.getAngle(),45));
-noColor = colo.getColor();
+//noColor = colo.getColor();
 
 //roboGo.arcadeDrive(piddie.calculate(enCod.piggie(),48), 0); //piddie.calculate(veel.getAngle(),0));
 //SmartDashboard.putNumber("pig",piddie.calculate(enCod.piggie(),48 ));
-SmartDashboard.putNumber("string", colo.getIR());
+//SmartDashboard.putNumber("string", colo.getIR());
 //SmartDashboard.putNumber("hey", noColor.green); doesnt work as well as stringy
-SmartDashboard.putNumber("stringy", colo.getRawColor().green);
-SmartDashboard.putNumber("proximity", colo.getProximity());
-SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
+//SmartDashboard.putNumber("stringy", colo.getRawColor().green);
+//SmartDashboard.putNumber("proximity", colo.getGreen());
+//SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
+//SmartDashboard.putNumber("ultrasonic", BIGsonny1.getRangeInches());
+testing.greggory(); 
   }
+
     
   /**
    * This function is called periodically during test mode.
@@ -168,9 +177,10 @@ SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
   }
 public void Portie() 
 {
-colo.getColor();
-colo.getRawColor();
-colo.getIR();
+//colo.getColor();
+//colo.getRawColor();
+//colo.getIR();
 }
+
 }
 
