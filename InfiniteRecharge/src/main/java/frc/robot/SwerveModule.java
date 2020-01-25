@@ -18,10 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveModule {
   private static final double kWheelRadius = 0.051;
   private static final int kEncoderResolution = 2048;
-
-  private static final double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
-  private static final double kModuleMaxAngularAcceleration = 6 * Math.PI; // radians per second squared //4
-
   public final WPI_TalonFX m_driveMotor;
   private final WPI_TalonSRX m_turningMotor;
   private double m_steeringAngle;
@@ -30,8 +26,8 @@ public class SwerveModule {
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 
-  private final ProfiledPIDController m_turningPIDController = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-  kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
+  private ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+  //kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
 
   //new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
   // kModuleMaxAngularAcceleration)
@@ -45,7 +41,7 @@ public class SwerveModule {
    * @param driveMotorChannel   ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
-  public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
+  public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange, ProfiledPIDController turnPID) {
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
     m_driveMotor.setInverted(false);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
@@ -58,7 +54,7 @@ public class SwerveModule {
     }
     m_driveMotor.setSelectedSensorPosition(0);
 
-    
+    m_turningPIDController = turnPID;
     m_turningEncoder = new AnalogInput(angleEncoder);
     angleOffset = angleChange;
 
