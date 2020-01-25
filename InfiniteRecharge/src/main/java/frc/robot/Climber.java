@@ -11,4 +11,21 @@ package frc.robot;
  * Add your docs here.
  */
 public class Climber {
+    public void extend()
+    {
+
+
+    }
+    public void retract()
+    {
+
+    }
+    public void strafeLeft()
+    {
+
+    }
+    public void strafeRight()
+    {
+        
+    }
 }
