@@ -24,7 +24,7 @@ public ServoTest() {
 
         if (tv == 0)
         {
-            ty += 0.5;
+            ty -= 0.5;
 
             if (ty < -1)
             {
