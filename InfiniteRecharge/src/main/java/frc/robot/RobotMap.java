@@ -7,8 +7,100 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
+
 /**
  * Add your docs here.
  */
 public class RobotMap {
+    public static CANSparkMax trolleySpark = new CANSparkMax(99, MotorType.kBrushless);
+    public static CANSparkMax elevatorSpark = new CANSparkMax(98, MotorType.kBrushless);
+
+    public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
+    public static DigitalInput elevatorMinExtension = new DigitalInput(19);
+
+    public static XboxController controller = new XboxController(0);
+
+    public static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+    
+    // Swerve hardware
+    public static final WPI_TalonSRX DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(2);
+    public static final WPI_TalonFX DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
+    public static final AnalogInput DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
+    public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.607 + Math.PI;
+
+    public static final WPI_TalonSRX DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(6);
+    public static final WPI_TalonFX DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
+    public static final AnalogInput DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
+    public static final double BACK_LEFT_ANGLE_OFFSET = -0.339;
+
+    public static final WPI_TalonSRX DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(4);
+    public static final WPI_TalonFX DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
+    public static final AnalogInput DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
+    public static final double BACK_RIGHT_ANGLE_OFFSET = -1.596 + Math.PI;
+
+    public static final WPI_TalonSRX DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(8);
+    public static final WPI_TalonFX DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
+    public static final AnalogInput DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
+    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
+
+    //PID Constants/Contraints
+    public static final double kMaxSpeed = 1; // 3 meters per second
+    public static final double kMaxAngularSpeed = Math.PI;
+
+    private static RobotMap thisInstance;
+
+    // m_driveMotor = new WPI_TalonFX(driveMotorChannel);
+    // m_driveMotor.setInverted(false);
+    // m_driveMotor.setNeutralMode(NeutralMode.Brake);
+    // m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
+    // m_turningMotor.setNeutralMode(NeutralMode.Brake);
+    // m_turningMotor.setInverted(true);
+    // if(driveMotorChannel == 7)
+    // {
+    // m_driveMotor.setInverted(true);
+    // }
+    // m_driveMotor.setSelectedSensorPosition(0);
+
+    private RobotMap() {
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setInverted(false);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
+
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+
+        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setInverted(true);
+        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
+        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
+        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
+
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+
+    }
+
+    public static RobotMap getInstance() {
+        if (thisInstance == null) {
+            thisInstance = new RobotMap();
+
+        }
+        return thisInstance;
+    }
 }
