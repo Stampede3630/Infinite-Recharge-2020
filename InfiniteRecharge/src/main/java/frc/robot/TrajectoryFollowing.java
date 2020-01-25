@@ -39,9 +39,9 @@ public class TrajectoryFollowing {
     private final Timer m_timer = new Timer();
     private Pose2d m_finalPose;
     private final SwerveDriveKinematics m_kinematics;
-    private final PIDController m_xController;
-    private final PIDController m_yController;
-    private final ProfiledPIDController m_thetaController;
+    private final PIDController m_xPIDController;
+    private final PIDController m_yPIDController;
+    private final ProfiledPIDController m_thetaPIDController;
     private SwerveModuleState[] m_outputModuleStates;
     private final SwerveDriveOdometry m_odometry;
    
@@ -58,9 +58,9 @@ public class TrajectoryFollowing {
         .setKinematics(driveBase.m_kinematics);
     trajectory = traj;
     m_kinematics = driveBase.m_kinematics;
-    m_xController = xController;
-    m_yController = yController;
-    m_thetaController = thetaController;
+    m_xPIDController = xController;
+    m_yPIDController = yController;
+    m_thetaPIDController = thetaController;
     m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
     m_odometry = driveBase.m_odometry;
     
@@ -85,19 +85,19 @@ public class TrajectoryFollowing {
     var desiredState = trajectory.sample(curTime);
     var desiredPose = desiredState.poseMeters;
 
-    var poseError = desiredPose.relativeTo(m_odometry.getPoseMeters());
+    var poseError = desiredPose.relativeTo(m_odometry.getPoseMeters()); //get velocity
 
-    double targetXVel = m_xController.calculate(
+    double targetXVel = m_xPIDController.calculate(
         m_odometry.getPoseMeters().getTranslation().getX(),
-        m_odometry.getPoseMeters().getTranslation().getX());
+       desiredPose.getTranslation().getX());
 
-    double targetYVel = m_yController.calculate(
+    double targetYVel = m_yPIDController.calculate(
         m_odometry.getPoseMeters().getTranslation().getY(),
         desiredPose.getTranslation().getY());
 
     // The robot will go to the desired rotation of the final pose in the trajectory,
     // not following the poses at individual states.
-    double targetAngularVel = m_thetaController.calculate(
+    double targetAngularVel = m_thetaPIDController.calculate(
         m_odometry.getPoseMeters().getRotation().getRadians(),
         m_finalPose.getRotation().getRadians());
 
