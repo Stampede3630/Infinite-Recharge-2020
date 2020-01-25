@@ -58,20 +58,32 @@ public class RobotMap {
     //PID Constants/Contraints
     public static final double kMaxSpeed = 1; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI;
+    
+    static
+    {
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setInverted(false);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
 
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+
+        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setInverted(true);
+        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
+        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
+        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
+
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+    }
+    /*
     private static RobotMap thisInstance;
 
-    // m_driveMotor = new WPI_TalonFX(driveMotorChannel);
-    // m_driveMotor.setInverted(false);
-    // m_driveMotor.setNeutralMode(NeutralMode.Brake);
-    // m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
-    // m_turningMotor.setNeutralMode(NeutralMode.Brake);
-    // m_turningMotor.setInverted(true);
-    // if(driveMotorChannel == 7)
-    // {
-    // m_driveMotor.setInverted(true);
-    // }
-    // m_driveMotor.setSelectedSensorPosition(0);
 
     private RobotMap() {
         DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
@@ -103,4 +115,5 @@ public class RobotMap {
         }
         return thisInstance;
     }
+    */
 }
