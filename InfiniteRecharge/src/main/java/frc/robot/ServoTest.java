@@ -30,7 +30,7 @@ public ServoTest() {
             {
                 ty += 0.5;
             }
-            
+
             if (ty > 1)
             {
                 ty -= 0.5;
