@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Servo;
 
 /**
@@ -14,9 +15,27 @@ import edu.wpi.first.wpilibj.Servo;
 public class ServoTest {
 
     Servo servo1;
+    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+
 public ServoTest() {
 
         servo1 = new Servo(0);
+
+        if (tv == 0)
+        {
+            ty += 0.5;
+
+            if (ty < -1)
+            {
+                ty += 0.5;
+            }
+
+            if (ty > 1)
+            {
+                ty -= 0.5;
+            }
+        }
     }
 
 public void TestServo () {
