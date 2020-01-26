@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   NetworkTableEntry rotateEntry =
   NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
-  public static final double kMaxSpeed = 1; // 3 meters per second
+  public static final double kMaxSpeed = .5; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   public static XboxController m_controller;
   private Drivetrain m_swerve;
@@ -136,6 +136,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     m_swerve.postToSmartDashboard();
+  
   }
 
   private void driveWithJoystick(boolean fieldRelative) {

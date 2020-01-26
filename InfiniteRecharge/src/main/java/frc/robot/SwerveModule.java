@@ -27,11 +27,12 @@ public class SwerveModule {
   private double m_steeringAngle;
   private int m_driveScalar = 1;
   private final AnalogInput m_turningEncoder;
+  double kPSpecial;
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 
-  private final ProfiledPIDController m_turningPIDController = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-  kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
+  private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+  //kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
 
   //new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
   // kModuleMaxAngularAcceleration)
@@ -46,6 +47,16 @@ public class SwerveModule {
    * @param turningMotorChannel ID for the turning motor.
    */
   public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
+    if (turningMotorChannel==4){
+      kPSpecial = .5;
+    }
+    else{
+      kPSpecial = 1;
+    }
+    
+    m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+    kModuleMaxAngularAcceleration));
+
     m_driveMotor = new WPI_TalonFX(driveMotorChannel);
     m_driveMotor.setInverted(false);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
@@ -111,10 +122,7 @@ public class SwerveModule {
     return m_steeringAngle;
   }
 
-  public void toSmartDashboard() {
-    SmartDashboard.putNumber("voltage" + m_driveMotor.getDeviceID(), m_turningEncoder.getVoltage());
-
-  }
+  
   /*
    * public double convertAngle(SwerveModuleState state) { double position =
    * readAngle(); double setpoint = state.angle.getRadians(); double newSetpoint =
@@ -200,5 +208,17 @@ public class SwerveModule {
 
     // System.out.println("Current State" + readAngle() + " requested state," +
     // state.angle.getRadians() + "turn output: " + turnOutput);
+
+    SmartDashboard.putNumber("Setpoint bound angle" + m_driveMotor.getDeviceID(), setpoint);
+    SmartDashboard.putNumber("setpoint unbound angle" + m_driveMotor.getDeviceID(), state.angle.getRadians());
+    SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(), currentAngle);
+    SmartDashboard.putNumber("Current unbound angle" + m_driveMotor.getDeviceID(), getAngle());
+    
+  }
+
+  public void toSmartDashboard() {
+    SmartDashboard.putNumber("voltage" + m_driveMotor.getDeviceID(), m_turningEncoder.getVoltage());
+    
+
   }
 }
