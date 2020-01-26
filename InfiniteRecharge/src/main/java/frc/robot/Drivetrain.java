@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -9,8 +8,6 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-
 import com.kauailabs.navx.frc.AHRS;
 public class Drivetrain {
 
@@ -21,40 +18,13 @@ public class Drivetrain {
     private final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
     private final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
     private final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
-    
-    private static final double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
-    private static final double kModuleMaxAngularAcceleration = 6 * Math.PI; // radians per second squared //4
 
-    private final ProfiledPIDController normal_turningPIDController = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-    kModuleMaxAngularAcceleration));
-
-    private final ProfiledPIDController bR_turningPIDController = new ProfiledPIDController(.5, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-    kModuleMaxAngularAcceleration));
-
-    public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
-                                                              RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, 
-                                                              RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, 
-                                                              RobotMap.FRONT_LEFT_ANGLE_OFFSET,
-                                                              normal_turningPIDController);
-    public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, 
-                                                              RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, 
-                                                              RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, 
-                                                              RobotMap.FRONT_RIGHT_ANGLE_OFFSET,
-                                                              normal_turningPIDController);
-    private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, 
-                                                            RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, 
-                                                            RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER, 
-                                                            RobotMap.BACK_LEFT_ANGLE_OFFSET,
-                                                            normal_turningPIDController);
-    private final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, 
-                                                              RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, 
-                                                              RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, 
-                                                              RobotMap.BACK_RIGHT_ANGLE_OFFSET,
-                                                              bR_turningPIDController);
+    public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET);
+    public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET);
+    private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER, RobotMap.BACK_LEFT_ANGLE_OFFSET);
+    private final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, RobotMap.BACK_RIGHT_ANGLE_OFFSET);
   
     private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-
-    
   
     SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
