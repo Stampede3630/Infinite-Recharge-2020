@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  Climber climber;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    climber = new Climber();
   }
 
   /**
@@ -85,7 +87,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    
+    //RobotMap.elevatorSpark.set(-0.3); 
+    RobotMap.elevatorSpark.set(0.9);
+
+   // climber.climberPeriodic();
+
  
   }
 
@@ -94,5 +100,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    //RobotMap.elevatorSpark.set(-0.3);
+    //climber.climberPeriodic();
+    RobotMap.elevatorSpark.set(-0.9);
   }
 }

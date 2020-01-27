@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class RobotMap {
-    public static CANSparkMax trolleySpark = new CANSparkMax(99, MotorType.kBrushless);
-    public static CANSparkMax elevatorSpark = new CANSparkMax(98, MotorType.kBrushless);
+    //public static CANSparkMax trolleySpark = new CANSparkMax(8, MotorType.kBrushless);
+    public static CANSparkMax elevatorSpark = new CANSparkMax(14, MotorType.kBrushless);
 
     public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
     public static DigitalInput elevatorMinExtension = new DigitalInput(19);

@@ -12,42 +12,51 @@ package frc.robot;
  */
 public class Climber {
 
-    public static final double elevatorSpeed = 0.5;
+    public static final double elevatorSpeed = 0.9;
     public static final double strafeSpeed = 0.5;
 
     public void climberPeriodic() {
-        if (RobotMap.controller.getAButtonPressed()) {
+        if (RobotMap.controller.getAButton()) {
             extend();
+            System.out.println("A pressed");
         }
-        if (RobotMap.controller.getBButtonPressed()) {
+        else if (RobotMap.controller.getBButton()) {
             retract();
+            System.out.println("B pressed");
         }
-        if (RobotMap.controller.getXButton()) {
+        else if (RobotMap.controller.getXButton()) {
             strafeLeft();
+            System.out.print("X pressed");
         }
-        if (RobotMap.controller.getYButton()) {
+        else if (RobotMap.controller.getYButton()) {
             strafeRight();
+            System.out.print("Y pressed");
+        }
+        else {
+            RobotMap.elevatorSpark.set(0);
+     //       RobotMap.trolleySpark.set(0);
         }
     }
 
     public void extend() {
-        if (RobotMap.elevatorMaxExtension.get() == false) {
-            RobotMap.elevatorSpark.set(elevatorSpeed); 
-        }
-       
+       // if (RobotMap.elevatorMaxExtension.get() == false) {
+          RobotMap.elevatorSpark.set(elevatorSpeed); 
+        //}
     }
 
     public void retract() {
-        if (RobotMap.elevatorMinExtension.get() == false) {
-            RobotMap.elevatorSpark.set(-(elevatorSpeed)); 
-        }
+        //if (RobotMap.elevatorMinExtension.get() == false) {
+         RobotMap.elevatorSpark.set((-elevatorSpeed)); 
+    
+        
+
     }
 
     public void strafeLeft() {
-        RobotMap.trolleySpark.set(-(strafeSpeed));
+    //    RobotMap.trolleySpark.set(-(strafeSpeed));
     }
 
     public void strafeRight() {
-        RobotMap.trolleySpark.set(strafeSpeed);
+    //    RobotMap.trolleySpark.set(strafeSpeed);
     }
 }
