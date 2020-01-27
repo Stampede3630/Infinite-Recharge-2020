@@ -27,10 +27,10 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 
 enum Movements {
-    SPIKEY, SPIKEYSTOP, BOLT, BOLT123, BOLTSTOPPER, ROLLEY,
+    SPIKEY, SPIKEYSTOP, BOLT, BOLT123, BOLTSTOPPER, ROLLEY, NOTHING
 }
 
-public class Balldigestion {
+public class balldigestion {
 
     XboxController controlly;
     WPI_TalonSRX armiedown;//first spin wheel
@@ -44,9 +44,10 @@ public class Balldigestion {
     Color noColor; 
     Ultrasonic s1;
   Ultrasonic s2;
-  Movements states = Movements.SPIKEY;
+  Movements state = Movements.ROLLEY;
 
-public Balldigestion (){
+
+public balldigestion (){
     controlly = new XboxController(0);
     armiedown = new WPI_TalonSRX(9);
     //newmatty = new Solenoid(19); // no solenoid on robo
@@ -65,38 +66,70 @@ public Balldigestion (){
 }
 
 public void greggorySwitch() {
-    switch(states) {
+    switch(state) {
+
         case ROLLEY:
+        if(controlly.getAButtonPressed()){
             System.out.println("tester");
             timmy.start();
             //newmatty.set(true); 
             armiedown.set(.5);
+        }
+        else if (timmy.hasPeriodPassed(4) && s1.getRangeInches()>3) {
+        state = Movements.SPIKEY;
+        }
         break;
 
-        case SPIKEY:   
+        case SPIKEY: 
             spiceygo.set(.5);
             System.out.println("called");
             armiedown.set(0);
+        
+        if (s1.getRangeInches()<3){
+        state = Movements.SPIKEYSTOP;
+        }
          break;
 
         case SPIKEYSTOP:
-            
+       
             System.out.println(s1.getRangeInches());
             spiceygo.set(0);
             System.out.println("testing");
+         if(s2.getRangeInches()>3 && s1.getRangeInches()<3){
+            state= Movements.BOLT;
+         }
+  
         break;
 
         case BOLT:
+        
             upiddiego.set(.5);
             spiceygo.set(0);
+            if (s2.getRangeInches()<3 && s1.getRangeInches()<3 && s3.getGreen()<700){
+            state= Movements.BOLT123;
+            }
+        else if (s1.getRangeInches()>3 && s2.getRangeInches()<3){
+        upiddiego.set(0);
+            
+        }
+        else if (s1.getRangeInches()>3){
+        state=Movements.SPIKEY;
+        }
         break;
 
         case BOLT123:
-            upiddiego.set(.5);
+         upiddiego.set(.5);
+         if(s3.getGreen()<700 && s2.getRangeInches()<3 || s1.getRangeInches()>3 && s2.getRangeInches()<3){
+        state= Movements.BOLTSTOPPER;
+         }
         break;
         
         case BOLTSTOPPER:
         upiddiego.set(0);
+       
+        if (s3.getGreen()>700 && controlly.getBButton()){
+        //shoot code
+        }
         break;
 
         default:
@@ -107,8 +140,6 @@ public void greggorySwitch() {
     }
 }
 public void greggory (){
-    
-    
 
     if(controlly.getAButtonPressed())
     {
@@ -162,9 +193,7 @@ upiddiego.set(0);
 
 }
 SmartDashboard.putNumber("stringy", s3.getRawColor().green);
-
 SmartDashboard.putNumber("proximity", s3.getGreen());
-
 SmartDashboard.putNumber("ultrasonic", s1.getRangeInches());
 SmartDashboard.putNumber("ultrasonic", s2.getRangeInches());
 
