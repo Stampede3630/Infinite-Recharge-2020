@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  WheelSpin spinThing;
+  //WheelSpin spinThing;
   SpeedControllerGroup rightyRobo;
   SpeedControllerGroup leftyRobo;
   Talon talon0;
@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
   Color noColor; 
   Ultrasonic BIGsonny;
   Ultrasonic BIGsonny1;
-  Balldigestion testing; 
+  balldigestion testing; 
   
 
 
@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
   
    // BIGsonny.setAutomaticMode(true);
     //BIGsonny.setDistanceUnits(Ultrasonic.Unit.kInches);
-    testing = new Balldigestion();
+    testing = new balldigestion();
     
   } 
   /**
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    testing.greggor(); 
   }
 
   /**
@@ -165,7 +165,8 @@ public class Robot extends TimedRobot {
 //SmartDashboard.putNumber("proximity", colo.getGreen());
 //SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
 //SmartDashboard.putNumber("ultrasonic", BIGsonny1.getRangeInches());
-testing.greggory(); 
+
+testing.greggorySwitch();
   }
 
     

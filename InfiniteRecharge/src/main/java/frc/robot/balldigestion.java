@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
@@ -43,8 +44,10 @@ public class balldigestion {
     ColorSensorV3 s3; // color sensor 3 by the shoot
     Color noColor; 
     Ultrasonic s1;
-  Ultrasonic s2;
+ ColorSensorV3 s2;
   Movements state = Movements.ROLLEY;
+  double threshold = 10000;
+
 
 
 public balldigestion (){
@@ -53,14 +56,15 @@ public balldigestion (){
     //newmatty = new Solenoid(19); // no solenoid on robo
     upiddiego = new WPI_TalonSRX(11);
     timmy = new Timer(); 
-    s3 = new ColorSensorV3(I2C.Port.kOnboard);
+    s3 = new ColorSensorV3(I2C.Port.kMXP);
     spiceygo = new WPI_TalonSRX(10);
     s1 = new Ultrasonic(8,9);
-    s2 = new Ultrasonic(6, 7);
+    s2 = new ColorSensorV3(I2C.Port.kOnboard);
     s1.setAutomaticMode(true);
     s1.setDistanceUnits(Ultrasonic.Unit.kInches);
-    s2.setAutomaticMode(true);
-    s2.setDistanceUnits(Ultrasonic.Unit.kInches);
+    //s2.setAutomaticMode(true);
+    //s2.setDistanceUnits(Ultrasonic.Unit.kInches);
+    
     
 
 }
@@ -81,7 +85,7 @@ public void greggorySwitch() {
         break;
 
         case SPIKEY: 
-            spiceygo.set(.5);
+            spiceygo.set(-.5);
             System.out.println("called");
             armiedown.set(0);
         
@@ -95,7 +99,7 @@ public void greggorySwitch() {
             System.out.println(s1.getRangeInches());
             spiceygo.set(0);
             System.out.println("testing");
-         if(s2.getRangeInches()>3 && s1.getRangeInches()<3){
+         if(s2.getGreen()<threshold && s1.getRangeInches()<3){
             state= Movements.BOLT;
          }
   
@@ -103,14 +107,14 @@ public void greggorySwitch() {
 
         case BOLT:
         
-            upiddiego.set(.5);
+            upiddiego.set(-.3);
             spiceygo.set(0);
-            if (s2.getRangeInches()<3 && s1.getRangeInches()<3 && s3.getGreen()<700){
+            if (s2.getGreen()>threshold && s1.getRangeInches()<3 && s3.getGreen()<threshold){
             state= Movements.BOLT123;
             }
-        else if (s1.getRangeInches()>3 && s2.getRangeInches()<3){
+        else if (s1.getRangeInches()>3 && s2.getGreen()>threshold){
         upiddiego.set(0);
-            
+        
         }
         else if (s1.getRangeInches()>3){
         state=Movements.SPIKEY;
@@ -118,16 +122,17 @@ public void greggorySwitch() {
         break;
 
         case BOLT123:
-         upiddiego.set(.5);
-         if(s3.getGreen()<700 && s2.getRangeInches()<3 || s1.getRangeInches()>3 && s2.getRangeInches()<3){
+         upiddiego.set(-.3);
+         if(s3.getGreen()>threshold && s2.getGreen()>threshold || s1.getRangeInches()>3 && s2.getGreen()>threshold){
         state= Movements.BOLTSTOPPER;
          }
         break;
         
         case BOLTSTOPPER:
         upiddiego.set(0);
+
        
-        if (s3.getGreen()>700 && controlly.getBButton()){
+        if (s3.getGreen()>threshold && controlly.getBButton()){
         //shoot code
         }
         break;
@@ -151,7 +156,7 @@ public void greggory (){
 
     if(timmy.hasPeriodPassed(4) && s1.getRangeInches()>3  )
      {
-        spiceygo.set(.5);
+        spiceygo.set(-.5);
         System.out.println("called");
         armiedown.set(0);
     }
@@ -162,17 +167,17 @@ public void greggory (){
         System.out.println("testing");
     }
     
-    if(s2.getRangeInches()>3 && s1.getRangeInches()<3){
+    if(s2.getGreen()>3 && s1.getRangeInches()<3){
         upiddiego.set(.5);
         spiceygo.set(0);
     }
         
 
-    if (s2.getRangeInches()<3 && s1.getRangeInches()<3 && s3.getGreen()<700){
+    if (s2.getGreen()<3 && s1.getRangeInches()<3 && s3.getGreen()<700){
 
         upiddiego.set(.5);
     }
-    if(s3.getGreen()<700 && s2.getRangeInches()<3 || s1.getRangeInches()>3 && s2.getRangeInches()<3){
+    if(s3.getGreen()<700 && s2.getGreen()<3 || s1.getRangeInches()>3 && s2.getGreen()<3){
 
         upiddiego.set(0);
 
@@ -187,7 +192,7 @@ public void greggory (){
         upiddiego.set(0);
         armiedown.set(0);
     }
-if (s1.getRangeInches()>3 && s2.getRangeInches()>3 && s3.getGreen()>700){
+if (s1.getRangeInches()>3 && s2.getGreen()>3 && s3.getGreen()>700){
 upiddiego.set(0);
 
 
@@ -195,9 +200,24 @@ upiddiego.set(0);
 SmartDashboard.putNumber("stringy", s3.getRawColor().green);
 SmartDashboard.putNumber("proximity", s3.getGreen());
 SmartDashboard.putNumber("ultrasonic", s1.getRangeInches());
-SmartDashboard.putNumber("ultrasonic", s2.getRangeInches());
+SmartDashboard.putNumber("ultrasonic", s2.getGreen());
 
-}}
+
+
+}
+public void greggor (){
+    SmartDashboard.putNumber("stringy", s3.getRawColor().green);
+    SmartDashboard.putNumber("s3", s3.getGreen());
+    SmartDashboard.putNumber("s2", s2.getGreen());
+    SmartDashboard.putNumber("ultrasonic", s1.getRangeInches());
+   // SmartDashboard.putNumber("ultrasonic", s2.getRangeInches());
+
+
+
+}
+
+
+}
 
     
 // spikey wont stop
