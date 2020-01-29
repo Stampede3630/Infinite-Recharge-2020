@@ -50,10 +50,10 @@ public class SwerveModule {
    */
   public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange, AHRS driveAngle) {
     if (turningMotorChannel==4){
-      kPSpecial = .5;
+      kPSpecial = .6;
     }
     else{
-      kPSpecial = 1;
+      kPSpecial = 1.1;
     }
     
     m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
@@ -144,25 +144,28 @@ public class SwerveModule {
    * }
    */
 
-  public double bound(double angle) {
-    /*double dTheta = angle-;
+  public double bound(double setpoint) {
+    double dTheta = setpoint - getAngle();
     double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
     
-    if (trueDTheta<90){
-      return trueDTheta;
-    }
-    else{
-      return (trueDTheta - Math.PI);
-    }
-
-    if (Math.abs(current+dTheta-angle) >.01){
-      m_driveScalar = 1;
-    }
-    else{
+    if (dTheta == trueDTheta)
+    {
       m_driveScalar = -1;
-    }*/
+    }
+    else{
+      m_driveScalar = 1;
+    } 
 
+    if (trueDTheta<90){
+      return getAngle() + trueDTheta;
+    }
+    else{
+      return getAngle() + (trueDTheta - Math.PI);
+    }
     
+  
+
+    /*
     if (angle > (Math.PI / 2)) {
       m_driveScalar = -m_driveScalar;
       return angle - Math.PI;
@@ -172,7 +175,7 @@ public class SwerveModule {
     } else {
       return angle;
     }
-
+    */
 
   }
 /*
@@ -196,7 +199,7 @@ public class SwerveModule {
     m_driveScalar = 1;
     // Calculate the turning motor output from the turning PID controller.
     double setpoint = bound(state.angle.getRadians());//state.angle.getRadians();//
-    double currentAngle = bound(getAngle()); //getAngle();//
+    double currentAngle = getAngle(); //getAngle();//
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
     if (m_turningMotor.getDeviceID() == 4) {
       turnOutput = turnOutput * -1;
@@ -211,7 +214,14 @@ public class SwerveModule {
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
-    m_driveMotor.set(driveOutput);
+    if (Math.abs(turnOutput) <.3){
+      m_driveMotor.set(driveOutput);
+    
+    } 
+    else {
+    m_driveMotor.set(0);
+
+    }
     //m_driveMotor.set(0);
     // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
     // driveOutput );
@@ -240,7 +250,7 @@ public class SwerveModule {
 
     SmartDashboard.putNumber("Setpoint bound angle" + m_driveMotor.getDeviceID(), setpoint);
     SmartDashboard.putNumber("setpoint unbound angle" + m_driveMotor.getDeviceID(), state.angle.getRadians());
-    SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(), currentAngle);
+    //SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(), currentAngle);
     SmartDashboard.putNumber("Current unbound angle" + m_driveMotor.getDeviceID(), getAngle());
     
   }
