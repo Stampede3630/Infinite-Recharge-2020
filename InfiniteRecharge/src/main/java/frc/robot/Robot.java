@@ -44,10 +44,14 @@ public class Robot extends TimedRobot {
   private Drivetrain m_swerve;
   SwerveModule swerveM;
   TrajectoryFollowing autonomous;
+  TestManipulator manipTest;
+  Shooter shooter;
   @Override
   public void robotInit() {
     m_swerve = new Drivetrain();
     m_controller = new XboxController(0);
+    manipTest = new TestManipulator();
+    shooter = new Shooter();
 
   }
 
@@ -55,6 +59,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     m_swerve.postToSmartDashboard();
     m_swerve.updateOdometry();
+    shooter.smartDashboardOutput();
 
   }
 
@@ -126,6 +131,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     driveWithJoystick(false);
+    manipTest.periodic();
+    if(m_controller.getTriggerAxis(Hand.kLeft)>0.5)
+    {
+      shooter.control();
+    }
+    else
+    {
+      shooter.drive();
+    }
+    
     
   }
 

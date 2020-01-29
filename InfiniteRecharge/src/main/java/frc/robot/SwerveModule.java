@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.kauailabs.navx.frc.AHRS;
 
 
 public class SwerveModule {
@@ -28,6 +29,7 @@ public class SwerveModule {
   private int m_driveScalar = 1;
   private final AnalogInput m_turningEncoder;
   double kPSpecial;
+  AHRS currentAngle;
 
   private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 
@@ -46,7 +48,7 @@ public class SwerveModule {
    * @param driveMotorChannel   ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
-  public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange) {
+  public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange, AHRS driveAngle) {
     if (turningMotorChannel==4){
       kPSpecial = .5;
     }
@@ -143,6 +145,24 @@ public class SwerveModule {
    */
 
   public double bound(double angle) {
+    /*double dTheta = angle-;
+    double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
+    
+    if (trueDTheta<90){
+      return trueDTheta;
+    }
+    else{
+      return (trueDTheta - Math.PI);
+    }
+
+    if (Math.abs(current+dTheta-angle) >.01){
+      m_driveScalar = 1;
+    }
+    else{
+      m_driveScalar = -1;
+    }*/
+
+    
     if (angle > (Math.PI / 2)) {
       m_driveScalar = -m_driveScalar;
       return angle - Math.PI;
@@ -152,8 +172,17 @@ public class SwerveModule {
     } else {
       return angle;
     }
-  }
 
+
+  }
+/*
+  public double bound (double angle, double setpoint)
+  {
+    change1 = setpoint-angle
+    change2 = setpoint + Math.PI - angle
+    bestChange = Math.
+  }
+  */
   /**
    * Sets the desired state for the module.
    *
