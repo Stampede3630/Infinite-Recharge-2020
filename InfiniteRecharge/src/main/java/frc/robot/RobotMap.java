@@ -24,11 +24,14 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class RobotMap {
+
+    /* climbing stuff, needs real ports
     public static CANSparkMax trolleySpark = new CANSparkMax(99, MotorType.kBrushless);
     public static CANSparkMax elevatorSpark = new CANSparkMax(98, MotorType.kBrushless);
 
     public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
     public static DigitalInput elevatorMinExtension = new DigitalInput(19);
+    */
 
     public static XboxController controller = new XboxController(0);
 
@@ -56,7 +59,7 @@ public class RobotMap {
     public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
 
     //PID Constants/Contraints
-    public static final double kMaxSpeed = 1; // 3 meters per second
+    public static final double kMaxSpeed = 4; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI;
     
     static
@@ -76,10 +79,16 @@ public class RobotMap {
         DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
         DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
 
+        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+
         DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
         DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
         DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
         DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+
     }
     /*
     private static RobotMap thisInstance;
