@@ -214,14 +214,14 @@ public class SwerveModule {
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
-    if (Math.abs(turnOutput) <.3){
+    //if (Math.abs(turnOutput) <.3){
       m_driveMotor.set(driveOutput);
     
-    } 
-    else {
-    m_driveMotor.set(0);
+    //} 
+    //else {
+   // m_driveMotor.set(0);
 
-    }
+    //}
     //m_driveMotor.set(0);
     // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
     // driveOutput );

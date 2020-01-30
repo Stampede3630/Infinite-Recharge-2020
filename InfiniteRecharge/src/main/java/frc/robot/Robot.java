@@ -38,11 +38,10 @@ public class Robot extends TimedRobot {
   NetworkTableEntry rotateEntry =
   NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
-  public static final double kMaxSpeed = .5; // 3 meters per second
+  public static final double kMaxSpeed = 4; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   public static XboxController m_controller;
-  private Drivetrain m_swerve;
-  SwerveModule swerveM;
+  public static Drivetrain m_swerve;
   TrajectoryFollowing autonomous;
   TestManipulator manipTest;
   Shooter shooter;
@@ -130,7 +129,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    driveWithJoystick(false);
+    driveWithJoystick(true);
     manipTest.periodic();
     if(m_controller.getTriggerAxis(Hand.kLeft)>0.5)
     {

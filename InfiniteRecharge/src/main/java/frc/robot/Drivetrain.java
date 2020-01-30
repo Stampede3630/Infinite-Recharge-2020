@@ -44,7 +44,7 @@ public class Drivetrain {
      */
     public Rotation2d getAngle() {
       // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES CHANGE
-      return Rotation2d.fromDegrees(-m_gyro.getAngle());
+      return Rotation2d.fromDegrees(-m_gyro.getAngle() + 180);
     }
   
     /**
