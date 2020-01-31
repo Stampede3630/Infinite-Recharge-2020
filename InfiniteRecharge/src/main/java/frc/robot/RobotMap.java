@@ -38,82 +38,17 @@ public class RobotMap {
     public static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
     
     // Swerve hardware
-    public static final WPI_TalonSRX DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(2);
-    public static final WPI_TalonFX DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
-    public static final AnalogInput DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-    public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.607 + Math.PI;
-
-    public static final WPI_TalonSRX DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(6);
-    public static final WPI_TalonFX DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
-    public static final AnalogInput DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
-    public static final double BACK_LEFT_ANGLE_OFFSET = -0.339;
-
-    public static final WPI_TalonSRX DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(4);
-    public static final WPI_TalonFX DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
-    public static final AnalogInput DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-    public static final double BACK_RIGHT_ANGLE_OFFSET = -1.596 + Math.PI;
-
-    public static final WPI_TalonSRX DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(8);
-    public static final WPI_TalonFX DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
-    public static final AnalogInput DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
-
+    
     //PID Constants/Contraints
     public static final double kMaxSpeed = 4; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI;
     
-    static
-    {
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setInverted(false);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
-
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-
-        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
-
-        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-
-    }
-    /*
+   
     private static RobotMap thisInstance;
 
 
-    private RobotMap() {
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setInverted(false);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
-
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-
-        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
-
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+    public RobotMap() {
+        
 
     }
 
@@ -124,5 +59,5 @@ public class RobotMap {
         }
         return thisInstance;
     }
-    */
+    
 }
