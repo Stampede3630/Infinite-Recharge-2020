@@ -8,9 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,14 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-
-  private DriveTrain ;
  
   @Override
   public void robotInit() {
 
-    m_swerve = new DriveTrain();
-   
   }
 
   @Override
@@ -47,7 +40,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_swerve.driveWithJoystick(true);
 
   }
 
