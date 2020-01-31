@@ -7,8 +7,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.RobotMap;
+
 /**
  * Add your docs here.
  */
 public class Drivetrain {
+    MecanumDrive mD;
+    RobotMap robotMap;
+
+    public void teleOpDrive() {
+        mD = new MecanumDrive(robotMap.talonFL, robotMap.talonBL, robotMap.talonFR, robotMap.talonBR);
+        mD.driveCartesian(robotMap.controller.getY(Hand.kRight) * 0.5, robotMap.controller.getX(Hand.kLeft) * 0.5, 0);
+    }
+    
 }

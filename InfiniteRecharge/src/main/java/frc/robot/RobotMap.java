@@ -34,5 +34,9 @@ public class RobotMap {
 	public final WPI_TalonSRX talonBallShooter = new WPI_TalonSRX(6); //6
 
 	public XboxController controller = new XboxController(0);
+
+	private RobotMap() {
+		
+	}
 	
 }

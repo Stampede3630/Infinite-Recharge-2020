@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,6 +18,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  Drivetrain driveTrain;
  
   @Override
   public void robotInit() {
@@ -40,6 +43,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    driveTrain.teleOpDrive();
 
   }
 
