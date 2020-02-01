@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
   Color noColor; 
   Ultrasonic BIGsonny;
   Ultrasonic BIGsonny1;
-  balldigestion testing; 
+  IntakeIndex intakeIndex; 
   
 
 
@@ -63,28 +63,7 @@ public class Robot extends TimedRobot {
 
   public Robot ()
   {
-    //spinThing = new WheelSpin();
-    /*
-    enCod = new AVA();
-    talon0 = new Talon(0);
-    talon1 = new Talon(1);
-    talon3 = new Talon(3);
-    talon2 = new Talon(2);
-    rightyRobo = new SpeedControllerGroup(talon0, talon1); 
-    leftyRobo = new SpeedControllerGroup (talon3, talon2);
-    roboGo = new DifferentialDrive(leftyRobo,rightyRobo);
-    remoty = new XboxController(0); 
-    piddie = new PIDController (0.01,0,0);
-    veel = new AHRS(SPI.Port.kMXP); 
-    */
-    //colo = new ColorSensorV3(I2C.Port.kOnboard );
-    //BIGsonny = new Ultrasonic(8,9);
-    //BIGsonny1 = new Ultrasonic(6, 7);
-    
-  
-   // BIGsonny.setAutomaticMode(true);
-    //BIGsonny.setDistanceUnits(Ultrasonic.Unit.kInches);
-    testing = new balldigestion();
+    intakeIndex = new IntakeIndex();
     
   } 
   /**
@@ -108,7 +87,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  testing.greggor();
+    intakeIndex.toSmartDashboard();
   }
 
   /**
@@ -150,23 +129,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    //spinThing.teleopPeriodic();
-    //roboGo.arcadeDrive(xSpeed, zRotation);
-  //roboGo.arcadeDrive(remoty.getY(Hand.kLeft),remoty.getX(Hand.kRight));
-  //piddie.calculate(veel.getAngle(),45);
-//roboGo.arcadeDrive(0,piddie.calculate(veel.getAngle(),45));
-//noColor = colo.getColor();
-
-//roboGo.arcadeDrive(piddie.calculate(enCod.piggie(),48), 0); //piddie.calculate(veel.getAngle(),0));
-//SmartDashboard.putNumber("pig",piddie.calculate(enCod.piggie(),48 ));
-//SmartDashboard.putNumber("string", colo.getIR());
-//SmartDashboard.putNumber("hey", noColor.green); doesnt work as well as stringy
-//SmartDashboard.putNumber("stringy", colo.getRawColor().green);
-//SmartDashboard.putNumber("proximity", colo.getGreen());
-//SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
-//SmartDashboard.putNumber("ultrasonic", BIGsonny1.getRangeInches());
-testing.greggory(); 
-//testing.greggorySwitch();
+    intakeIndex.index(); 
+    //intakeIndex.greggorySwitch();
   }
 
     
@@ -176,12 +140,6 @@ testing.greggory();
   @Override
   public void testPeriodic() {
   }
-public void Portie() 
-{
-//colo.getColor();
-//colo.getRawColor();
-//colo.getIR();
-}
 
 }
 
