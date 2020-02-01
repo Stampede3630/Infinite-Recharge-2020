@@ -10,8 +10,6 @@ import com.revrobotics.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -49,12 +47,12 @@ public class Robot extends TimedRobot {
   XboxController remoty;
   PIDController piddie;
   AHRS veel;
-  AVA enCod;
   ColorSensorV3 colo; 
   Color noColor; 
   Ultrasonic BIGsonny;
   Ultrasonic BIGsonny1;
   IntakeIndex intakeIndex; 
+  Shoot shoot;
   
 
 
@@ -64,6 +62,7 @@ public class Robot extends TimedRobot {
   public Robot ()
   {
     intakeIndex = new IntakeIndex();
+    shoot = new Shoot();
     
   } 
   /**
@@ -129,8 +128,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    intakeIndex.index(); 
-    //intakeIndex.greggorySwitch();
+      shoot.control();
+      intakeIndex.index(); 
+      
   }
 
     

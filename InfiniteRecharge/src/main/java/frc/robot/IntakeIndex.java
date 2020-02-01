@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
@@ -38,8 +39,11 @@ public class IntakeIndex {
     ColorSensorV3 colorSensorLow;
     ColorSensorV3 colorSensorHigh; 
     Color noColor;
+    Shoot shoot;
 
-    double threshold = 20000;
+    double threshold;
+    boolean bottom, middle, top, none;
+
 
     public IntakeIndex() {
     controller = new XboxController(0);
@@ -56,10 +60,33 @@ public class IntakeIndex {
     //colorSensorLow.setAutomaticMode(true);
     //colorSensorLow.setDistanceUnits(Ultrasonic.Unit.kInches);
 }
+
+public void updateBooleans(){
+    threshold = 13000;
+    
+    bottom = false;
+    middle = false;
+    top = false;
+    none = true;
+
+    if (ultrasonic.getRangeInches()>200 || ultrasonic.getRangeInches() < 9 ){
+        bottom = true;
+        none = false;
+    }
+    if (colorSensorHigh.getGreen()>threshold){
+        top = true;
+        none = false;
+    }
+    if (colorSensorLow.getGreen()>threshold){
+        middle = true;
+        none = false;
+    }
+}
     
 //most recent intake machine
 public void index (){
     System.out.println(pinwheel.get());
+    updateBooleans();
 
     if(controller.getAButton())
     {
@@ -74,37 +101,53 @@ public void index (){
         intakeWheels.set(0);
         System.out.print(timer.get());
     }
+
     //if its been 1.5 sec or there's something in the bottom
-    if(timer.get() > 1.5 || ultrasonic.getRangeInches()>200 || ultrasonic.getRangeInches() < 3 || timer.get() == 0)  
+    if(timer.get() > 1.5 || bottom == true|| timer.get() == 0)  
      {
         pinwheel.set(0);      
     }
     else{
         pinwheel.set(-.8);
     }
-    //if something is in the top
-    if (colorSensorHigh.getGreen() > threshold)
-    {
+
+//BELT STUFF!!!!!!!!!!!!!!!!!
+
+    if(middle && top && bottom && RobotMap.shooter1.getSelectedSensorVelocity() < Constants.rpmToRotatPer100Mili(Shoot.rotpm) * Constants.kEncoderUnitsPerRev){
         belt.set(0);
     }
-    //if a ball is in the bottom
-    else if(colorSensorLow.getGreen()<threshold && (ultrasonic.getRangeInches()>200 || ultrasonic.getRangeInches() < 8)){
-        belt.set(-.5);
-    }
-    //if something is in the middle and the bottom
-    else if (colorSensorLow.getGreen()>threshold && (ultrasonic.getRangeInches()>200 || ultrasonic.getRangeInches() < 8)  && colorSensorHigh.getGreen()<threshold){
-        belt.set(-.5);
-    }
-    else
-    {
-        belt.set(0);
-    }
-   
-    if (colorSensorHigh.getGreen()>threshold && controller.getBButton()){
 
-    //SHOOT NOW CODE
+    else{
+        //if a ball is in the bottom
+        if(middle == false && bottom == true){
+            belt.set(-.5);
+        }
 
+        //if something is in the middle and the bottom
+        else if (middle == true && bottom == true && top == false){
+            belt.set(-.5);
+        }
+
+        //if something is in top but not middle
+        else if (middle == false && top == true){
+            belt.set(.5);
+        }
+
+        else if(RobotMap.controller.getTriggerAxis(Hand.kRight)>.6 && RobotMap.shooter1.getSelectedSensorVelocity() >= Constants.rpmToRotatPer100Mili(Shoot.rotpm) * Constants.kEncoderUnitsPerRev){
+            belt.set(-.5);
+        }
+        else
+        {
+            belt.set(0);
+        }
     }
+        /*if (colorSensorHigh.getGreen()>threshold && controller.getBButton()){
+
+        //SHOOT NOW CODE
+            //shoot.spin(.75);
+            //set boolean true
+        }*/
+    
     
     /*
         SmartDashboard.putNumber("stringy", colorSensorHigh.getRawColor().green);
