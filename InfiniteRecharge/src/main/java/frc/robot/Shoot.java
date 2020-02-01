@@ -3,13 +3,9 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shoot {
@@ -22,7 +18,7 @@ public class Shoot {
     private WPI_TalonFX falcon;
     private WPI_TalonFX falcon2;
     XboxController controller;
-    WPI_TalonSRX bird; //belt talon
+    WPI_TalonSRX belt; //belt talon
     
 
     public Shoot() {
@@ -35,8 +31,8 @@ public class Shoot {
         falcon2.setInverted(true); // GET REAL PORT!
         controller = new XboxController(0);
         loops = 0;
-        bird = new WPI_TalonSRX(11);
-        bird.setNeutralMode(NeutralMode.Coast);
+        belt = new WPI_TalonSRX(11);
+        belt.setNeutralMode(NeutralMode.Coast);
 
         falcon.configFactoryDefault();
         falcon2.configFactoryDefault();
@@ -99,7 +95,7 @@ public class Shoot {
       /* 500 RPM in either direction */
      falcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
       falcon2.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-      bird.set(-.6);
+      belt.set(-.6);
     }
 
 }

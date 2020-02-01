@@ -1,6 +1,14 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -24,27 +32,40 @@ public class Drivetrain {
     public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET, m_gyro);
     private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER, RobotMap.BACK_LEFT_ANGLE_OFFSET, m_gyro);
     private final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, RobotMap.BACK_RIGHT_ANGLE_OFFSET, m_gyro);
+
+    public static final double kMaxSpeed = 4; // 3 meters per second
+    public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   
-   
+    
   
     SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
     );
 
     final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
-  
-    public Drivetrain() {
+
+    static Drivetrain drivetrain;
+
+    private Drivetrain() {
       m_gyro.reset();
+    }
+
+    public static Drivetrain getInstance(){
+        if(drivetrain == null){
+            drivetrain = new Drivetrain();
+        }
+        return drivetrain;
     }
   
     /**
+     * 
      * Returns the angle of the robot as a Rotation2d.
      *
      * @return The angle of the robot.
      */
     public Rotation2d getAngle() {
       // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES CHANGE
-      return Rotation2d.fromDegrees(-m_gyro.getAngle() + 180);
+      return Rotation2d.fromDegrees(-m_gyro.getAngle() + 90);
     }
   
     /**
@@ -74,7 +95,7 @@ public class Drivetrain {
     ********************************************************* */
 
 
-      SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, Robot.kMaxSpeed);
+      SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.kMaxSpeed);
      m_frontLeft.setDesiredState(swerveModuleStates[0]);
      m_frontRight.setDesiredState(swerveModuleStates[1]);
       m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -83,7 +104,7 @@ public class Drivetrain {
     
     public void setModuleStates(SwerveModuleState[] swerveModuleStates)
     {
-      SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, Robot.kMaxSpeed);
+      SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.kMaxSpeed);
      m_frontLeft.setDesiredState(swerveModuleStates[0]);
      m_frontRight.setDesiredState(swerveModuleStates[1]);
       m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -142,4 +163,36 @@ public class Drivetrain {
       SmartDashboard.putNumber("meters dist Y", m_odometry.getPoseMeters().getTranslation().getY());
 
     }
+    public void driveWithJoystick(boolean fieldRelative) {
+        
+        // Get the x speed. We are inverting this because Xbox controllers return
+        // negative values when we push forward.
+        var xSpeed = RobotMap.controller.getY(Hand.kLeft)* kMaxSpeed;
+        if(Math.abs(xSpeed) < (0.2 * kMaxSpeed))
+        {
+          xSpeed = 0;
+        }
+        
+        // Get the y speed or sideways/strafe speed. We are inverting this because
+        // we want a positive value when we pull to the left. Xbox controllers
+        // return positive values when you pull to the right by default.
+        var ySpeed = RobotMap.controller.getX(Hand.kLeft) * kMaxSpeed;
+        if(Math.abs(ySpeed) < (0.2 * kMaxSpeed))
+        {
+          ySpeed = 0;
+        }
+        // Get the rate of angular rotatpion. We are inverting this because we want a
+        // positive value when we pull to the left (remember, CCW is positive in
+        // mathematics). Xbox controllers return positive values when you pull to
+        // the right by default.
+        var rot = RobotMap.controller.getX(Hand.kRight) * kMaxAngularSpeed;
+        if(Math.abs(rot) < (0.2 * kMaxAngularSpeed))
+        {
+          rot = 0;
+        }
+        //System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
+        //System.out.println("rot-c: " + rot);
+        System.out.println(xSpeed + "," + ySpeed);
+        drive(xSpeed, ySpeed, rot, fieldRelative);
+      }
   }

@@ -11,8 +11,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
@@ -31,7 +29,7 @@ public class TestManipulator {
     }
     public void periodic()
     {
-        if(Robot.m_controller.getAButton())
+        if(RobotMap.controller.getAButton())
         {
             intake.set(.75);
             highRoller.set(-.4);
@@ -40,17 +38,17 @@ public class TestManipulator {
             intake.set(0);
             highRoller.set(0);
         }
-        if(Robot.m_controller.getTriggerAxis(Hand.kRight)>0.5)
+        if(RobotMap.controller.getTriggerAxis(Hand.kRight)>0.5)
         {
             belt.set(-.7);
         }
-        else if(Robot.m_controller.getBumper(Hand.kRight)){
+        else if(RobotMap.controller.getBumper(Hand.kRight)){
             belt.set(0.7);
         }
         else {
             belt.set(0);
         }
-        /*if(Robot.m_controller.getXButton())
+        /*if(RobotMap.controller.getXButton())
         {
             highRoller.set(-.8);
         }
