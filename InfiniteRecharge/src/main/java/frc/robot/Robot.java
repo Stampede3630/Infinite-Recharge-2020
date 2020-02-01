@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -22,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
   private Drivetrain m_swerve;
- 
+  private Compressor compp = new Compressor(0);
   @Override
   public void robotInit() {
 
@@ -32,7 +33,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-
+    SmartDashboard.putNumber("Current trolleySpark", RobotMap.trolleySpark.getOutputCurrent());
+    SmartDashboard.putNumber("Current Elevator", RobotMap.elevatorSpark.getOutputCurrent());
   }
 
   @Override
@@ -47,7 +49,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_swerve.driveWithJoystick(true);
+    //m_swerve.driveWithJoystick(true);
+    RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
+    RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
+    System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
+
 
   }
 

@@ -25,10 +25,10 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class RobotMap {
 
-    /* climbing stuff, needs real ports
-    public static CANSparkMax trolleySpark = new CANSparkMax(99, MotorType.kBrushless);
-    public static CANSparkMax elevatorSpark = new CANSparkMax(98, MotorType.kBrushless);
-
+    //climbing stuff, needs real ports
+    public static CANSparkMax trolleySpark = new CANSparkMax(14, MotorType.kBrushless);
+    public static CANSparkMax elevatorSpark = new CANSparkMax(8, MotorType.kBrushless);
+    /*
     public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
     public static DigitalInput elevatorMinExtension = new DigitalInput(19);
     */
