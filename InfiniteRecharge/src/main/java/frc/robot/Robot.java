@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    testing.greggor(); 
+  testing.greggor();
   }
 
   /**
@@ -165,8 +165,8 @@ public class Robot extends TimedRobot {
 //SmartDashboard.putNumber("proximity", colo.getGreen());
 //SmartDashboard.putNumber("ultrasonic", BIGsonny.getRangeInches());
 //SmartDashboard.putNumber("ultrasonic", BIGsonny1.getRangeInches());
-
-testing.greggorySwitch();
+testing.greggory(); 
+//testing.greggorySwitch();
   }
 
     

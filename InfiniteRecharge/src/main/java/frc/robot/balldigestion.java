@@ -46,7 +46,8 @@ public class balldigestion {
     Ultrasonic s1;
  ColorSensorV3 s2;
   Movements state = Movements.ROLLEY;
-  double threshold = 10000;
+  double threshold = 20000;
+  
 
 
 
@@ -58,7 +59,7 @@ public balldigestion (){
     timmy = new Timer(); 
     s3 = new ColorSensorV3(I2C.Port.kMXP);
     spiceygo = new WPI_TalonSRX(10);
-    s1 = new Ultrasonic(8,9);
+    s1 = new Ultrasonic(5,3);
     s2 = new ColorSensorV3(I2C.Port.kOnboard);
     s1.setAutomaticMode(true);
     s1.setDistanceUnits(Ultrasonic.Unit.kInches);
@@ -70,26 +71,41 @@ public balldigestion (){
 }
 
 public void greggorySwitch() {
+  
+    if (controlly.getAButton()){
+          armiedown.set(.65);
+          timmy.start();
+    }
+          
+    else if (timmy.hasPeriodPassed(4) && s1.getRangeInches()<200) {
+        state = Movements.SPIKEY;
+    }
+   
+    else {
+        armiedown.set(0);
+
+    }
+    
+
     switch(state) {
 
-        case ROLLEY:
-        if(controlly.getAButtonPressed()){
-            System.out.println("tester");
-            timmy.start();
+       // case ROLLEY:
+        //if(controlly.getAButtonPressed()){
+           
+            //timmy.start();
             //newmatty.set(true); 
-            armiedown.set(.5);
-        }
-        else if (timmy.hasPeriodPassed(4) && s1.getRangeInches()>3) {
-        state = Movements.SPIKEY;
-        }
-        break;
+           // armiedown.set(.5);
+        
+       // else if (timmy.hasPeriodPassed(4) && s1.getRangeInches()<200) {
+        
 
+    
         case SPIKEY: 
             spiceygo.set(-.5);
             System.out.println("called");
             armiedown.set(0);
         
-        if (s1.getRangeInches()<3){
+        if (s1.getRangeInches()>200){
         state = Movements.SPIKEYSTOP;
         }
          break;
@@ -99,7 +115,7 @@ public void greggorySwitch() {
             System.out.println(s1.getRangeInches());
             spiceygo.set(0);
             System.out.println("testing");
-         if(s2.getGreen()<threshold && s1.getRangeInches()<3){
+         if(s2.getGreen()<threshold && s1.getRangeInches()>200){
             state= Movements.BOLT;
          }
   
@@ -109,21 +125,22 @@ public void greggorySwitch() {
         
             upiddiego.set(-.3);
             spiceygo.set(0);
-            if (s2.getGreen()>threshold && s1.getRangeInches()<3 && s3.getGreen()<threshold){
+            if (s2.getGreen()>threshold && s1.getRangeInches()>200 && s3.getGreen()<threshold){
             state= Movements.BOLT123;
             }
-        else if (s1.getRangeInches()>3 && s2.getGreen()>threshold){
+        else if (s1.getRangeInches()<200 && s2.getGreen()>threshold){
         upiddiego.set(0);
+        System.out.println("trying to stop");
         
         }
-        else if (s1.getRangeInches()>3){
+        else if (s1.getRangeInches()<200){
         state=Movements.SPIKEY;
         }
         break;
 
         case BOLT123:
          upiddiego.set(-.3);
-         if(s3.getGreen()>threshold && s2.getGreen()>threshold || s1.getRangeInches()>3 && s2.getGreen()>threshold){
+         if(s3.getGreen()>threshold && s2.getGreen()>threshold || s1.getRangeInches()<200 && s2.getGreen()>threshold){
         state= Movements.BOLTSTOPPER;
          }
         break;
@@ -143,70 +160,77 @@ public void greggorySwitch() {
             armiedown.set(0);
         break;
     }
+    System.out.println(state);
 }
-public void greggory (){
 
-    if(controlly.getAButtonPressed())
+    
+
+public void greggory (){
+    System.out.println(spiceygo.get());
+
+    if(controlly.getAButton())
     {
         System.out.println("tester");
-        timmy.start();//must check
+        //timmy.stop();
+        timmy.reset();
+        timmy.start();
         //newmatty.set(true); 
         armiedown.set(.5);
-    }
-
-    if(timmy.hasPeriodPassed(4) && s1.getRangeInches()>3  )
-     {
-        spiceygo.set(-.5);
-        System.out.println("called");
-        armiedown.set(0);
-    }
-    
-    if (s1.getRangeInches()<3){
-        System.out.println(s1.getRangeInches());
-        spiceygo.set(0);
-        System.out.println("testing");
-    }
-    
-    if(s2.getGreen()>3 && s1.getRangeInches()<3){
-        upiddiego.set(.5);
-        spiceygo.set(0);
-    }
         
-
-    if (s2.getGreen()<3 && s1.getRangeInches()<3 && s3.getGreen()<700){
-
-        upiddiego.set(.5);
     }
-    if(s3.getGreen()<700 && s2.getGreen()<3 || s1.getRangeInches()>3 && s2.getGreen()<3){
-
+    else {
+        armiedown.set(0);
+        System.out.print(timmy.get());
+    }
+    
+    if(timmy.get() > 1.5 || s1.getRangeInches()>200 || s1.getRangeInches() < 3 || timmy.get() == 0)  
+     {
+        spiceygo.set(0);
+        System.out.println("called");
+      
+    }
+    else{
+        spiceygo.set(-.8);
+    }
+    if (s3.getGreen() > threshold)
+    {
         upiddiego.set(0);
-
     }
-    if (s3.getGreen()>700 && controlly.getBButton()){
+    else if(s2.getGreen()<threshold && (s1.getRangeInches()>200 || s1.getRangeInches() < 8)){
+        upiddiego.set(-.5);
+       
+    }
+
+    else if (s2.getGreen()>threshold && (s1.getRangeInches()>200 || s1.getRangeInches() < 8)  && s3.getGreen()<threshold){
+
+        upiddiego.set(-.5);
+    }
+    else
+    {
+        upiddiego.set(0);
+    }
+   
+    if (s3.getGreen()>threshold && controlly.getBButton()){
 
     //SHOOT NOW CODE
 
     }
-    else {
-        spiceygo.set(0);
-        upiddiego.set(0);
-        armiedown.set(0);
-    }
-if (s1.getRangeInches()>3 && s2.getGreen()>3 && s3.getGreen()>700){
-upiddiego.set(0);
+    
 
-
-}
 SmartDashboard.putNumber("stringy", s3.getRawColor().green);
 SmartDashboard.putNumber("proximity", s3.getGreen());
 SmartDashboard.putNumber("ultrasonic", s1.getRangeInches());
 SmartDashboard.putNumber("ultrasonic", s2.getGreen());
 
-
-
 }
-public void greggor (){
-    SmartDashboard.putNumber("stringy", s3.getRawColor().green);
+
+
+
+
+
+
+public void greggor(){
+    //SmartDashboard.putNumber("stringy", s3.getRawColor().green);
     SmartDashboard.putNumber("s3", s3.getGreen());
     SmartDashboard.putNumber("s2", s2.getGreen());
     SmartDashboard.putNumber("ultrasonic", s1.getRangeInches());
