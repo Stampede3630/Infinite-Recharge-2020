@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -45,11 +52,12 @@ public class SwerveModule {
   /**
    * Constructs a SwerveModule.
    *
-   * @param driveMotorChannel   ID for the drive motor.
-   * @param turningMotorChannel ID for the turning motor.
+   * @param drivetrainFrontLeftDriveMotor   ID for the drive motor.
+   * @param drivetrainFrontLeftAngleMotor ID for the turning motor.
    */
-  public SwerveModule(int driveMotorChannel, int turningMotorChannel, int angleEncoder, double angleChange, AHRS driveAngle) {
-    if (turningMotorChannel==4){
+  public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_TalonSRX drivetrainFrontLeftAngleMotor, AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
+    if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4){
+
       kPSpecial = .6;
     }
     else{
@@ -59,20 +67,11 @@ public class SwerveModule {
     m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
     kModuleMaxAngularAcceleration));
 
-    m_driveMotor = new WPI_TalonFX(driveMotorChannel);
-    m_driveMotor.setInverted(false);
-    m_driveMotor.setNeutralMode(NeutralMode.Brake);
-    m_turningMotor = new WPI_TalonSRX(turningMotorChannel);
-    m_turningMotor.setNeutralMode(NeutralMode.Brake);
-    m_turningMotor.setInverted(true);
-    if(driveMotorChannel == 7)
-    {
-      m_driveMotor.setInverted(true);
-    }
-    m_driveMotor.setSelectedSensorPosition(0);
-
+    m_driveMotor = drivetrainFrontLeftDriveMotor;
+    m_turningMotor = drivetrainFrontLeftAngleMotor;
     
-    m_turningEncoder = new AnalogInput(angleEncoder);
+    m_turningEncoder = drivetrainFrontLeftAngleEncoder;
+
     angleOffset = angleChange;
 
     // Set the distance per pulse for the drive encoder. We can simply use the
@@ -88,7 +87,6 @@ public class SwerveModule {
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
-
 
   public double getTalonFXRate(){
     double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0)*10;
@@ -120,7 +118,7 @@ public class SwerveModule {
   }
 
   public double getAngle() {
-    readAngle();
+    //readAngle();
     return m_steeringAngle;
   }
 
@@ -148,12 +146,12 @@ public class SwerveModule {
     double dTheta = setpoint - getAngle();
     double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
     
-    if (dTheta == trueDTheta)
+    if (Math.abs(Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI) - Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01)
     {
-      m_driveScalar = -1;
+      m_driveScalar = 1;
     }
     else{
-      m_driveScalar = 1;
+      m_driveScalar = -1;
     } 
 
     if (trueDTheta<90){
@@ -207,10 +205,9 @@ public class SwerveModule {
 
     System.out.println(m_driveMotor.getDeviceID() + "," + "encoder position" + m_driveMotor.getSelectedSensorPosition(0));
 
-    double driveOutput = state.speedMetersPerSecond / Robot.kMaxSpeed * m_driveScalar;
+    double driveOutput = state.speedMetersPerSecond / RobotMap.kMaxSpeed * m_driveScalar;
   
     if(driveOutput == 0) { turnOutput = 0; }
-    
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
