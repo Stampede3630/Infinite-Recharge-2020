@@ -143,6 +143,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testInit() {
+		BallFollowDrive.initLimelight();
 	}
 
 	@Override
@@ -152,7 +153,7 @@ public class Robot extends TimedRobot {
 			BallFollowDrive.resetIntakeState();
 		}
 		if (m_controller.getBumper(Hand.kRight)) {
-			BallFollowDrive.intake(kMaxAngularSpeed / 2);
+			BallFollowDrive.intake(kMaxAngularSpeed);
 		} else {
 			BallFollowDrive.stop();
 		}

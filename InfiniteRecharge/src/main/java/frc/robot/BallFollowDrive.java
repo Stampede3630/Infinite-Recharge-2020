@@ -8,14 +8,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 
 /**
  * Add your docs here.
  */
 public class BallFollowDrive {
 
-    private static PIDController turnPID = new PIDController(0.03, 0, 0);
+    private static ProfiledPIDController turnPID = new ProfiledPIDController(0.03, 0, 0,
+            new TrapezoidProfile.Constraints(Robot.kMaxAngularSpeed, Math.PI * 6));
     private static PIDController xPID = new PIDController(0.03, 0, 0);
     private static PIDController yPID = new PIDController(0.03, 0, 0);
     private static PIDController xVelPID = new PIDController(0.03, 0, 0);
@@ -49,14 +52,25 @@ public class BallFollowDrive {
 
     public static boolean intake(double rotationSpeed) {
         targetPos.getPosFromLimelight();
-        double xScreenPos = LimeLight.getTX();
+        double xTargetAngle = LimeLight.getTX();
 
         // System.out.println(xScreenPos);
 
         boolean hasTarget = targetPos.isValid();
-        boolean isInCenter = Math.abs(xScreenPos) < 0.8;
+        boolean isInCenter = Math.abs(xTargetAngle) < 16;
 
-        SmartDashboard.putString("Intake State", intakeState.toString());
+        switch (intakeState) {
+        case Searching:
+            SmartDashboard.putNumber("Intake State", 0);
+            break;
+        case Intaking:
+            SmartDashboard.putNumber("Intake State", 1);
+            break;
+        case Done:
+            SmartDashboard.putNumber("Intake State", 2);
+            break;
+        }
+
         SmartDashboard.putNumber("Last Y Angle", lastYAngle);
 
         if (lastYAngle < -20) {
@@ -74,16 +88,17 @@ public class BallFollowDrive {
                     lastYAngle = LimeLight.getTY();
                     break;
                 } else {
-                    Drivetrain.drive(0, 0, rotationSpeed * 0.6, false);
+                    Drivetrain.drive(0, 0, Robot.kMaxAngularSpeed * 0.6, false);
                 }
             } else {
-                Drivetrain.drive(0, 0, rotationSpeed, false);
+                Drivetrain.drive(0, 0, Robot.kMaxAngularSpeed * 0.9, false);
             }
             break;
         case Intaking:
             if (hasTarget) {
                 lastYAngle = LimeLight.getTY();
-                followTarget(targetPos, 0, 30);
+                // stop();
+                followTarget(targetPos, 0, 0);
             } else {
                 if (lastAngleInvalidTicks < 4) // The ball was last seen in the lower quarter of the screen
                 {
@@ -115,17 +130,17 @@ public class BallFollowDrive {
         double yMotion = 0;
 
         double xDelta = targetPos.getX() - targetX;
-        double zDelta = targetPos.getY() - targetY;
+        double yDelta = targetPos.getY() - targetY;
 
         xMotion = -xPID.calculate(xDelta, 0);
-        yMotion = -yPID.calculate(zDelta, 0);
+        yMotion = yPID.calculate(yDelta, 0);
 
         // final double POWER = 1;
         //
         // xMotion = Math.pow(Math.abs(xMotion), POWER) * Math.signum(xMotion);
         // yMotion = Math.pow(Math.abs(yMotion), POWER) * Math.signum(yMotion);
 
-        double dist = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(zDelta, 2));
+        double dist = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
 
         final double DIST_THRESHOLD = 5;
 
@@ -152,14 +167,22 @@ public class BallFollowDrive {
 
         SmartDashboard.putNumber("dist", dist);
 
-        double angleDelta = Math.atan2(targetPos.getX(), targetPos.getY()) / Math.PI * 180;
+        double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180;
         // System.out.println(angleDelta);
         double angleVel = turnPID.calculate(angleDelta, 0);
 
-        Drivetrain.drive(-MathHelper.remap(xMotion, -1, 1, -Robot.kMaxSpeed / 4, Robot.kMaxSpeed / 4),
-                MathHelper.remap(yMotion, -1, 1, -Robot.kMaxSpeed / 4, Robot.kMaxSpeed / 4),
-                MathHelper.remap(angleVel, -1, 1, -Robot.kMaxAngularSpeed, Robot.kMaxAngularSpeed), false);
+        // Drivetrain.drive(-MathHelper.remap(xMotion, -1, 1, -Robot.kMaxSpeed,
+        // Robot.kMaxSpeed) / 4,
+        // MathHelper.remap(yMotion, -1, 1, -Robot.kMaxSpeed, Robot.kMaxSpeed) / 4,
+        // MathHelper.remap(angleVel, -1, 1, -Robot.kMaxAngularSpeed,
+        // Robot.kMaxAngularSpeed) / 2, false);
+        Drivetrain.drive(MathHelper.clampUnit(yMotion) * Robot.kMaxSpeed / 2,
+                MathHelper.clampUnit(xMotion) * Robot.kMaxSpeed / 2,
+                MathHelper.clampUnit(angleVel) * Robot.kMaxAngularSpeed, false);
 
+        SmartDashboard.putNumber("X Delta", xDelta);
+        SmartDashboard.putNumber("Y Delta", yDelta);
+        SmartDashboard.putNumber("Angle Delta", angleDelta);
         SmartDashboard.putNumber("X Velocity", xMotion);
         SmartDashboard.putNumber("Y Velocity", yMotion);
         SmartDashboard.putNumber("Angular Velocity", angleVel);

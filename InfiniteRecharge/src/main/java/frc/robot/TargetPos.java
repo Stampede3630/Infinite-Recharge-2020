@@ -15,7 +15,7 @@ public class TargetPos
 {
     public static final double CAM_HEIGHT = 33;
     public static final double CAM_ANGLE = -30;
-    public static final double CAM_X_OFFSET = 10;
+    public static final double CAM_X_OFFSET = -3;
 
     private double x;
     private double y;
