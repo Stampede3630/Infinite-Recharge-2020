@@ -33,7 +33,6 @@ import frc.robot.SwerveControllerCommand;
  */
 public class TrajectoryFollowing {
 
-    private Drivetrain driveBase;
     private TrajectoryConfig config;
     public Trajectory trajectory;
     private final Timer m_timer = new Timer();
@@ -46,23 +45,22 @@ public class TrajectoryFollowing {
     private final SwerveDriveOdometry m_odometry;
    
 
-    public TrajectoryFollowing(Drivetrain drive, Trajectory traj,
+    public TrajectoryFollowing(Trajectory traj,
     PIDController xController,
     PIDController yController,
     ProfiledPIDController thetaController)
     {
-    driveBase = drive;
     config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
                          AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(driveBase.m_kinematics);
+        .setKinematics(Drivetrain.m_kinematics);
     trajectory = traj;
-    m_kinematics = driveBase.m_kinematics;
+    m_kinematics = Drivetrain.m_kinematics;
     m_xController = xController;
     m_yController = yController;
     m_thetaController = thetaController;
     m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
-    m_odometry = driveBase.m_odometry;
+    m_odometry = Drivetrain.m_odometry;
     
     m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
     m_timer.reset();
@@ -74,7 +72,7 @@ public class TrajectoryFollowing {
     public void auto()
     {
         updateAutoStates();
-        driveBase.setModuleStates(m_outputModuleStates);  
+        Drivetrain.setModuleStates(m_outputModuleStates);  
     }
 
     @SuppressWarnings("LocalVariableName")

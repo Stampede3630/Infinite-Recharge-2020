@@ -27,11 +27,10 @@ public class TrajectoryContainer
     Robot robot;
     private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
     private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-    private Drivetrain drive = Robot.m_swerve;
     private TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
     AutoConstants.kMaxAccelerationMetersPerSecondSquared)
 // Add kinematics to ensure max speed is actually obeyed
-.setKinematics(drive.m_kinematics);
+.setKinematics(Drivetrain.m_kinematics);
     
     private ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
     private Trajectory traj = TrajectoryGenerator.generateTrajectory(
@@ -46,7 +45,7 @@ public class TrajectoryContainer
         );
 
     
-    public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(drive, traj, xController, yController, thetaController);
+    public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(traj, xController, yController, thetaController);
     
     
 }

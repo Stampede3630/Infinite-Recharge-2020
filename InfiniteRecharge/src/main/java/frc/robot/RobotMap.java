@@ -21,4 +21,6 @@ public class RobotMap {
     public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 3; // CAN
     public static final double BACK_RIGHT_ANGLE_OFFSET = -2.5+.88+0.024+Math.PI;
 
+    public static final int PIPELINE_BALL_FOLLOW = 1;
+    public static final int PIPELINE_TARGET_LINEUP = 4;
 }

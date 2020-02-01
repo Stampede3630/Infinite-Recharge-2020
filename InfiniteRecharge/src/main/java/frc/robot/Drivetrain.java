@@ -14,26 +14,25 @@ public class Drivetrain {
   //******************THESE locations must be in Meters ..... SwerveDriveKinematics computes in Meters****************** */
   //Ensure GYRo reading is not crazy (we may need to do a full long reset)
   // translation is (x,y) where x is forward and y is side-side
-    private final Translation2d m_frontLeftLocation = new Translation2d(0.3556, 0.3556);
-    private final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
-    private final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
-    private final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
-    private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+    private static final Translation2d m_frontLeftLocation = new Translation2d(0.3556, 0.3556);
+    private static final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
+    private static final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
+    private static final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
+    private static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
-    public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET, m_gyro);
-    public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET, m_gyro);
-    private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER, RobotMap.BACK_LEFT_ANGLE_OFFSET, m_gyro);
-    private final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, RobotMap.BACK_RIGHT_ANGLE_OFFSET, m_gyro);
+    private static final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET, m_gyro);
+    private static final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET, m_gyro);
+    private static final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER, RobotMap.BACK_LEFT_ANGLE_OFFSET, m_gyro);
+    private static final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER, RobotMap.BACK_RIGHT_ANGLE_OFFSET, m_gyro);
   
    
-  
-    SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+    public static final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
     );
 
-    final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
+    public static final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
   
-    public Drivetrain() {
+    public void init() {
       m_gyro.reset();
     }
   
@@ -42,7 +41,7 @@ public class Drivetrain {
      *
      * @return The angle of the robot.
      */
-    public Rotation2d getAngle() {
+    public static Rotation2d getAngle() {
       // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES CHANGE
       return Rotation2d.fromDegrees(-m_gyro.getAngle() + 180);
     }
@@ -56,7 +55,7 @@ public class Drivetrain {
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
     @SuppressWarnings("ParameterName")
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    public static void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
       var swerveModuleStates = m_kinematics.toSwerveModuleStates(
           fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
               xSpeed, ySpeed, rot, getAngle())
@@ -81,7 +80,12 @@ public class Drivetrain {
      m_backRight.setDesiredState(swerveModuleStates[3]);
     }
     
-    public void setModuleStates(SwerveModuleState[] swerveModuleStates)
+    public static void stop()
+    {
+      drive(0, 0, 0, false);
+    }
+
+    public static void setModuleStates(SwerveModuleState[] swerveModuleStates)
     {
       SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, Robot.kMaxSpeed);
      m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -89,11 +93,11 @@ public class Drivetrain {
       m_backLeft.setDesiredState(swerveModuleStates[2]);
      m_backRight.setDesiredState(swerveModuleStates[3]);
     }
+    
     /**
      * Updates the field relative position of the robot.
      */
-    
-    public void updateOdometry() {
+    public static void updateOdometry() {
       m_odometry.update(
           getAngle(),
           m_frontLeft.getState(),
@@ -107,27 +111,25 @@ public class Drivetrain {
       //System.out.println(m_backRight.getState());
     }
     
-    public double getRightSidePos()
+    public static double getRightSidePos()
     {
       return m_frontRight.getTalonFXPos();
     }
-    public double getLeftSidePos()
+    public static double getLeftSidePos()
     {
       return m_frontLeft.getTalonFXPos();
     }
 
-    public double getRightSideRate()
+    public static double getRightSideRate()
     {
       return m_frontRight.getTalonFXRate();
     }
-    public double getLeftSideRate()
+    public static double getLeftSideRate()
     {
       return m_frontLeft.getTalonFXRate();
     }
 
-
-
-    public void postToSmartDashboard()
+    public static void postToSmartDashboard()
     {
       SmartDashboard.putNumber("front-right angle - (2,3)", m_frontRight.getAngle());
       SmartDashboard.putNumber("front-left angle - (0,1)",m_frontLeft.getAngle());
