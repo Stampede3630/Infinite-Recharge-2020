@@ -84,10 +84,10 @@ public class RobotMap {
         DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
         DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
 
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1); //setting to integrated sensor
+        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
 
     }
     /*
