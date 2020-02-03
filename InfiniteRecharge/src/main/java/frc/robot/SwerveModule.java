@@ -219,19 +219,6 @@ public class SwerveModule {
     //m_driveMotor.set(0);
     // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
     // driveOutput );
-    // SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
-
-    
-     /* if(state.angle.getRadians() != setpoint) 
-      { 
-        driveOutput = driveOutput * -1;
-        System.out.println("State of " + m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
-      } 
-      if(getAngle() != currentAngle) 
-      {
-      driveOutput = driveOutput *-1; System.out.println("Measurement of " +
-      m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
-       }*/ 
      
     /*
      * if((Math.abs(setpoint - readAngle())) < 2) { m_driveMotor.set(driveOutput); }

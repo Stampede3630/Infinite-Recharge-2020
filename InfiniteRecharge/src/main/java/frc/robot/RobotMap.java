@@ -54,7 +54,7 @@ public class RobotMap {
     public static final WPI_TalonSRX DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(8);
     public static final WPI_TalonFX DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
     public static final AnalogInput DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
+    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.034; // radians
 
     //PID Constants/Contraints
     public static final double kMaxSpeed = 4; // 3 meters per second

@@ -22,7 +22,7 @@ public class Robot extends TimedRobot {
   private Drivetrain m_swerve;
   private Compressor comp = new Compressor(0);
   private Shoot shooter = new Shoot();
-  //private TrajectoryFollowing trajFollow;
+  // private TrajectoryFollowing trajFollow;
   private TrajectoryContainer trajContain;
 
   @Override
@@ -30,13 +30,15 @@ public class Robot extends TimedRobot {
 
     m_swerve = Drivetrain.getInstance();
     trajContain = new TrajectoryContainer();
-    //trajFollow = new TrajectoryFollowing(m_swerve, trajContain);
+    // trajFollow = new TrajectoryFollowing(m_swerve, trajContain);
   }
-  
+
   @Override
   public void robotPeriodic() {
-    //SmartDashboard.putNumber("Current trolleySpark", RobotMap.trolleySpark.getOutputCurrent());
-    //SmartDashboard.putNumber("Current Elevator", RobotMap.elevatorSpark.getOutputCurrent());
+    // SmartDashboard.putNumber("Current trolleySpark",
+    // RobotMap.trolleySpark.getOutputCurrent());
+    // SmartDashboard.putNumber("Current Elevator",
+    // RobotMap.elevatorSpark.getOutputCurrent());
     m_swerve.postToSmartDashboard();
     m_swerve.updateOdometry();
     shooter.smartDashboardOutput();
@@ -54,26 +56,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    
-    m_swerve.driveWithJoystick(false);
-    
-    /*
-    RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
-    RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
-    System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
 
-    driveWithJoystick(true);
-    manipTest.periodic();
-    if(m_controller.getTriggerAxis(Hand.kLeft)>0.5)
-    {
-      shooter.control();
-    }
-    else
-    {
-      shooter.drive();
-    }
-    
-*/
+    m_swerve.driveWithJoystick(true);
+
+    /*
+     * RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
+     * RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
+     * System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
+     * RobotMap.controller.getX(Hand.kRight) *.5);
+     * 
+     * driveWithJoystick(true); manipTest.periodic();
+     * if(m_controller.getTriggerAxis(Hand.kLeft)>0.5) { shooter.control(); } else {
+     * shooter.drive(); }
+     * 
+     */
   }
 
   @Override
@@ -84,6 +80,4 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 
-  
 }
-
