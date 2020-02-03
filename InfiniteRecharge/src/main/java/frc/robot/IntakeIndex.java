@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -31,9 +32,9 @@ public class IntakeIndex {
     XboxController controller;
     WPI_TalonSRX intakeWheels;// first spin wheel
     WPI_TalonSRX pinwheel; // from box to belt
-    WPI_TalonSRX belt;
-    // Solenoid solenoid; //lowers the arms
-    Timer timer;
+    WPI_TalonSRX belt; 
+    DoubleSolenoid newmatty; //lowers the arms
+    Timer timmy;
     Ultrasonic ultrasonic; //on the ground of the belt box
     ColorSensorV3 colorSensorLow;
     ColorSensorV3 colorSensorHigh; 
@@ -44,9 +45,9 @@ public class IntakeIndex {
     public IntakeIndex() {
     controller = new XboxController(0);
     intakeWheels = new WPI_TalonSRX(9);
-    //newmatty = new Solenoid(19); // no solenoid on robo
+    newmatty = new DoubleSolenoid(19, 5); // 2 solenoid on r
     belt = new WPI_TalonSRX(11);
-    timer = new Timer(); 
+    timmy = new Timer(); 
     colorSensorHigh = new ColorSensorV3(I2C.Port.kMXP);
     pinwheel = new WPI_TalonSRX(10);
     ultrasonic = new Ultrasonic(5,3);
@@ -65,17 +66,19 @@ public void index (){
     {
         System.out.println("tester");
         //timer.stop();
-        timer.reset();
-        timer.start();
-        //newmatty.set(true); 
+        timmy.reset();
+        timmy.start();
+        newmatty.set(true); 
         intakeWheels.set(.5);
+        
     }
     else {
         intakeWheels.set(0);
-        System.out.print(timer.get());
+        System.out.print(timmy.get());
+        
     }
     //if its been 1.5 sec or there's something in the bottom
-    if(timer.get() > 1.5 || ultrasonic.getRangeInches()>200 || ultrasonic.getRangeInches() < 3 || timer.get() == 0)  
+    if(timmy.get() > 1.5 || ultrasonic.getRangeInches()>200 || ultrasonic.getRangeInches() < 3 || timmy.get() == 0)  
      {
         pinwheel.set(0);      
     }
@@ -100,10 +103,13 @@ public void index (){
         belt.set(0);
     }
    
-    if (colorSensorHigh.getGreen()>threshold && controller.getBButton()){
+   // if (colorSensorHigh.getGreen()>threshold && controller.getBButton()){
 
     //SHOOT NOW CODE
-
+    if (controller.getBButton()){
+        newmatty.set(false);
+    }
+    
     }
     
     /*
@@ -112,7 +118,7 @@ public void index (){
         SmartDashboard.putNumber("ultrasonic", ultrasonic.getRangeInches());
         SmartDashboard.putNumber("ultrasonic", colorSensorLow.getGreen());
     */
-    }
+
 
 
     public void toSmartDashboard(){
