@@ -89,7 +89,7 @@ public class TrajectoryFollowing {
 
     double targetXVel = m_xController.calculate(
         m_odometry.getPoseMeters().getTranslation().getX(),
-        m_odometry.getPoseMeters().getTranslation().getX());
+        desiredPose.getTranslation().getX());
 
     double targetYVel = m_yController.calculate(
         m_odometry.getPoseMeters().getTranslation().getY(),

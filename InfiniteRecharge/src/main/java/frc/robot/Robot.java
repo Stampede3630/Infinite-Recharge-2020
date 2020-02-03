@@ -22,11 +22,15 @@ public class Robot extends TimedRobot {
   private Drivetrain m_swerve;
   private Compressor comp = new Compressor(0);
   private Shoot shooter = new Shoot();
+  //private TrajectoryFollowing trajFollow;
+  private TrajectoryContainer trajContain;
 
   @Override
   public void robotInit() {
 
     m_swerve = Drivetrain.getInstance();
+    trajContain = new TrajectoryContainer();
+    //trajFollow = new TrajectoryFollowing(m_swerve, trajContain);
   }
   
   @Override
@@ -44,6 +48,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    trajContain.trajectoryFollowing.auto();
 
   }
 
