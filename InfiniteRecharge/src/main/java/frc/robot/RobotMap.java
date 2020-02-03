@@ -7,37 +7,18 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import edu.wpi.first.wpilibj.XboxController;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 /**
  * Add your docs here.
  */
-public class AVA {
-Encoder cod;
-double trouble;
-PIDController piddie; 
+public class RobotMap {
 
+    public static XboxController controller = new XboxController(0);
 
-public AVA()
-{
-cod = new Encoder(0,1); 
-
-}
-public void piggi()
-
-{
-
-    SmartDashboard.putNumber("encoder value", cod.getDistance());
- trouble = cod.getDistance()/250*Math.PI*2*2.5;
- 
- 
-}
-public double piggie()
-
- { return cod.getDistance()/250*Math.PI*2*2.5;
-
-}
+    public static WPI_TalonFX shooter1 = new WPI_TalonFX(12); // GOOD + is right
+    public static WPI_TalonFX shooter2 = new WPI_TalonFX(13);
 
 }
