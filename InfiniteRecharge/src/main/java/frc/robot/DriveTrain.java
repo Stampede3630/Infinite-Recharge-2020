@@ -14,12 +14,15 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Drivetrain {
+public class DriveTrain {
     MecanumDrive mD;
     RobotMap robotMap;
 
-    public void teleOpDrive() {
+    public DriveTrain() {
         mD = new MecanumDrive(robotMap.talonFL, robotMap.talonBL, robotMap.talonFR, robotMap.talonBR);
+    }
+
+    public void teleOpDrive() {
         mD.driveCartesian(robotMap.controller.getY(Hand.kRight) * 0.5, robotMap.controller.getX(Hand.kLeft) * 0.5, 0);
     }
     
