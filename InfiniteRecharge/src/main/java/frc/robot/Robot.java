@@ -21,12 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  private Drivetrain m_swerve;
+  private DriveTrain m_swerve;
  
   @Override
   public void robotInit() {
 
-    m_swerve = new Drivetrain();
+    m_swerve = new DriveTrain();
    
   }
 

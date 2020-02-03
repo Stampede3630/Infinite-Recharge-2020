@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
-public class Drivetrain {
+public class DriveTrain {
 
   //******************THESE locations must be in Meters ..... SwerveDriveKinematics computes in Meters****************** */
   //Ensure GYRo reading is not crazy (we may need to do a full long reset)
@@ -44,15 +44,15 @@ public class Drivetrain {
 
     final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
 
-    static Drivetrain drivetrain;
+    static DriveTrain drivetrain;
 
-    public Drivetrain() {
+    public DriveTrain() {
       m_gyro.reset();
     }
 
-    public static Drivetrain getInstance(){
+    public static DriveTrain getInstance(){
         if(drivetrain == null){
-            drivetrain = new Drivetrain();
+            drivetrain = new DriveTrain();
         }
         return drivetrain;
     }
