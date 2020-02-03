@@ -11,8 +11,8 @@ package frc.robot;
  * Add your docs here.
  */
 public class TargetAlignDrive {
-    
-    public static void stop() {
-        Drivetrain.stop();
-    }
+
+	public static void stop() {
+		Drivetrain.stop();
+	}
 }

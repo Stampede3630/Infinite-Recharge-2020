@@ -7,15 +7,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -153,7 +150,7 @@ public class Robot extends TimedRobot {
 			BallFollowDrive.resetIntakeState();
 		}
 		if (m_controller.getBumper(Hand.kRight)) {
-			BallFollowDrive.intake(kMaxAngularSpeed);
+			BallFollowDrive.intake();
 		} else {
 			BallFollowDrive.stop();
 		}

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -22,30 +21,21 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 /**
  * Add your docs here.
  */
-public class TrajectoryContainer
-{
-    Robot robot;
-    private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-    private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-    private TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-    AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-// Add kinematics to ensure max speed is actually obeyed
-.setKinematics(Drivetrain.m_kinematics);
-    
-    private ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    private Trajectory traj = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0,0, 
-        new Rotation2d(0)), 
-        List.of(
-            new Translation2d(1, 1), 
-            new Translation2d(2,-1)
-            ), 
-        new Pose2d(3,0,new Rotation2d(0)), 
-        config
-        );
+public class TrajectoryContainer {
+	// private Robot robot;
+	private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
+	private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
+	private TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
+			AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+					// Add kinematics to ensure max speed is actually obeyed
+					.setKinematics(Drivetrain.m_kinematics);
 
-    
-    public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(traj, xController, yController, thetaController);
-    
-    
+	private ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
+			AutoConstants.kThetaControllerConstraints);
+	private Trajectory traj = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)),
+			List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)), config);
+
+	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(traj, xController, yController,
+			thetaController);
+
 }

@@ -12,23 +12,23 @@ package frc.robot;
  */
 public class Climber {
 
-    public void extend() {
+	public void extend() {
 
-    }
+	}
 
-    public void climberPeriodic() {
+	public void climberPeriodic() {
 
-    }
+	}
 
-    public void retract() {
+	public void retract() {
 
-    }
+	}
 
-    public void strafeRight() {
+	public void strafeRight() {
 
-    }
+	}
 
-    public void strafeLeft() {
+	public void strafeLeft() {
 
-    }
+	}
 }

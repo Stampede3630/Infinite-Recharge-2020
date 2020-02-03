@@ -7,114 +7,95 @@
 
 package frc.robot;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import frc.robot.AutoConstants;
-import frc.robot.Drivetrain;
-import frc.robot.Drivetrain;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import frc.robot.SwerveControllerCommand;
 
 /**
  * Add your docs here.
  */
 public class TrajectoryFollowing {
 
-    private TrajectoryConfig config;
-    public Trajectory trajectory;
-    private final Timer m_timer = new Timer();
-    private Pose2d m_finalPose;
-    private final SwerveDriveKinematics m_kinematics;
-    private final PIDController m_xController;
-    private final PIDController m_yController;
-    private final ProfiledPIDController m_thetaController;
-    private SwerveModuleState[] m_outputModuleStates;
-    private final SwerveDriveOdometry m_odometry;
-   
+	private TrajectoryConfig config;
+	public Trajectory trajectory;
+	private final Timer m_timer = new Timer();
+	private Pose2d m_finalPose;
+	private final SwerveDriveKinematics m_kinematics;
+	private final PIDController m_xController;
+	private final PIDController m_yController;
+	private final ProfiledPIDController m_thetaController;
+	private SwerveModuleState[] m_outputModuleStates;
+	private final SwerveDriveOdometry m_odometry;
 
-    public TrajectoryFollowing(Trajectory traj,
-    PIDController xController,
-    PIDController yController,
-    ProfiledPIDController thetaController)
-    {
-    config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-                         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(Drivetrain.m_kinematics);
-    trajectory = traj;
-    m_kinematics = Drivetrain.m_kinematics;
-    m_xController = xController;
-    m_yController = yController;
-    m_thetaController = thetaController;
-    m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
-    m_odometry = Drivetrain.m_odometry;
-    
-    m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
-    m_timer.reset();
-    m_timer.start();
-    
-    }
-    
-   
-    public void auto()
-    {
-        updateAutoStates();
-        Drivetrain.setModuleStates(m_outputModuleStates);  
-    }
+	public TrajectoryFollowing(Trajectory traj, PIDController xController, PIDController yController,
+			ProfiledPIDController thetaController) {
+		config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
+				AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+						// Add kinematics to ensure max speed is actually obeyed
+						.setKinematics(Drivetrain.m_kinematics);
+		trajectory = traj;
+		m_kinematics = Drivetrain.m_kinematics;
+		m_xController = xController;
+		m_yController = yController;
+		m_thetaController = thetaController;
+		m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
+		m_odometry = Drivetrain.m_odometry;
 
-    @SuppressWarnings("LocalVariableName")
-  public void updateAutoStates() {
-    
-    double curTime = m_timer.get();
+		m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
+		m_timer.reset();
+		m_timer.start();
 
-    var desiredState = trajectory.sample(curTime);
-    var desiredPose = desiredState.poseMeters;
+	}
 
-    var poseError = desiredPose.relativeTo(m_odometry.getPoseMeters());
+	public void auto() {
+		updateAutoStates();
+		Drivetrain.setModuleStates(m_outputModuleStates);
+	}
 
-    double targetXVel = m_xController.calculate(
-        m_odometry.getPoseMeters().getTranslation().getX(),
-        m_odometry.getPoseMeters().getTranslation().getX());
+	@SuppressWarnings("LocalVariableName")
+	public void updateAutoStates() {
 
-    double targetYVel = m_yController.calculate(
-        m_odometry.getPoseMeters().getTranslation().getY(),
-        desiredPose.getTranslation().getY());
+		double curTime = m_timer.get();
 
-    // The robot will go to the desired rotation of the final pose in the trajectory,
-    // not following the poses at individual states.
-    double targetAngularVel = m_thetaController.calculate(
-        m_odometry.getPoseMeters().getRotation().getRadians(),
-        m_finalPose.getRotation().getRadians());
+		var desiredState = trajectory.sample(curTime);
+		var desiredPose = desiredState.poseMeters;
 
-    double vRef = desiredState.velocityMetersPerSecond;
+		var poseError = desiredPose.relativeTo(m_odometry.getPoseMeters());
 
-    targetXVel += vRef * poseError.getRotation().getCos();
-    targetYVel += vRef * poseError.getRotation().getSin();
+		double targetXVel = m_xController.calculate(m_odometry.getPoseMeters().getTranslation().getX(),
+				m_odometry.getPoseMeters().getTranslation().getX());
 
-    var targetChassisSpeeds = new ChassisSpeeds(targetXVel, targetYVel, targetAngularVel);
+		double targetYVel = m_yController.calculate(m_odometry.getPoseMeters().getTranslation().getY(),
+				desiredPose.getTranslation().getY());
 
-    m_outputModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+		// The robot will go to the desired rotation of the final pose in the
+		// trajectory,
+		// not following the poses at individual states.
+		double targetAngularVel = m_thetaController.calculate(m_odometry.getPoseMeters().getRotation().getRadians(),
+				m_finalPose.getRotation().getRadians());
 
-  }
+		double vRef = desiredState.velocityMetersPerSecond;
 
-  public void setTrajectory(Trajectory newTrajectory)
-  {
-      trajectory = newTrajectory;
-      m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
-      m_timer.reset();
-      m_timer.start();
-  }
+		targetXVel += vRef * poseError.getRotation().getCos();
+		targetYVel += vRef * poseError.getRotation().getSin();
+
+		var targetChassisSpeeds = new ChassisSpeeds(targetXVel, targetYVel, targetAngularVel);
+
+		m_outputModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+
+	}
+
+	public void setTrajectory(Trajectory newTrajectory) {
+		trajectory = newTrajectory;
+		m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
+		m_timer.reset();
+		m_timer.start();
+	}
 }
