@@ -26,8 +26,8 @@ public class SwerveModule {
 	private double m_steeringAngle;
 	private int m_driveScalar = 1;
 	private final AnalogInput m_turningEncoder;
-	double kPSpecial;
-	AHRS currentAngle;
+	private double kPSpecial;
+	private AHRS currentAngle;
 
 	private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
 

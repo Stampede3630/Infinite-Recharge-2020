@@ -26,17 +26,17 @@ public class Robot extends TimedRobot {
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
-	double priorAutospeed = 0;
-	Number[] numberArray = new Number[10];
-	NetworkTableEntry autoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
-	NetworkTableEntry telemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
-	NetworkTableEntry rotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
+	private double priorAutospeed = 0;
+	private Number[] numberArray = new Number[10];
+	private NetworkTableEntry autoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
+	private NetworkTableEntry telemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
+	private NetworkTableEntry rotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
 	public static final double kMaxSpeed = 4; // 3 meters per second
 	public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 	public static XboxController m_controller;
-	TrajectoryFollowing autonomous;
-	TestManipulator manipTest;
+	private TrajectoryFollowing autonomous;
+	private TestManipulator manipTest;
 	// Shooter shooter;
 
 	@Override

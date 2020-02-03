@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Add your docs here.
  */
 public class TestManipulator {
-	Counter counter = new Counter(4);
-	WPI_TalonSRX intake = new WPI_TalonSRX(9);
-	WPI_TalonSRX belt = new WPI_TalonSRX(11);
-	WPI_TalonSRX highRoller = new WPI_TalonSRX(10);
+	private Counter counter = new Counter(4);
+	private WPI_TalonSRX intake = new WPI_TalonSRX(9);
+	private WPI_TalonSRX belt = new WPI_TalonSRX(11);
+	private WPI_TalonSRX highRoller = new WPI_TalonSRX(10);
 
 	public TestManipulator() {
 		belt.setNeutralMode(NeutralMode.Brake);
