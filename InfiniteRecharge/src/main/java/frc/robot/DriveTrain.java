@@ -193,6 +193,6 @@ public class Drivetrain {
         //System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
         //System.out.println("rot-c: " + rot);
         System.out.println(xSpeed + "," + ySpeed);
-        drive(xSpeed, ySpeed, rot, fieldRelative);
+        drive(xSpeed*.3, ySpeed*.3, rot*.5, fieldRelative);
       }
   }

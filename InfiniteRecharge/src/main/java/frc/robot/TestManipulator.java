@@ -32,7 +32,7 @@ public class TestManipulator {
         if(RobotMap.controller.getAButton())
         {
             intake.set(.75);
-            highRoller.set(-.4);
+            highRoller.set(-.7);
         }
         else{
             intake.set(0);

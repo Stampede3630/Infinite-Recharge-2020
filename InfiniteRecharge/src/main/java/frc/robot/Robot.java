@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,12 +25,14 @@ public class Robot extends TimedRobot {
   private Shoot shooter = new Shoot();
   // private TrajectoryFollowing trajFollow;
   private TrajectoryContainer trajContain;
+  private TestManipulator manipulator;
 
   @Override
   public void robotInit() {
 
     m_swerve = Drivetrain.getInstance();
     trajContain = new TrajectoryContainer();
+    manipulator = new TestManipulator();
     // trajFollow = new TrajectoryFollowing(m_swerve, trajContain);
   }
 
@@ -50,15 +53,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    trajContain.trajectoryFollowing.auto();
-
   }
 
   @Override
   public void teleopPeriodic() {
 
-    m_swerve.driveWithJoystick(true);
+    m_swerve.driveWithJoystick(false);
+    manipulator.periodic();
 
+    if (RobotMap.controller.getTriggerAxis(Hand.kLeft)>.6){
+      shooter.spin();
+    }
+    else{
+      RobotMap.shooter1.set(0);
+      RobotMap.shooter2.set(0);
+    }
     /*
      * RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
      * RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);

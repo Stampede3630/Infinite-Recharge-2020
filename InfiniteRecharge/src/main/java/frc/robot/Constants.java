@@ -39,7 +39,7 @@ class Constants {
 
     public static final double kEncoderUnitsPerRev = 2048;//4096;
 
-    public double rpmToRotatPer100Mili(double rpm){
+    public static double rpmToRotatPer100Mili(double rpm){
         double milliSec = rpm/600;
         return milliSec;
 	}

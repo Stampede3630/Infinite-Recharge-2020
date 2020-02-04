@@ -59,6 +59,9 @@ public class RobotMap {
     //PID Constants/Contraints
     public static final double kMaxSpeed = 4; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI;
+
+    public static WPI_TalonFX shooter1 = new WPI_TalonFX(12);
+    public static WPI_TalonFX shooter2 = new WPI_TalonFX(13);
     
     static
     {

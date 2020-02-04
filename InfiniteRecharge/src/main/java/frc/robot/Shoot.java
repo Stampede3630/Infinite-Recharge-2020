@@ -13,7 +13,7 @@ public class Shoot {
     Constants constants;
     double xSpeed;
     int loops;
-    double rotpm;
+    public static double rotpm;
     // sparks
     private WPI_TalonFX falcon;
     private WPI_TalonFX falcon2;
@@ -23,12 +23,10 @@ public class Shoot {
 
     public Shoot() {
         constants = new Constants();
-        rotpm = 3800;
-        // device IDs are completely arbitrary and NEED to be changed
-        // spark tests
+        rotpm = 1200;
         falcon = new WPI_TalonFX(12); //GOOD + is right
         falcon2 = new WPI_TalonFX(13);
-        falcon2.setInverted(true); // GET REAL PORT!
+        falcon2.setInverted(true); 
         controller = new XboxController(0);
         loops = 0;
         belt = new WPI_TalonSRX(11);
@@ -74,8 +72,8 @@ public class Shoot {
 
     public void spin() {
         // double output = pid.calculate(spark.getEncoder().getVelocity());
-        falcon.set(.75);
-        falcon2.set(-.75);
+        falcon.set(.3);
+        falcon2.set(-.3);
     }
 
     public void smartDashboardOutput() {
