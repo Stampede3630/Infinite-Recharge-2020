@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj.*;
  * Add your docs here.
  */
 public class RobotMap {
-	public final WPI_TalonSRX talonFL =  new WPI_TalonSRX (4); //4
-    public final WPI_TalonSRX talonFR =  new WPI_TalonSRX (9); //3
-    public final WPI_TalonSRX talonBL =  new WPI_TalonSRX (2); //2
-	public final WPI_TalonSRX talonBR =  new WPI_TalonSRX (1); //1
-	public final WPI_TalonSRX talonBallIntake = new WPI_TalonSRX(5);
-	public final WPI_TalonSRX talonBallShooter = new WPI_TalonSRX(6); //6
-
-	public XboxController controller = new XboxController(0);
+	public static final WPI_TalonSRX talonFR =  new WPI_TalonSRX (9); //3
+    public static final WPI_TalonSRX talonBL =  new WPI_TalonSRX (2); //2
+	public static final WPI_TalonSRX talonBR =  new WPI_TalonSRX (1); //1
+	public static final WPI_TalonSRX talonBallIntake = new WPI_TalonSRX(5);
+	public static final WPI_TalonSRX talonBallShooter = new WPI_TalonSRX(6); //6
+	public static final WPI_TalonSRX talonFL =  new WPI_TalonSRX (4); //4
+    
+	public static XboxController controller = new XboxController(0);
 
 	private RobotMap() {
 		

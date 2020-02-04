@@ -20,10 +20,12 @@ import frc.robot.DriveTrain;
 public class Robot extends TimedRobot {
 
   DriveTrain driveTrain;
+  Ball ball;
  
   @Override
   public void robotInit() {
-
+  driveTrain = new DriveTrain();
+  ball = new Ball();
   }
 
   @Override
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     driveTrain.teleOpDrive();
+    ball.ballShooter();
 
   }
 

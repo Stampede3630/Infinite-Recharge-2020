@@ -16,14 +16,12 @@ import frc.robot.RobotMap;
  */
 public class DriveTrain {
     MecanumDrive mD;
-    RobotMap robotMap;
+  
 
     public DriveTrain() {
-        mD = new MecanumDrive(robotMap.talonFL, robotMap.talonBL, robotMap.talonFR, robotMap.talonBR);
+        mD = new MecanumDrive(RobotMap.talonFL, RobotMap.talonBL, RobotMap.talonFR, RobotMap.talonBR);
     }
 
     public void teleOpDrive() {
-        mD.driveCartesian(robotMap.controller.getY(Hand.kRight) * 0.5, robotMap.controller.getX(Hand.kLeft) * 0.5, 0);
-    }
-    
-}
+        mD.driveCartesian(RobotMap.controller.getX(Hand.kRight) * -0.5, RobotMap.controller.getY(Hand.kLeft) * -0.5, RobotMap.controller.getTriggerAxis(Hand.kLeft));
+}} 

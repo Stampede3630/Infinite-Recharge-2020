@@ -12,24 +12,33 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Ball {
-    RobotMap robotMap;
     
     public void ballShooter() {
-        if (robotMap.controller.getAButtonPressed()) {
+        if (RobotMap.controller.getAButton()) {
             intakeBall();
         }
-        if (robotMap.controller.getBButtonPressed()) {
-            shootBall();
+        else {
+            RobotMap.talonBallIntake.stopMotor();
+
         }
+        if (RobotMap.controller.getBButton()) {
+            shootBall();
+            
+        }
+    
+        else {
+            RobotMap.talonBallShooter.stopMotor();
+        }
+      
     }    
 
     public void intakeBall() {
-        robotMap.talonBallIntake.set(0.5);
-       
+        RobotMap.talonBallIntake.set(-0.5);
+        RobotMap.controller.getAButtonReleased();
     }
 
     public void shootBall() {
-        robotMap.talonBallShooter.set(0.5);
-        robotMap.controller.getBButton();
+        RobotMap.talonBallShooter.set(-0.5);
+        RobotMap.controller.getBButton();
     }
 }
