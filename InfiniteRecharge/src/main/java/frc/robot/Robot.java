@@ -21,12 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  private DriveTrain m_swerve;
- 
   @Override
   public void robotInit() {
-
-    m_swerve = new DriveTrain();
    
   }
 
@@ -47,13 +43,26 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_swerve.driveWithJoystick(true);
+    DriveTrain.drive(RobotMap.JOYSTICK);
 
+    if (RobotMap.JOYSTICK.getTrigger())
+    {
+      GearController.open();
+    }
+    else
+    {
+      GearController.close();
+    }
   }
 
   @Override
   public void testPeriodic() {
 
+  }
+
+  @Override
+  public void disabledInit() {
+    DriveTrain.stop();
   }
 
   
