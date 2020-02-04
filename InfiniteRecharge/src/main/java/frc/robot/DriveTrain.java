@@ -23,5 +23,8 @@ public class DriveTrain {
     }
 
     public void teleOpDrive() {
-        mD.driveCartesian(RobotMap.controller.getX(Hand.kRight) * -0.5, RobotMap.controller.getY(Hand.kLeft) * -0.5, RobotMap.controller.getTriggerAxis(Hand.kLeft));
+        mD.driveCartesian(RobotMap.controller.getX(Hand.kLeft) * 0.5, RobotMap.controller.getY(Hand.kLeft) * -0.5, RobotMap.controller.getX(Hand.kRight));
 }} 
+ //new change 
+ //new change 
+ //new change 
