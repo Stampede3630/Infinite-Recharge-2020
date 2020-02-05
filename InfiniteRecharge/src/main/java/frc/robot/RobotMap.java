@@ -7,24 +7,16 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * Add your docs here.
  */
 public class RobotMap {
 
+<<<<<<< HEAD
     /* climbing stuff, needs real ports
     public static CANSparkMax trolleySpark = new CANSparkMax(99, MotorType.kBrushless);
     public static CANSparkMax elevatorSpark = new CANSparkMax(98, MotorType.kBrushless);
@@ -49,15 +41,26 @@ public class RobotMap {
 
     public RobotMap() {
         
+=======
+    public static final Talon TALON_FR = new Talon(1);
+    public static final Talon TALON_FL = new Talon(3);
+    public static final Talon TALON_BR = new Talon(0);
+    public static final Talon TALON_BL = new Talon(2);
+    
+    public static final Talon TALON_GEAR = new Talon(4);
+>>>>>>> d6431b9f10f6bbf78dec9e5c8c1df2ff4c323960
 
-    }
+    public static final DigitalInput LIMIT_GEAR_OPEN = new DigitalInput(8);
+    public static final DigitalInput LIMIT_GEAR_CLOSE = new DigitalInput(9);
 
-    public static RobotMap getInstance() {
-        if (thisInstance == null) {
-            thisInstance = new RobotMap();
+    public static final double GEAR_SPEED = -1;
 
+<<<<<<< HEAD
         }
         return thisInstance;
     }
     
+=======
+    public static final Joystick JOYSTICK = new Joystick(5);
+>>>>>>> d6431b9f10f6bbf78dec9e5c8c1df2ff4c323960
 }
