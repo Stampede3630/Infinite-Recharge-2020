@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class DriveTrain {
@@ -18,18 +19,24 @@ public class DriveTrain {
 			RobotMap.TALON_BR);
 	private static final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
 
-	public static void drive(Joystick joystick)
+	public static void drive()
 	{
-		double speed = MathHelper.deadzone(-joystick.getY(), 0.05);
-		double rotation = MathHelper.clampUnit(MathHelper.deadzone(joystick.getX(), 0.05) + MathHelper.deadzone(joystick.getZ(), 0.05));
+		double speed = RobotMap.controller.getY(Hand.kLeft);
+		double rotation = RobotMap.controller.getX(Hand.kLeft);
 
+		if(Math.abs(RobotMap.controller.getY(Hand.kLeft))<0.1){
+			speed = 0;
+		}
+		if(Math.abs(RobotMap.controller.getX(Hand.kLeft))<0.1){
+			rotation = 0;
+		}
 		drive(speed, rotation);
 	}
 
 	public static void drive(double xSpeed, double zRotation)
 	{
 
-		differentialDrive.arcadeDrive(xSpeed * 0.5, zRotation * 0.7, true);
+		differentialDrive.arcadeDrive(xSpeed, zRotation, true);
 	}
 
 	public static void stop()

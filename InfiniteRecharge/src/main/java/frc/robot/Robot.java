@@ -43,9 +43,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    DriveTrain.drive(RobotMap.JOYSTICK);
+    DriveTrain.drive();
 
-    if (RobotMap.JOYSTICK.getTrigger())
+    if (RobotMap.controller.getTriggerAxis(Hand.kRight)>0.6)
     {
       GearController.open();
     }
