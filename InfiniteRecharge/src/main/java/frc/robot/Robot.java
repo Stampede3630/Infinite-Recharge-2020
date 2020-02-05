@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.ILoopable;
+import frc.robot.CANLed.*;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.DriveTrain;
 
@@ -26,11 +29,16 @@ public class Robot extends TimedRobot {
   public void robotInit() {
   driveTrain = new DriveTrain();
   ball = new Ball();
+
+  for (ILoopable loop : TaskList.FullList) {
+    Schedulers.PeriodicTasks.add(loop);
+  }
+
   }
 
   @Override
   public void robotPeriodic() {
-
+    Schedulers.PeriodicTasks.process(); //for led STRIPS
   }
 
   @Override

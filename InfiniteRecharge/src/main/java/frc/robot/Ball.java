@@ -7,38 +7,39 @@
 
 package frc.robot;
 import frc.robot.RobotMap;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 /**
  * Add your docs here.
  */
 public class Ball {
+    public Ball() {
+        RobotMap.talonBallShooter.setNeutralMode(NeutralMode.Brake);
+    }
     
     public void ballShooter() {
-        if (RobotMap.controller.getAButton()) {
+        if (RobotMap.controller.getAButton() && RobotMap.ballButton.get()) {
             intakeBall();
-        }
-        else {
-            RobotMap.talonBallIntake.stopMotor();
 
-        }
-        if (RobotMap.controller.getBButton()) {
+        } else if (RobotMap.controller.getBButton()) {
             shootBall();
             
-        }
-    
+        }   
         else {
             RobotMap.talonBallShooter.stopMotor();
+            RobotMap.talonBallIntake.stopMotor();
         }
       
     }    
 
     public void intakeBall() {
-        RobotMap.talonBallIntake.set(-0.5);
-        RobotMap.controller.getAButtonReleased();
+        RobotMap.talonBallIntake.set(-1);
+        RobotMap.talonBallShooter.set(.25);
     }
 
     public void shootBall() {
-        RobotMap.talonBallShooter.set(-0.5);
-        RobotMap.controller.getBButton();
+        RobotMap.talonBallShooter.set(-1);
+        RobotMap.talonBallIntake.set(-1);
+        
     }
 }

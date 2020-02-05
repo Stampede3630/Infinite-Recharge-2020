@@ -10,6 +10,7 @@ package frc.robot;
 
 
 
+import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
 /**
@@ -21,10 +22,10 @@ public class RobotMap {
 	public static final WPI_TalonSRX talonBR =  new WPI_TalonSRX (1); //1
 	public static final WPI_TalonSRX talonBallIntake = new WPI_TalonSRX(5);
 	public static final WPI_TalonSRX talonBallShooter = new WPI_TalonSRX(6); //6
-	public static final WPI_TalonSRX talonFL =  new WPI_TalonSRX (4); //4
-    
+	public static final WPI_TalonSRX talonFL = new WPI_TalonSRX(4); // 4
+    public static final CANifier canifier = new CANifier(3);
 	public static XboxController controller = new XboxController(0);
-
+	public static final DigitalInput ballButton = new DigitalInput(0);
 	private RobotMap() {
 		
 	}
