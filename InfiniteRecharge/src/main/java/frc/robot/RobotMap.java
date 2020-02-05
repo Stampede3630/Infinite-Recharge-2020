@@ -27,8 +27,7 @@ public class RobotMap {
     public static final DigitalInput LIMIT_GEAR_CLOSE = new DigitalInput(9);
 
     public static final double GEAR_SPEED = -1;
-
-    public static final Joystick JOYSTICK = new Joystick(5);
     
     public static final XboxController controller = new XboxController(0); 
+
 }

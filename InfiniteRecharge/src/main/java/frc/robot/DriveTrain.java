@@ -7,6 +7,39 @@
 
 package frc.robot;
 
+<<<<<<< HEAD
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.kauailabs.navx.frc.AHRS;
+public class Drivetrain {
+
+    Drivetrain drivetrain;
+
+    public Drivetrain() {
+      
+
+    }
+
+    public void drive(){
+      
+    }
+
+    public static Drivetrain getInstance(){
+        if(drivetrain == null){
+            drivetrain = new Drivetrain();
+        }
+        return drivetrain;
+    }
+  
+   
+=======
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -44,3 +77,4 @@ public class DriveTrain {
 		drive(0, 0);
 	}
 }
+>>>>>>> d6431b9f10f6bbf78dec9e5c8c1df2ff4c323960
