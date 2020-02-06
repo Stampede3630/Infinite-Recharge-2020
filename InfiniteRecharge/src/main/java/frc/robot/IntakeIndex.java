@@ -8,12 +8,11 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 //import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorSensorV3;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -23,6 +22,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * Add your docs here.
@@ -41,21 +41,22 @@ public class IntakeIndex {
     ColorSensorV3 colorSensorHigh; 
     Color noColor;
     Shoot shoot;
-
     double threshold;
     boolean bottom, middle, top, none;
+    private boolean newMattyState = false;
 
 
     public IntakeIndex() {
     controller = new XboxController(0);
     intakeWheels = new WPI_TalonSRX(9);
-    newmatty = new DoubleSolenoid(19, 5); // 2 solenoid on r
+    newmatty = new DoubleSolenoid(2, 3); // 2 solenoid on r
     belt = new WPI_TalonSRX(11);
     timmy = new Timer(); 
     colorSensorHigh = new ColorSensorV3(I2C.Port.kMXP);
     pinwheel = new WPI_TalonSRX(10);
     ultrasonic = new Ultrasonic(5,3);
     colorSensorLow = new ColorSensorV3(I2C.Port.kOnboard);
+    
     ultrasonic.setAutomaticMode(true);
     ultrasonic.setDistanceUnits(Ultrasonic.Unit.kInches);
     //colorSensorLow.setAutomaticMode(true);
@@ -95,7 +96,7 @@ public void index (){
         //timer.stop();
         timmy.reset();
         timmy.start();
-        newmatty.set(DoubleSolenoid.Value.kForward);
+        //newmatty.set(DoubleSolenoid.Value.kForward);
         intakeWheels.set(.5);
        
         
@@ -175,4 +176,25 @@ public void index (){
         SmartDashboard.putNumber("ultrasonic", ultrasonic.getRangeInches());
     }
 
+    public void ToggleSolenoids (){
+if(RobotMap.controller.getXButtonPressed()){
+
+    if(newMattyState==false){
+    newmatty.set(DoubleSolenoid.Value.kForward);
+    
+    newMattyState = true;
+    }
+    else if (newMattyState==true){
+    newmatty.set(DoubleSolenoid.Value.kReverse);
+    newMattyState = false;
+    }
+    
 }
+
+    }   
+
+
+
+}
+
+
