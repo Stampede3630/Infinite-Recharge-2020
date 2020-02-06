@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,12 +27,19 @@ public class Robot extends TimedRobot {
   private Shoot shooter = new Shoot();
   // private TrajectoryFollowing trajFollow;
   private TrajectoryContainer trajContain;
+  private TestManipulator manipTest;
+  static double kF;
+  
 
   @Override
   public void robotInit() {
 
     m_swerve = Drivetrain.getInstance();
     trajContain = new TrajectoryContainer();
+    manipTest = new TestManipulator();
+    SmartDashboard.putNumber("kf", 0);
+
+
     // trajFollow = new TrajectoryFollowing(m_swerve, trajContain);
   }
 
@@ -42,6 +52,8 @@ public class Robot extends TimedRobot {
     m_swerve.postToSmartDashboard();
     m_swerve.updateOdometry();
     shooter.smartDashboardOutput();
+    kF = SmartDashboard.getNumber("kf", 0);
+    
   }
 
   @Override
@@ -59,17 +71,24 @@ public class Robot extends TimedRobot {
 
     m_swerve.driveWithJoystick(true);
 
-    /*
-     * RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
-     * RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
-     * System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
-     * RobotMap.controller.getX(Hand.kRight) *.5);
-     * 
-     * driveWithJoystick(true); manipTest.periodic();
-     * if(m_controller.getTriggerAxis(Hand.kLeft)>0.5) { shooter.control(); } else {
-     * shooter.drive(); }
-     * 
-     */
+    
+     //RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
+      //RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
+      //System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
+      //RobotMap.controller.getX(Hand.kRight) *.5);
+     
+      manipTest.periodic();
+     if(RobotMap.controller.getTriggerAxis(Hand.kLeft)>0.5) 
+     { 
+     shooter.control();
+     System.out.println("called") ;
+     } 
+     else 
+     {
+     shooter.stop();
+      }
+     
+    
   }
 
   @Override

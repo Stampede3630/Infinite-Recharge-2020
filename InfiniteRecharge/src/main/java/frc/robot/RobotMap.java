@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -59,6 +60,10 @@ public class RobotMap {
     //PID Constants/Contraints
     public static final double kMaxSpeed = 4; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI;
+
+    public static final DoubleSolenoid solenoid1 = new DoubleSolenoid(0, 1);
+    public static final DoubleSolenoid solenoid2 = new DoubleSolenoid(2, 3);
+
     
     static
     {

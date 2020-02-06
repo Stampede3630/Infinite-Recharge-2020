@@ -34,7 +34,7 @@ class Constants {
      * kF: 1023 represents output value to Talon at 100%, 7200 represents Velocity units at 100% output kf:1023.0/7200.0
      * 
 	 * 	                                    			  kP   kI   kD   kF          Iz    PeakOut */
-    public final static Gains kGains_Velocit = new Gains( .4, 0, 0, (.45 *(1023.0/7200.0)),  0,  1.00);
+    public final static Gains kGains_Velocit = new Gains( 0, 0, 0, (Robot.kF),  0,  1.00);// KF.45 *(1023.0/7200.0
 
 
     public static final double kEncoderUnitsPerRev = 2048;//4096;
@@ -44,7 +44,7 @@ class Constants {
         return milliSec;
 	}
 	
-	public double sensorUnitsToRPM(double senUnits)
+	public static double sensorUnitsToRPM(double senUnits)
 	{
 		return senUnits * 600 / kEncoderUnitsPerRev;
 

@@ -80,7 +80,7 @@ public class Shoot {
 
     public void smartDashboardOutput() {
         //falcon.getSelectedSensorPosition();
-        SmartDashboard.putNumber("RPM", (falcon.getSelectedSensorVelocity(0)));
+        SmartDashboard.putNumber("RPM", (Constants.sensorUnitsToRPM(falcon.getSelectedSensorVelocity(1))));
         System.out.println(falcon.getSelectedSensorVelocity(0));
     }
 
@@ -91,11 +91,20 @@ public class Shoot {
     }
 
     public void control(){
+        falcon.config_kF(Constants.kPIDLoopIdx, Robot.kF, Constants.kTimeoutMs);
+        falcon2.config_kF(Constants.kPIDLoopIdx, Robot.kF, Constants.kTimeoutMs);
+        System.out.println("`````````````````````"+Robot.kF);
     double targetVelocity_UnitsPer100ms = constants.rpmToRotatPer100Mili(rotpm) * Constants.kEncoderUnitsPerRev;
       /* 500 RPM in either direction */
      falcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
       falcon2.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-      belt.set(-.6);
+      //belt.set(-.6);
+    }
+    public void stop()
+    {
+        falcon.set(0);
+        falcon2.set(0);
+        //belt.set(0);
     }
 
 }
