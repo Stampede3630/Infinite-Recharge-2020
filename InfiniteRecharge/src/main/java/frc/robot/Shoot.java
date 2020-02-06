@@ -23,7 +23,7 @@ public class Shoot {
 
     public Shoot() {
         constants = new Constants();
-        rotpm = 3800;
+        rotpm = 315;//3800
         // device IDs are completely arbitrary and NEED to be changed
         // spark tests
         falcon = RobotMap.shooter1; // GOOD + is right
@@ -82,6 +82,7 @@ public class Shoot {
     public void smartDashboardOutput() {
         // falcon.getSelectedSensorPosition();
         SmartDashboard.putNumber("RPM", (falcon.getSelectedSensorVelocity(0)));
+        SmartDashboard.putNumber("Falcon Output", falcon.getMotorOutputPercent());
         System.out.println(falcon.getSelectedSensorVelocity(0));
     }
 
