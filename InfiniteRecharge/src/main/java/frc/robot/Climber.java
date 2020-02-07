@@ -18,19 +18,15 @@ public class Climber {
     public void climberPeriodic() {
         if (RobotMap.controller.getAButton()) {
             extend();
-            System.out.println("A pressed");
         }
         else if (RobotMap.controller.getBButton()) {
             retract();
-            System.out.println("B pressed");
         }
         else if (RobotMap.controller.getXButton()) {
             strafeLeft();
-            System.out.print("X pressed");
         }
         else if (RobotMap.controller.getYButton()) {
             strafeRight();
-            System.out.print("Y pressed");
         }
         else {
             RobotMap.elevatorSpark.set(0);
