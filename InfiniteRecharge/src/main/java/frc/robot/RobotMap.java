@@ -20,8 +20,8 @@ public class RobotMap {
     //public static CANSparkMax trolleySpark = new CANSparkMax(8, MotorType.kBrushless);
     public static CANSparkMax elevatorSpark = new CANSparkMax(14, MotorType.kBrushless);
 
-    public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
-    public static DigitalInput elevatorMinExtension = new DigitalInput(19);
+    public static DigitalInput maxLimitSwitch = new DigitalInput(20);
+    public static DigitalInput minLimitSwitch = new DigitalInput(19);
 
     public static XboxController controller = new XboxController(0);
 }

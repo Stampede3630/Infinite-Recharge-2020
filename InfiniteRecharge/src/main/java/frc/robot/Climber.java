@@ -34,29 +34,34 @@ public class Climber {
         }
         else {
             RobotMap.elevatorSpark.set(0);
-     //       RobotMap.trolleySpark.set(0);
+            RobotMap.trolleySpark.set(0);
         }
     }
 
     public void extend() {
-       // if (RobotMap.elevatorMaxExtension.get() == false) {
+        if (RobotMap.maxLimitSwitch.get() == false) {
           RobotMap.elevatorSpark.set(elevatorSpeed); 
-        //}
+        }
+        else{
+            RobotMap.elevatorSpark.set((0));     
+           }
     }
 
     public void retract() {
-        //if (RobotMap.elevatorMinExtension.get() == false) {
+        if (RobotMap.minLimitSwitch.get() == false) {
          RobotMap.elevatorSpark.set((-elevatorSpeed)); 
-    
-        
+        }
+        else{
+         RobotMap.elevatorSpark.set((0));     
+        }
 
     }
 
     public void strafeLeft() {
-    //    RobotMap.trolleySpark.set(-(strafeSpeed));
+        RobotMap.trolleySpark.set(-(strafeSpeed));
     }
 
     public void strafeRight() {
-    //    RobotMap.trolleySpark.set(strafeSpeed);
+       RobotMap.trolleySpark.set(strafeSpeed);
     }
 }
