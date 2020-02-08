@@ -204,6 +204,79 @@ public class IntakeIndex {
 
     }
 
+    /**
+     * This belt logic looks at the current belt speed to determine 
+     * the current state. If we are shooting and up to speed, we go forward.
+     * Otherwise, we use the following logic. 
+     * If no balls are detected, we set the speed to 0.
+     * If the belt is moving forward, we stop when a ball reaches top. 
+     * If the belt is moving backward, we stop when a ball reaches middle.
+     * If the belt is at rest, we look at the sensors.
+     *   - top, middleWeak and bottom: no movement
+     *   - just bottom: move forward until top is triggered (to top)
+     *   - top and bottom: move backward until middle is triggered (to middle and bottom)
+     *   - middle and bottom: move forward until top is triggered (to top and middle)
+     * This code assumes that the belt will return 0.0 when it is not moving.
+     */
+    public void tempBelt() {
+            // BELT STUFF!!!!!!!!!!!!!!!!!
+            if (controller.getBButton()) {
+                newmatty.set(DoubleSolenoid.Value.kReverse);
+            }
+            
+            if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
+                        && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)* Shooter.kEncoderUnitsPerRev) 
+            {
+                belt.set(beltForwardTwo);
+                System.out.println("shooter up to speed");
+            }
+            else if (none) {
+                System.out.println("none, reset to 0");
+                belt.set(0.0);
+            }
+            else if (top && middleWeak && bottom) {
+                belt.set(0.0);
+                System.out.println("top, middleWeak and bottom, reset to/stay at 0");
+            }
+            else if (belt.get() == 0.0) {
+                // ready for new command
+                if (top && bottom) { 
+                    belt.set(beltBackwardsOne);
+                    System.out.println("top, bottom, go BACK");
+                }
+                else if (middleWeak && bottom){
+                    belt.set(beltForwardTwo);
+                    System.out.println("middle weak, bottom, go FORWARD");
+                } else if (bottom) {
+                    belt.set(beltForwardOne);
+                    System.out.println("bottom, go FORWARD");
+                }
+            }
+            else if (belt.get() < 0.0)
+            {
+                // currently moving forward
+                if (top) {
+                    belt.set(0.0);
+                    System.out.println("top, STOP forward");
+                    if (middleWeak) {
+                        System.out.println("\t also middle weak");
+                    }
+                }
+            } else if (belt.get() > 0.0) {
+                // currently moving backward
+                if (middle) {
+                    belt.set(0.0);
+                   System.out.println("middle, STOP backward");
+                   if (bottom) {
+                       System.out.println("\t also bottom");
+                   }
+                }
+            }
+        }
+    }
+
+
+
     public void toSmartDashboard() {
         SmartDashboard.putNumber("colorSensorHigh Green", colorSensorHigh.getGreen());
         SmartDashboard.putNumber("colorSensorMid Green", colorSensorMid.getGreen());
