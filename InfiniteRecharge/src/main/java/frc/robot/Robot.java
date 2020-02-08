@@ -24,11 +24,14 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_swerve;
   private Compressor compp = new Compressor(0);
+  
+  Shoot shoot;
+
   @Override
   public void robotInit() {
 
     m_swerve = new Drivetrain();
-   
+    shoot = new Shoot();
   }
 
   @Override

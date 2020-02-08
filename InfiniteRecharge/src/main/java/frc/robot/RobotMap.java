@@ -28,6 +28,10 @@ public class RobotMap {
     //climbing stuff, needs real ports
     public static CANSparkMax trolleySpark = new CANSparkMax(14, MotorType.kBrushless);
     public static CANSparkMax elevatorSpark = new CANSparkMax(8, MotorType.kBrushless);
+
+    public static WPI_TalonFX shooter1 = new WPI_TalonFX(12);
+    public static WPI_TalonFX shooter2 = new WPI_TalonFX(13);
+
     /*
     public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
     public static DigitalInput elevatorMinExtension = new DigitalInput(19);
