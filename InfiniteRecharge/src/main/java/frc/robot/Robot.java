@@ -34,6 +34,9 @@ public class Robot extends TimedRobot {
     m_swerve = Drivetrain.getInstance();
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();
+    SmartDashboard.putNumber("kP", 0);
+    SmartDashboard.putNumber("kF", 0);
+    SmartDashboard.putNumber("kI", 0);
   }
 
   @Override
@@ -42,6 +45,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Current Elevator", RobotMap.elevatorSpark.getOutputCurrent());
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
+    shoot.smartDashboardOutput();
+    
 
   }
 
@@ -62,7 +67,8 @@ public class Robot extends TimedRobot {
     //RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
     //System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
     shoot.control();
-    ballProcessor.index();
+    ballProcessor.manualControl();
+    ballProcessor.ToggleSolenoids();
   
 
   }

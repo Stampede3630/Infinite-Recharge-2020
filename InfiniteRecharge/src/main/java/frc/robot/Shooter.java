@@ -21,7 +21,7 @@ public class Shooter {
     WPI_TalonSRX belt; // belt talon
 
     public Shooter() {
-        rotpm = 315;//3800
+        rotpm = 4000;//3800
         // device IDs are completely arbitrary and NEED to be changed
         // spark tests
         leftShooterFalcon = RobotMap.leftShooterFalcon; // GOOD + is right
@@ -43,7 +43,7 @@ public class Shooter {
         leftShooterFalcon.setSensorPhase(true);
         // rightShooterFalcon.setSensorPhase(true);
 
-        leftShooterFalcon.setSelectedSensorPosition(0);
+        leftShooterFalcon.setSelectedSensorPosition(1);
 
         /* Config the peak and nominal outputs */
         leftShooterFalcon.configNominalOutputForward(0, kTimeoutMs);
@@ -52,7 +52,7 @@ public class Shooter {
         leftShooterFalcon.configPeakOutputReverse(-1, kTimeoutMs);
 
         /* Config the Velocity closed loop gains in slot0 */
-        leftShooterFalcon.config_kF(kPIDLoopIdx,.45 *(1023.0/7200.0), kTimeoutMs);
+        leftShooterFalcon.config_kF(kPIDLoopIdx,0.055, kTimeoutMs); //.45 *(1023.0/7200.0)
         leftShooterFalcon.config_kP(kPIDLoopIdx, 0.4, kTimeoutMs);
         leftShooterFalcon.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
         leftShooterFalcon.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
@@ -73,7 +73,7 @@ public class Shooter {
 
     public void smartDashboardOutput() {
         // falcon.getSelectedSensorPosition();
-        SmartDashboard.putNumber("RPM", (leftShooterFalcon.getSelectedSensorVelocity(0)));
+        SmartDashboard.putNumber("RPM", (sensorUnitsToRPM(leftShooterFalcon.getSelectedSensorVelocity(1))));
         SmartDashboard.putNumber("Falcon Output", leftShooterFalcon.getMotorOutputPercent());
         System.out.println(leftShooterFalcon.getSelectedSensorVelocity(0));
     }
@@ -89,8 +89,10 @@ public class Shooter {
             ELSE
                 DONT
         */
-         
-        if(RobotMap.controller.getTriggerAxis(Hand.kRight)>.6){
+        leftShooterFalcon.config_kF(kPIDLoopIdx,SmartDashboard.getNumber("kF", 0), kTimeoutMs); //.45 *(1023.0/7200.0)
+        leftShooterFalcon.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), kTimeoutMs);
+        leftShooterFalcon.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
+        if(RobotMap.controller.getTriggerAxis(Hand.kLeft)>.6){
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             //belt.set(-.6);
