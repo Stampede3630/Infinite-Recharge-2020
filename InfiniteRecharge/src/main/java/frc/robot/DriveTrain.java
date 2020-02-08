@@ -46,7 +46,7 @@ public class Drivetrain {
 
     static Drivetrain drivetrain;
 
-    public Drivetrain() {
+    private Drivetrain() {
       m_gyro.reset();
     }
 

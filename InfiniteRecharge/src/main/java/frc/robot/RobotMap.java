@@ -29,8 +29,8 @@ public class RobotMap {
     public static CANSparkMax trolleySpark = new CANSparkMax(14, MotorType.kBrushless);
     public static CANSparkMax elevatorSpark = new CANSparkMax(8, MotorType.kBrushless);
 
-    public static WPI_TalonFX shooter1 = new WPI_TalonFX(12);
-    public static WPI_TalonFX shooter2 = new WPI_TalonFX(13);
+    public static WPI_TalonFX leftShooterFalcon = new WPI_TalonFX(12);
+    public static WPI_TalonFX rightShooterFalcon = new WPI_TalonFX(13);
 
     /*
     public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
