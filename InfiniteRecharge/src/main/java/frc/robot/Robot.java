@@ -7,11 +7,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -22,123 +20,61 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-	/**
-	 * This function is run when the robot is first started up and should be used
-	 * for any initialization code.
-	 */
-	private double priorAutospeed = 0;
-	private Number[] numberArray = new Number[10];
-	private NetworkTableEntry autoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
-	private NetworkTableEntry telemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
-	private NetworkTableEntry rotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
-	public static final double kMaxSpeed = 4; // 3 meters per second
-	public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
-	public static XboxController m_controller;
-	private TrajectoryFollowing autonomous;
-	private TestManipulator manipTest;
-	// Shooter shooter;
+  private Drivetrain m_swerve;
+  private Compressor comp = new Compressor(0);
+  private Climber climber;
 
-	@Override
-	public void robotInit() {
-		m_controller = new XboxController(0);
-		manipTest = new TestManipulator();
-		// shooter = new Shooter();
-		BallFollowDrive.resetIntakeState();
-	}
+  private IntakeIndex ballProcessor;
+  private Shooter shoot;
 
-	@Override
-	public void robotPeriodic() {
-		Drivetrain.postToSmartDashboard();
-		Drivetrain.updateOdometry();
-		// shooter.smartDashboardOutput();
+  @Override
+  public void robotInit() {
 
-	}
+    m_swerve = Drivetrain.getInstance();
+    shoot = new Shooter();
+    ballProcessor = new IntakeIndex();
+    climber = new Climber();
+    SmartDashboard.putNumber("kP", 0);
+    SmartDashboard.putNumber("kF", 0);
+    SmartDashboard.putNumber("kI", 0);
+    SmartDashboard.putNumber("kD", 0);
 
-	@Override
-	public void autonomousInit() {
-		NetworkTableInstance.getDefault().setUpdateRate(0.010);
-		if (!isReal())
-			SmartDashboard.putData(new SimEnabler());
-		BallFollowDrive.initLimelight();
-		BallFollowDrive.resetIntakeState();
-	}
+	BallFollowDrive.resetIntakeState();
+  }
 
-	@Override
-	public void autonomousPeriodic() {
+  @Override
+  public void robotPeriodic() {
+    SmartDashboard.putNumber("Current trolleySpark", RobotMap.trolleySpark.getOutputCurrent());
+    SmartDashboard.putNumber("Current Elevator", RobotMap.elevatorSpark.getOutputCurrent());
+    ballProcessor.toSmartDashboard();
+    ballProcessor.updateBooleans();
+    shoot.smartDashboardOutput();
 
-		// BallFollowDrive.intake(kMaxAngularSpeed / 2);
+  }
 
-		// // Retrieve values to send back before telling the motors to do something
-		// double now = Timer.getFPGATimestamp();
+  @Override
+  public void autonomousInit() {
 
-		// double leftPosition = -m_swerve.m_frontLeft.getTalonFXPos();
-		// double leftRate = -m_swerve.m_frontLeft.getTalonFXRate();
-		// //System.out.println(m_swerve.m_frontLeft.m_driveMotor.getSelectedSensorPosition());
+  }
 
-		// double rightPosition = -m_swerve.m_frontRight.getTalonFXPos();
-		// double rightRate = -m_swerve.m_frontRight.getTalonFXRate();
+  @Override
+  public void autonomousPeriodic() {
 
-		// double battery = RobotController.getBatteryVoltage();
+  }
 
-		// double leftMotorVolts =
-		// 0;//m_swerve.m_frontLeft.m_driveMotor.getMotorOutputVoltage();
-		// double rightMotorVolts =
-		// 0;//m_swerve.m_frontRight.m_driveMotor.getMotorOutputVoltage();
+  @Override
+  public void teleopPeriodic() {
+    //m_swerve.driveWithJoystick(false);
+    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
+    shoot.control();
+    ballProcessor.manualControl();
+    ballProcessor.ToggleSolenoids();
+    climber.climberPeriodic();
 
-		// // Retrieve the commanded speed from NetworkTables
-		// double autospeed = autoSpeedEntry.getDouble(0);
-		// priorAutospeed = autospeed;
+  }
 
-		// // command motors to do things
-		// double xspeed, yspeed, rot;
-		// boolean fieldRelative;
-		// if(rotateEntry.getBoolean(false)){
-
-		// xspeed = 0;
-		// yspeed = 0;
-		// rot = autospeed;
-		// fieldRelative = false;
-		// } else {
-		// xspeed = autospeed;
-		// yspeed = 0;
-		// rot = 0;
-		// fieldRelative = false;
-		// }
-		// m_swerve.drive(xspeed, yspeed, rot, fieldRelative);
-
-		// // send telemetry data array back to NT
-		// numberArray[0] = now;
-		// numberArray[1] = battery;
-		// numberArray[2] = autospeed;
-		// numberArray[3] = leftMotorVolts;
-		// numberArray[4] = rightMotorVolts;
-		// numberArray[5] = leftPosition;
-		// numberArray[6] = rightPosition;
-		// numberArray[7] = leftRate;
-		// numberArray[8] = rightRate;
-		// numberArray[9] = m_swerve.getAngle().getRadians();
-
-		// telemetryEntry.setNumberArray(numberArray);
-
-	}
-
-	@Override
-	public void teleopInit() {
-	}
-
-	@Override
-	public void teleopPeriodic() {
-
-		driveWithJoystick(false);
-		/*
-		 * manipTest.periodic(); if(m_controller.getTriggerAxis(Hand.kLeft)>0.5) {
-		 * shooter.control(); } else { shooter.drive(); }
-		 * 
-		 */
-	}
-
-	@Override
+  @Override
 	public void testInit() {
 		BallFollowDrive.initLimelight();
 	}
@@ -146,38 +82,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 
-		if (m_controller.getAButton()) {
+		if (RobotMap.controller.getAButton()) {
 			BallFollowDrive.resetIntakeState();
 		}
-		if (m_controller.getBumper(Hand.kRight)) {
+		if (RobotMap.controller.getBumper(Hand.kRight)) {
 			BallFollowDrive.intake();
 		} else {
 			BallFollowDrive.stop();
 		}
 
-		Drivetrain.postToSmartDashboard();
+		m_swerve.postToSmartDashboard();
 
 	}
 
-	private void driveWithJoystick(boolean fieldRelative) {
-		// Get the x speed. We are inverting this because Xbox controllers return
-		// negative values when we push forward.
-		var xSpeed = -MathHelper.deadzone(m_controller.getY(Hand.kLeft), 0.2) * kMaxSpeed;
-
-		// Get the y speed or sideways/strafe speed. We are inverting this because
-		// we want a positive value when we pull to the left. Xbox controllers
-		// return positive values when you pull to the right by default.
-		var ySpeed = -MathHelper.deadzone(m_controller.getX(Hand.kLeft), 0.2) * kMaxSpeed;
-
-		// Get the rate of angular rotation. We are inverting this because we want a
-		// positive value when we pull to the left (remember, CCW is positive in
-		// mathematics). Xbox controllers return positive values when you pull to
-		// the right by default.
-		var rot = -MathHelper.deadzone(m_controller.getX(Hand.kRight), 0.2) * kMaxAngularSpeed;
-
-		// System.out.println("rot: " + m_controller.getX(Hand.kRight));
-		// System.out.println("rot-c: " + rot);
-		System.out.println(xSpeed + "," + ySpeed);
-		Drivetrain.drive(xSpeed, ySpeed, rot, fieldRelative);
-	}
 }
