@@ -7,18 +7,11 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.I2C;
+
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser<V>;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -27,16 +20,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class IntakeIndex {
     SendableChooser<Integer> intakeChooser;
-
-    XboxController controller;
-    WPI_TalonSRX intakeWheels;// first spin wheel
-    WPI_TalonSRX pinwheel; // from box to belt
-    WPI_TalonSRX belt;
-    DoubleSolenoid armsSolenoid; // lowers the arms
     Timer timer;
-    Ultrasonic ultrasonic; // on the ground of the belt box
-    ColorSensorV3 colorSensorMid;
-    ColorSensorV3 colorSensorHigh;
     Shooter shoot;
     double threshold;
     double thresholdWeak;
@@ -49,25 +33,13 @@ public class IntakeIndex {
     private double beltBackwardsTwo = .5;
 
     public IntakeIndex() {
-        controller = new XboxController(0);
-        intakeWheels = new WPI_TalonSRX(9);
-        armsSolenoid = new DoubleSolenoid(2, 3); // 2 solenoid on r
-        belt = new WPI_TalonSRX(11);
         timer = new Timer();
-        colorSensorHigh = new ColorSensorV3(I2C.Port.kMXP);
-        pinwheel = new WPI_TalonSRX(10);
-        ultrasonic = new Ultrasonic(5, 3);
-        colorSensorMid = new ColorSensorV3(I2C.Port.kOnboard);
-        ultrasonic.setAutomaticMode(true);
-        ultrasonic.setDistanceUnits(Ultrasonic.Unit.kInches);
-        // colorSensorMid.setAutomaticMode(true);
-        // colorSensorMid.setDistanceUnits(Ultrasonic.Unit.kInches);
+        
 
         intakeChooser = new SendableChooser<Integer>();
         intakeChooser.addDefault("Automatic", 1);
         intakeChooser.addObject("Manual", 0);
 
-        belt.setNeutralMode(NeutralMode.Brake);
     }
 
     public void updateBooleans() {
@@ -80,21 +52,23 @@ public class IntakeIndex {
         none = false;
         middleWeak = false;
 
-        if (ultrasonic.getRangeInches() > 200 || ultrasonic.getRangeInches() < 6) {
+        if (RobotMap.ultrasonic.getRangeInches() > 200 || RobotMap.ultrasonic.getRangeInches() < 6) {
             bottom = true;
-
         }
-        if (colorSensorHigh.getGreen() > threshold) {
+
+        if (RobotMap.colorSensorHigh.getGreen() > threshold) {
             top = true;
-
         }
-        if (colorSensorMid.getGreen() > threshold) {
+
+        if (RobotMap.colorSensorMid.getGreen() > threshold) {
             middle = true;
         }
-        if (ultrasonic.getRangeInches() < 200 && ultrasonic.getRangeInches() > 20) {
+
+        if (RobotMap.ultrasonic.getRangeInches() < 200 && RobotMap.ultrasonic.getRangeInches() > 20) {
             none = true;
         }
-        if (colorSensorMid.getGreen() > thresholdWeak) {
+
+        if (RobotMap.colorSensorMid.getGreen() > thresholdWeak) {
             middleWeak = true;
         }
     }
@@ -109,19 +83,19 @@ public class IntakeIndex {
 
     public void manualControl() {
         if (RobotMap.controller.getAButton()) {
-            intakeWheels.set(.75);
-            pinwheel.set(-.4);
+            RobotMap.intakeWheels.set(.75);
+            RobotMap.pinwheel.set(-.4);
         } else {
-            intakeWheels.set(0);
-            pinwheel.set(0);
+            RobotMap.intakeWheels.set(0);
+            RobotMap.pinwheel.set(0);
         }
 
         if (RobotMap.controller.getTriggerAxis(Hand.kRight) > 0.5) {
-            belt.set(-.7);
+            RobotMap.belt.set(-.7);
         } else if (RobotMap.controller.getBumper(Hand.kRight)) {
-            belt.set(0.7);
+            RobotMap.belt.set(0.7);
         } else {
-            belt.set(0);
+            RobotMap.belt.set(0);
         }
 
     }
@@ -130,59 +104,59 @@ public class IntakeIndex {
         // System.out.println(pinwheel.get());
         // updateBooleans();
 
-        if (controller.getAButton()) {
+        if (RobotMap.controller.getAButton()) {
             System.out.println("tester");
             timer.reset();
             timer.start();
-            intakeWheels.set(.5);
+            RobotMap.intakeWheels.set(.5);
         }
 
         else {
-            intakeWheels.set(0);
+            RobotMap.intakeWheels.set(0);
             // System.out.print(timer.get());
         }
 
         if (timer.get() > 1.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
-            pinwheel.set(0);
+            RobotMap.pinwheel.set(0);
         } else {
-            pinwheel.set(-.8);
+            RobotMap.pinwheel.set(-.8);
         }
 
         // BELT STUFF!!!!!!!!!!!!!!!!!
-        if (controller.getBButton()) {
-            armsSolenoid.set(DoubleSolenoid.Value.kReverse);
+        if (RobotMap.controller.getBButton()) {
+            RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kReverse);
         }
 
         if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
                 && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
-            belt.set(beltForwardTwo);
+            RobotMap.belt.set(beltForwardTwo);
             System.out.println("shooter up to speed");
 
         } else if (top && middle) {
-            belt.set(0);
+            RobotMap.belt.set(0);
             System.out.println("yes top, yes middle");
         } else if (top && middleWeak) {
-            belt.set(0);
+            RobotMap.belt.set(0);
             System.out.println("top, middle weak");
         } else if (top && !middle) {
-            belt.set(beltBackwardsOne);
+            RobotMap.belt.set(beltBackwardsOne);
             System.out.println("yes top, no middle");
 
         } else if (!top && middle && bottom) {
-            belt.set(beltForwardTwo);
+            RobotMap.belt.set(beltForwardTwo);
             System.out.println("middle and bottom");
 
         } else if (!top && !middle && bottom) {
-            belt.set(beltForwardOne);
+            RobotMap.belt.set(beltForwardOne);
             System.out.println("only bottom");
 
         } else if (middle) {
-            belt.set(0);
+            RobotMap.belt.set(0);
             System.out.println("middle");
         } else if (none) {
             System.out.println("none");
-            belt.set(0);
+            RobotMap.belt.set(0);
         }
 
     }
@@ -203,46 +177,46 @@ public class IntakeIndex {
      */
     public void tempBelt() {
         // BELT STUFF!!!!!!!!!!!!!!!!!
-        if (controller.getBButton()) {
-            armsSolenoid.set(DoubleSolenoid.Value.kReverse);
+        if (RobotMap.controller.getBButton()) {
+            RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kReverse);
         }
 
         if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
                 && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
-            belt.set(beltForwardTwo);
+            RobotMap.belt.set(beltForwardTwo);
             System.out.println("shooter up to speed");
         } else if (none) {
             System.out.println("none, reset to 0");
-            belt.set(0.0);
+            RobotMap.belt.set(0.0);
         } else if (top && middleWeak && bottom) {
-            belt.set(0.0);
+            RobotMap.belt.set(0.0);
             System.out.println("top, middleWeak and bottom, reset to/stay at 0");
-        } else if (belt.get() == 0.0) {
+        } else if (RobotMap.belt.get() == 0.0) {
             // ready for new command
             if (top && bottom) {
-                belt.set(beltBackwardsOne);
+                RobotMap.belt.set(beltBackwardsOne);
                 System.out.println("top, bottom, go BACK");
             } else if (middleWeak && bottom) {
-                belt.set(beltForwardTwo);
+                RobotMap.belt.set(beltForwardTwo);
                 System.out.println("middle weak, bottom, go FORWARD");
             } else if (bottom) {
-                belt.set(beltForwardOne);
+                RobotMap.belt.set(beltForwardOne);
                 System.out.println("bottom, go FORWARD");
             }
-        } else if (belt.get() < 0.0) {
+        } else if (RobotMap.belt.get() < 0.0) {
             // currently moving forward
             if (top) {
-                belt.set(0.0);
+                RobotMap.belt.set(0.0);
                 System.out.println("top, STOP forward");
                 if (middleWeak) {
                     System.out.println("\t also middle weak");
                 }
             }
-        } else if (belt.get() > 0.0) {
+        } else if (RobotMap.belt.get() > 0.0) {
             // currently moving backward
             if (middle) {
-                belt.set(0.0);
+                RobotMap.belt.set(0.0);
                 System.out.println("middle, STOP backward");
                 if (bottom) {
                     System.out.println("\t also bottom");
@@ -252,9 +226,9 @@ public class IntakeIndex {
     }
 
     public void toSmartDashboard() {
-        SmartDashboard.putNumber("colorSensorHigh Green", colorSensorHigh.getGreen());
-        SmartDashboard.putNumber("colorSensorMid Green", colorSensorMid.getGreen());
-        SmartDashboard.putNumber("ultrasonic", ultrasonic.getRangeInches());
+        SmartDashboard.putNumber("colorSensorHigh Green", RobotMap.colorSensorHigh.getGreen());
+        SmartDashboard.putNumber("colorSensorMid Green", RobotMap.colorSensorMid.getGreen());
+        SmartDashboard.putNumber("ultrasonic", RobotMap.ultrasonic.getRangeInches());
         SmartDashboard.putBoolean("bottom", bottom);
         SmartDashboard.putBoolean("middle", middle);
         SmartDashboard.putBoolean("top", top);
@@ -266,11 +240,11 @@ public class IntakeIndex {
         if (RobotMap.controller.getXButtonPressed()) {
 
             if (newMattyState == false) {
-                armsSolenoid.set(DoubleSolenoid.Value.kForward);
+                RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kForward);
                 newMattyState = true;
 
             } else if (newMattyState == true) {
-                armsSolenoid.set(DoubleSolenoid.Value.kReverse);
+                RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kReverse);
                 newMattyState = false;
             }
 

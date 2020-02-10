@@ -7,9 +7,6 @@
 
 package frc.robot;
 
-/**
- * Add your docs here.
- */
 public class Climber {
 
     public static final double elevatorSpeed = 0.9;
