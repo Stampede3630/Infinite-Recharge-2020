@@ -54,6 +54,7 @@ public class SwerveModule {
    */
   public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_TalonSRX drivetrainFrontLeftAngleMotor, AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
     if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4){
+
       kPSpecial = .6;
     }
     else{
@@ -65,9 +66,9 @@ public class SwerveModule {
 
     m_driveMotor = drivetrainFrontLeftDriveMotor;
     m_turningMotor = drivetrainFrontLeftAngleMotor;
-
     
     m_turningEncoder = drivetrainFrontLeftAngleEncoder;
+
     angleOffset = angleChange;
 
     // Set the distance per pulse for the drive encoder. We can simply use the
@@ -84,7 +85,7 @@ public class SwerveModule {
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
-public double getTalonFXRate(){
+  public double getTalonFXRate(){
     double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0)*10;
     double revsPerSec = ticksPerSec/(kEncoderResolution * 8.307692307692308);
     double metersPerSec = revsPerSec * 2 * Math.PI * kWheelRadius;
@@ -114,6 +115,7 @@ public double getTalonFXRate(){
   }
 
   public double getAngle() {
+    //readAngle();
     return m_steeringAngle;
   }
 
@@ -132,6 +134,8 @@ public double getTalonFXRate(){
    * = setpoint; }
    * 
    * return 0; //WRONG!!!!!!!
+   * 
+   * 
    * }
    */
 
@@ -193,7 +197,7 @@ public double getTalonFXRate(){
     double currentAngle = getAngle(); //getAngle();//
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
     if (m_turningMotor.getDeviceID() == 4) {
-      turnOutput = turnOutput * -1;
+      turnOutput = (double) turnOutput * -1;
     }
 
     System.out.println(m_driveMotor.getDeviceID() + "," + "encoder position" + m_driveMotor.getSelectedSensorPosition(0));
@@ -201,10 +205,9 @@ public double getTalonFXRate(){
     double driveOutput = state.speedMetersPerSecond / RobotMap.kMaxSpeed * m_driveScalar;
   
     if(driveOutput == 0) { turnOutput = 0; }
-
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
-    m_turningMotor.set(-turnOutput);
+    m_turningMotor.set((double) turnOutput *-1);
     //if (Math.abs(turnOutput) <.3){
       m_driveMotor.set(driveOutput);
     
@@ -216,19 +219,6 @@ public double getTalonFXRate(){
     //m_driveMotor.set(0);
     // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
     // driveOutput );
-    // SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
-
-    
-     /* if(state.angle.getRadians() != setpoint) 
-      { 
-        driveOutput = driveOutput * -1;
-        System.out.println("State of " + m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
-      } 
-      if(getAngle() != currentAngle) 
-      {
-      driveOutput = driveOutput *-1; System.out.println("Measurement of " +
-      m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
-       }*/ 
      
     /*
      * if((Math.abs(setpoint - readAngle())) < 2) { m_driveMotor.set(driveOutput); }
