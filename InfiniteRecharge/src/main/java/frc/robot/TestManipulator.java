@@ -29,16 +29,16 @@ public class TestManipulator {
 	}
 
 	public void periodic() {
-		if (Robot.m_controller.getAButton()) {
+		if (RobotMap.controller.getAButton()) {
 			intake.set(.75);
 			highRoller.set(-.4);
 		} else {
 			intake.set(0);
 			highRoller.set(0);
 		}
-		if (Robot.m_controller.getTriggerAxis(Hand.kRight) > 0.5) {
+		if (RobotMap.controller.getTriggerAxis(Hand.kRight) > 0.5) {
 			belt.set(-.7);
-		} else if (Robot.m_controller.getBumper(Hand.kRight)) {
+		} else if (RobotMap.controller.getBumper(Hand.kRight)) {
 			belt.set(0.7);
 		} else {
 			belt.set(0);

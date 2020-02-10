@@ -13,6 +13,6 @@ package frc.robot;
 public class TargetAlignDrive {
 
 	public static void stop() {
-		Drivetrain.stop();
+		//Drivetrain.stop(); TODO stop being lazy
 	}
 }

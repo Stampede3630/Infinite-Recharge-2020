@@ -112,6 +112,15 @@ public class Drivetrain {
   }
 
   /**
+   * Stops the robot.
+   * <p>
+   * Alias for {@link #drive(double, double, double, boolean) drive(0, 0, 0, false)}.
+   */
+  public void stop() {
+    drive(0, 0, 0, false);
+  }
+
+  /**
    * Updates the field relative position of the robot.
    */
 

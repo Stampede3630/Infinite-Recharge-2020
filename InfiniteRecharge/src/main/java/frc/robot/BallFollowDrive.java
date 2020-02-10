@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 public class BallFollowDrive {
 
 	private static ProfiledPIDController turnPID = new ProfiledPIDController(0.03, 0, 0,
-			new TrapezoidProfile.Constraints(Robot.kMaxAngularSpeed, Math.PI * 6));
+			new TrapezoidProfile.Constraints(RobotMap.kMaxAngularSpeed, Math.PI * 6)); // TODO?
 	private static PIDController xPID = new PIDController(0.03, 0, 0);
 	private static PIDController yPID = new PIDController(0.03, 0, 0);
 	private static PIDController xVelPID = new PIDController(0.03, 0, 0);
@@ -35,6 +35,12 @@ public class BallFollowDrive {
 	private static double lastYAngle;
 
 	private static int lastAngleInvalidTicks;
+
+	private static Drivetrain drivetrain;
+
+	static {
+		drivetrain = Drivetrain.getInstance();
+	}
 
 	/**
 	 * Initializes the LimeLight pipeline to {@value RobotMap#PIPELINE_BALL_FOLLOW}
@@ -117,10 +123,10 @@ public class BallFollowDrive {
 					lastYAngle = Limelight.getTY();
 					break;
 				} else {
-					Drivetrain.drive(0, 0, Robot.kMaxAngularSpeed * 0.6, false);
+					drivetrain.drive(0, 0, RobotMap.kMaxAngularSpeed * RobotMap.BALL_FOLLOW_SLOW_SEARCH, false); // TODO Verify rotation speed
 				}
 			} else {
-				Drivetrain.drive(0, 0, Robot.kMaxAngularSpeed * 0.9, false);
+				drivetrain.drive(0, 0, RobotMap.kMaxAngularSpeed * RobotMap.BALL_FOLLOW_FAST_SEARCH, false); // TODO Verify rotation speed
 			}
 			break;
 		case Intaking:
@@ -129,7 +135,7 @@ public class BallFollowDrive {
 				// stop();
 				followTarget(0, 0);
 			} else {
-				if (lastAngleInvalidTicks < 4) // The ball was last seen in the lower quarter of the screen
+				if (lastAngleInvalidTicks < RobotMap.BALL_FOLLOW_FLICKER_PROTECTION) // The ball was last seen in the lower quarter of the screen
 				{
 					intakeState = IntakeState.Done;
 				} else {
@@ -150,7 +156,7 @@ public class BallFollowDrive {
 	 * Stops the robot. Currently only a shortcut for {@link Drivetrain#stop()}.
 	 */
 	public static void stop() {
-		Drivetrain.stop();
+		drivetrain.stop();
 	}
 
 	/**
@@ -168,7 +174,7 @@ public class BallFollowDrive {
 	 */
 	public static boolean followTarget(double targetX, double targetY) {
 		if (!targetPos.isValid()) {
-			Drivetrain.stop();
+			drivetrain.stop();
 			return false;
 		}
 		double xMotion = 0;
@@ -187,17 +193,15 @@ public class BallFollowDrive {
 
 		double dist = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
 
-		final double DIST_THRESHOLD = 5;
+		final double DIST_THRESHOLD = 5; // TODO Basically not used anymore
 
 		if (dist < DIST_THRESHOLD) {
 			xMotion *= Math.sqrt((DIST_THRESHOLD - dist) / DIST_THRESHOLD);
 			yMotion *= Math.sqrt((DIST_THRESHOLD - dist) / DIST_THRESHOLD);
 		}
 
-		final double SPEEDMULT = 0.7;
-
-		xMotion *= -SPEEDMULT;
-		yMotion *= -SPEEDMULT;
+		xMotion *= -RobotMap.BALL_FOLLOW_FOLLOW_SPEED_MULTIPLIER;
+		yMotion *= -RobotMap.BALL_FOLLOW_FOLLOW_SPEED_MULTIPLIER;
 
 		final double DELTA_MULT = 0.5;
 
@@ -208,11 +212,11 @@ public class BallFollowDrive {
 		yVel = Math.pow(Math.abs(yVel), 2) * Math.signum(yVel);
 
 		xMotion -= xVel;
-		xMotion -= yVel;
+		yMotion -= yVel;
 
 		SmartDashboard.putNumber("dist", dist);
 
-		double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180;
+		double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180; // TODO Incorporate turnToAngle stuff and all that
 		// System.out.println(angleDelta);
 		double angleVel = turnPID.calculate(angleDelta, 0);
 
@@ -221,11 +225,11 @@ public class BallFollowDrive {
 		// MathHelper.remap(yMotion, -1, 1, -Robot.kMaxSpeed, Robot.kMaxSpeed) / 4,
 		// MathHelper.remap(angleVel, -1, 1, -Robot.kMaxAngularSpeed,
 		// Robot.kMaxAngularSpeed) / 2, false);
-		Drivetrain.drive(MathHelper.clampUnit(yMotion) * Robot.kMaxSpeed / 2,
-				MathHelper.clampUnit(xMotion) * Robot.kMaxSpeed / 2,
-				MathHelper.clampUnit(angleVel) * Robot.kMaxAngularSpeed, false);
+		drivetrain.drive(MathHelper.clampUnit(yMotion) * RobotMap.kMaxSpeed / 2,
+				MathHelper.clampUnit(xMotion) * RobotMap.kMaxSpeed / 2,
+				MathHelper.clampUnit(angleVel) * RobotMap.kMaxAngularSpeed, false);
 
-		SmartDashboard.putNumber("X Delta", xDelta);
+		SmartDashboard.putNumber("X Delta", xDelta); // TODO Move into its own SmartDashboard method
 		SmartDashboard.putNumber("Y Delta", yDelta);
 		SmartDashboard.putNumber("Angle Delta", angleDelta);
 		SmartDashboard.putNumber("X Velocity", xMotion);

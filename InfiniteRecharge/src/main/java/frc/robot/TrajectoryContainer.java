@@ -28,7 +28,7 @@ public class TrajectoryContainer {
 	private TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
 			AutoConstants.kMaxAccelerationMetersPerSecondSquared)
 					// Add kinematics to ensure max speed is actually obeyed
-					.setKinematics(Drivetrain.m_kinematics);
+					.setKinematics(Drivetrain.getInstance().m_kinematics);
 
 	private ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
 			AutoConstants.kThetaControllerConstraints);

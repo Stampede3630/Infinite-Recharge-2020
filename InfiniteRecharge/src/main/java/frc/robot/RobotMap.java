@@ -30,7 +30,7 @@ public class RobotMap {
     public static DigitalInput maxLimitSwitch = new DigitalInput(20);
     public static DigitalInput minLimitSwitch = new DigitalInput(19);
 
-    //shooter stuff
+    // shooter stuff
     public static WPI_TalonFX leftShooterFalcon = new WPI_TalonFX(12);
     public static WPI_TalonFX rightShooterFalcon = new WPI_TalonFX(13);
 
@@ -67,9 +67,14 @@ public class RobotMap {
     // PID Constants/Contraints
     public static final double kMaxSpeed = 4; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI;
-    
-	public static final int PIPELINE_BALL_FOLLOW = 1;
-	public static final int PIPELINE_TARGET_LINEUP = 4;
+
+    public static final int PIPELINE_BALL_FOLLOW = 1;
+    public static final int PIPELINE_TARGET_LINEUP = 4;
+
+    public static final int BALL_FOLLOW_FLICKER_PROTECTION = 4;
+    public static final double BALL_FOLLOW_FAST_SEARCH = 0.9;
+    public static final double BALL_FOLLOW_SLOW_SEARCH = 0.6;
+    public static final double BALL_FOLLOW_FOLLOW_SPEED_MULTIPLIER = 0.7;
 
     static {
         DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
@@ -96,7 +101,6 @@ public class RobotMap {
         DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
         DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
         DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
-        
 
     }
     /*

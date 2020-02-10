@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("kI", 0);
     SmartDashboard.putNumber("kD", 0);
 
-	BallFollowDrive.resetIntakeState();
+    BallFollowDrive.resetIntakeState();
   }
 
   @Override
@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
-
   }
 
   @Override
@@ -65,34 +64,38 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    //m_swerve.driveWithJoystick(false);
-    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
+    // m_swerve.driveWithJoystick(false);
+    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
+    // RobotMap.controller.getX(Hand.kRight) *.5);
     shoot.control();
     ballProcessor.manualControl();
     ballProcessor.ToggleSolenoids();
     climber.climberPeriodic();
-
   }
 
   @Override
-	public void testInit() {
-		BallFollowDrive.initLimelight();
-	}
+  public void testInit() {
+    // Sets up the limelight pipeline
+    BallFollowDrive.initLimelight();
+  }
 
-	@Override
-	public void testPeriodic() {
+  @Override
+  public void testPeriodic() {
 
-		if (RobotMap.controller.getAButton()) {
-			BallFollowDrive.resetIntakeState();
-		}
-		if (RobotMap.controller.getBumper(Hand.kRight)) {
-			BallFollowDrive.intake();
-		} else {
-			BallFollowDrive.stop();
-		}
+    // Button A on the XBOX makes the robot start searching again (if it marked
+    // intake as done)
+    if (RobotMap.controller.getAButton()) {
+      BallFollowDrive.resetIntakeState();
+    }
 
-		m_swerve.postToSmartDashboard();
+    // Intake code runs only while the right bumber is held (otherwise it stops)
+    if (RobotMap.controller.getBumper(Hand.kRight)) {
+      BallFollowDrive.intake();
+    } else {
+      BallFollowDrive.stop();
+    }
 
-	}
+    m_swerve.postToSmartDashboard();
+  }
 
 }
