@@ -83,6 +83,8 @@ public class Shooter {
         leftShooterFalcon.config_kF(kPIDLoopIdx, SmartDashboard.getNumber("kF", 0), kTimeoutMs); // .45 *(1023.0/7200.0)
         leftShooterFalcon.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), kTimeoutMs);
         leftShooterFalcon.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
+        leftShooterFalcon.config_kD(kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), kTimeoutMs);
+
         if (RobotMap.controller.getTriggerAxis(Hand.kLeft) > .6) {
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);

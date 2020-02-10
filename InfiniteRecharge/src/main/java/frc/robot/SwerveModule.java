@@ -52,9 +52,11 @@ public class SwerveModule {
    * @param drivetrainFrontLeftDriveMotor ID for the drive motor.
    * @param drivetrainFrontLeftAngleMotor ID for the turning motor.
    */
+
   public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_TalonSRX drivetrainFrontLeftAngleMotor,
       AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
     if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
+
       kPSpecial = .6;
     } else {
       kPSpecial = 1.1;
@@ -65,8 +67,8 @@ public class SwerveModule {
 
     m_driveMotor = drivetrainFrontLeftDriveMotor;
     m_turningMotor = drivetrainFrontLeftAngleMotor;
-
     m_turningEncoder = drivetrainFrontLeftAngleEncoder;
+
     angleOffset = angleChange;
 
     // Set the distance per pulse for the drive encoder. We can simply use the
@@ -116,6 +118,7 @@ public class SwerveModule {
   }
 
   public double getAngle() {
+    //readAngle();
     return m_steeringAngle;
   }
 
@@ -180,7 +183,7 @@ public class SwerveModule {
     double currentAngle = getAngle(); // getAngle();//
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
     if (m_turningMotor.getDeviceID() == 4) {
-      turnOutput = turnOutput * -1;
+      turnOutput = (double) turnOutput * -1;
     }
 
     System.out
