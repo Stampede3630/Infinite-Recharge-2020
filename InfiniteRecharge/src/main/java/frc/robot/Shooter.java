@@ -21,13 +21,11 @@ public class Shooter {
     WPI_TalonSRX belt; // belt talon
 
     public Shooter() {
-        rotpm = 4000;//3800
-        // device IDs are completely arbitrary and NEED to be changed
-        // spark tests
+        rotpm = 4000;// 3800
         leftShooterFalcon = RobotMap.leftShooterFalcon; // GOOD + is right
         rightShooterFalcon = RobotMap.rightShooterFalcon;
         rightShooterFalcon.set(ControlMode.Follower, RobotMap.leftShooterFalcon.getDeviceID());
-        rightShooterFalcon.setInverted(InvertType.OpposeMaster); 
+        rightShooterFalcon.setInverted(InvertType.OpposeMaster);
         controller = new XboxController(0);
         belt = new WPI_TalonSRX(11);
         belt.setNeutralMode(NeutralMode.Coast);
@@ -37,8 +35,9 @@ public class Shooter {
 
         leftShooterFalcon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx,
                 kTimeoutMs);
-        // rightShooterFalcon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx,
-                // kTimeoutMs);
+        // rightShooterFalcon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        // kPIDLoopIdx,
+        // kTimeoutMs);
 
         leftShooterFalcon.setSensorPhase(true);
         // rightShooterFalcon.setSensorPhase(true);
@@ -52,7 +51,7 @@ public class Shooter {
         leftShooterFalcon.configPeakOutputReverse(-1, kTimeoutMs);
 
         /* Config the Velocity closed loop gains in slot0 */
-        leftShooterFalcon.config_kF(kPIDLoopIdx,0.055, kTimeoutMs); //.45 *(1023.0/7200.0)
+        leftShooterFalcon.config_kF(kPIDLoopIdx, 0.055, kTimeoutMs); // .45 *(1023.0/7200.0)
         leftShooterFalcon.config_kP(kPIDLoopIdx, 0.4, kTimeoutMs);
         leftShooterFalcon.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
         leftShooterFalcon.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
@@ -81,57 +80,47 @@ public class Shooter {
     public void control() {
         double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(rotpm) * kEncoderUnitsPerRev;
         /* 500 RPM in either direction */
-           
-        /*IF TRIGGER PRESSED
-            SPIN SHOOTER
-            IF VELOCITY HIGH ENOUGH
-                SPIN BELT
-            ELSE
-                DONT
-        */
-        leftShooterFalcon.config_kF(kPIDLoopIdx,SmartDashboard.getNumber("kF", 0), kTimeoutMs); //.45 *(1023.0/7200.0)
+        leftShooterFalcon.config_kF(kPIDLoopIdx, SmartDashboard.getNumber("kF", 0), kTimeoutMs); // .45 *(1023.0/7200.0)
         leftShooterFalcon.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), kTimeoutMs);
         leftShooterFalcon.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
-        if(RobotMap.controller.getTriggerAxis(Hand.kLeft)>.6){
+        if (RobotMap.controller.getTriggerAxis(Hand.kLeft) > .6) {
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-            //belt.set(-.6);
-        }
-        else{
+            // belt.set(-.6);
+        } else {
             leftShooterFalcon.set(0);
             // rightShooterFalcon.set(0);
         }
     }
-	/**
-	 * Which PID slot to pull gains from. Starting 2018, you can choose from
-	 * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
-	 * configuration.
-	 */
-	public static final int kSlotIdx = 0;
 
-	/**
-	 * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For
-	 * now we just want the primary one.
-	 */
-	public static final int kPIDLoopIdx = 0;
+    /**
+     * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
+     * or 3. Only the first two (0,1) are visible in web-based configuration.
+     */
+    public static final int kSlotIdx = 0;
 
-	/**
-	 * Set to zero to skip waiting for confirmation, set to nonzero to wait and
-	 * report to DS if action fails.
-	 */
+    /**
+     * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For now
+     * we just want the primary one.
+     */
+    public static final int kPIDLoopIdx = 0;
+
+    /**
+     * Set to zero to skip waiting for confirmation, set to nonzero to wait and
+     * report to DS if action fails.
+     */
     public static final int kTimeoutMs = 30;
 
-    public static final double kEncoderUnitsPerRev = 2048;//4096;
+    public static final double kEncoderUnitsPerRev = 2048;// 4096;
 
-    public static double rpmToRotatPer100Mili(double rpm){
-        double milliSec = rpm/600;
+    public static double rpmToRotatPer100Mili(double rpm) {
+        double milliSec = rpm / 600;
         return milliSec;
-	}
-	
-	public static double sensorUnitsToRPM(double senUnits)
-	{
-		return senUnits * 600 / kEncoderUnitsPerRev;
+    }
 
-	}
+    public static double sensorUnitsToRPM(double senUnits) {
+        return senUnits * 600 / kEncoderUnitsPerRev;
+
+    }
 
 }

@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 
-
 public class SwerveModule {
   private static final double kWheelRadius = 0.051;
   private static final int kEncoderResolution = 2048;
@@ -35,12 +34,13 @@ public class SwerveModule {
   double kPSpecial;
   AHRS currentAngle;
 
-  private final PIDController m_drivePIDController = new PIDController(0.05, 0, 0);
+  private final PIDController m_drivePIDController = new PIDController(0.1, 0, 0);
 
-  private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-  //kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
+  private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new
+                                                             // TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+  // kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
 
-  //new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
+  // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
   // kModuleMaxAngularAcceleration)
   // front left -(0,1) - PID: 0.8, 0.05
   // (4,5) -PID: 0.8, 0.05
@@ -49,24 +49,23 @@ public class SwerveModule {
   /**
    * Constructs a SwerveModule.
    *
-   * @param drivetrainFrontLeftDriveMotor   ID for the drive motor.
+   * @param drivetrainFrontLeftDriveMotor ID for the drive motor.
    * @param drivetrainFrontLeftAngleMotor ID for the turning motor.
    */
-  public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_TalonSRX drivetrainFrontLeftAngleMotor, AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
-    if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4){
+  public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_TalonSRX drivetrainFrontLeftAngleMotor,
+      AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
+    if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
       kPSpecial = .6;
-    }
-    else{
+    } else {
       kPSpecial = 1.1;
     }
-    
-    m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02, new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-    kModuleMaxAngularAcceleration));
+
+    m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02,
+        new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
     m_driveMotor = drivetrainFrontLeftDriveMotor;
     m_turningMotor = drivetrainFrontLeftAngleMotor;
 
-    
     m_turningEncoder = drivetrainFrontLeftAngleEncoder;
     angleOffset = angleChange;
 
@@ -82,20 +81,23 @@ public class SwerveModule {
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+
   }
 
-public double getTalonFXRate(){
-    double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0)*10;
-    double revsPerSec = ticksPerSec/(kEncoderResolution * 8.307692307692308);
+  public double getTalonFXRate() {
+    double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0) * 10;
+    double revsPerSec = ticksPerSec / (kEncoderResolution * 8.307692307692308);
     double metersPerSec = revsPerSec * 2 * Math.PI * kWheelRadius;
     return -metersPerSec;
   }
-  public double getTalonFXPos(){
-    double ticks = m_driveMotor.getSelectedSensorPosition(0)*10;
-    double revs = ticks/(kEncoderResolution * 8.307692307692308);
+
+  public double getTalonFXPos() {
+    double ticks = m_driveMotor.getSelectedSensorPosition(0) * 10;
+    double revs = ticks / (kEncoderResolution * 8.307692307692308);
     double meters = revs * 2 * Math.PI * kWheelRadius;
     return -meters;
   }
+
   /**
    * Returns the current state of the module.
    *
@@ -117,7 +119,6 @@ public double getTalonFXRate(){
     return m_steeringAngle;
   }
 
-  
   /*
    * public double convertAngle(SwerveModuleState state) { double position =
    * readAngle(); double setpoint = state.angle.getRadians(); double newSetpoint =
@@ -131,52 +132,38 @@ public double getTalonFXRate(){
    * if(oldError > newError) { finalSetpoint = newSetpoint; } else { finalSetpoint
    * = setpoint; }
    * 
-   * return 0; //WRONG!!!!!!!
-   * }
+   * return 0; //WRONG!!!!!!! }
    */
 
   public double bound(double setpoint) {
     double dTheta = setpoint - getAngle();
     double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
-    
-    if (Math.abs(Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI) - Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01)
-    {
-      m_driveScalar = 1;
-    }
-    else{
-      m_driveScalar = -1;
-    } 
 
-    if (trueDTheta<90){
-      return getAngle() + trueDTheta;
+    if (Math.abs(
+        Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI) - Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01) {
+      m_driveScalar = 1;
+    } else {
+      m_driveScalar = -1;
     }
-    else{
+
+    if (trueDTheta < 90) {
+      return getAngle() + trueDTheta;
+    } else {
       return getAngle() + (trueDTheta - Math.PI);
     }
-    
-  
 
     /*
-    if (angle > (Math.PI / 2)) {
-      m_driveScalar = -m_driveScalar;
-      return angle - Math.PI;
-    } else if (angle < (-Math.PI / 2)) {
-      m_driveScalar = -m_driveScalar;
-      return angle + Math.PI;
-    } else {
-      return angle;
-    }
-    */
+     * if (angle > (Math.PI / 2)) { m_driveScalar = -m_driveScalar; return angle -
+     * Math.PI; } else if (angle < (-Math.PI / 2)) { m_driveScalar = -m_driveScalar;
+     * return angle + Math.PI; } else { return angle; }
+     */
 
   }
-/*
-  public double bound (double angle, double setpoint)
-  {
-    change1 = setpoint-angle
-    change2 = setpoint + Math.PI - angle
-    bestChange = Math.
-  }
-  */
+
+  /*
+   * public double bound (double angle, double setpoint) { change1 =
+   * setpoint-angle change2 = setpoint + Math.PI - angle bestChange = Math. }
+   */
   /**
    * Sets the desired state for the module.
    *
@@ -189,47 +176,48 @@ public double getTalonFXRate(){
     readAngle();
     m_driveScalar = 1;
     // Calculate the turning motor output from the turning PID controller.
-    double setpoint = bound(state.angle.getRadians());//state.angle.getRadians();//
-    double currentAngle = getAngle(); //getAngle();//
+    double setpoint = bound(state.angle.getRadians());// state.angle.getRadians();//
+    double currentAngle = getAngle(); // getAngle();//
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
     if (m_turningMotor.getDeviceID() == 4) {
       turnOutput = turnOutput * -1;
     }
 
-    System.out.println(m_driveMotor.getDeviceID() + "," + "encoder position" + m_driveMotor.getSelectedSensorPosition(0));
+    System.out
+        .println(m_driveMotor.getDeviceID() + "," + "encoder position" + m_driveMotor.getSelectedSensorPosition(0));
 
-    double driveOutput = state.speedMetersPerSecond / RobotMap.kMaxSpeed * m_driveScalar;
-  
-    if(driveOutput == 0) { turnOutput = 0; }
+    // double driveOutput = state.speedMetersPerSecond / RobotMap.kMaxSpeed *
+    // m_driveScalar;
+
+    double driveOutput = m_drivePIDController.calculate(getTalonFXRate(), state.speedMetersPerSecond);
+    if (driveOutput == 0) {
+      turnOutput = 0;
+    }
 
     // Calculate the turning motor output from the turning PID controller.
     // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
-    //if (Math.abs(turnOutput) <.3){
-      m_driveMotor.set(driveOutput);
-    
-    //} 
-    //else {
-   // m_driveMotor.set(0);
+    // if (Math.abs(turnOutput) <.3){
+    m_driveMotor.set(driveOutput);
 
-    //}
-    //m_driveMotor.set(0);
+    // }
+    // else {
+    // m_driveMotor.set(0);
+
+    // }
+    // m_driveMotor.set(0);
     // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
     // driveOutput );
     // SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
 
-    
-     /* if(state.angle.getRadians() != setpoint) 
-      { 
-        driveOutput = driveOutput * -1;
-        System.out.println("State of " + m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
-      } 
-      if(getAngle() != currentAngle) 
-      {
-      driveOutput = driveOutput *-1; System.out.println("Measurement of " +
-      m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); 
-       }*/ 
-     
+    /*
+     * if(state.angle.getRadians() != setpoint) { driveOutput = driveOutput * -1;
+     * System.out.println("State of " + m_driveMotor.getDeviceID() +
+     * " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); } if(getAngle() != currentAngle) {
+     * driveOutput = driveOutput *-1; System.out.println("Measurement of " +
+     * m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); }
+     */
+
     /*
      * if((Math.abs(setpoint - readAngle())) < 2) { m_driveMotor.set(driveOutput); }
      */
@@ -241,14 +229,14 @@ public double getTalonFXRate(){
 
     SmartDashboard.putNumber("Setpoint bound angle" + m_driveMotor.getDeviceID(), setpoint);
     SmartDashboard.putNumber("setpoint unbound angle" + m_driveMotor.getDeviceID(), state.angle.getRadians());
-    //SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(), currentAngle);
+    // SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(),
+    // currentAngle);
     SmartDashboard.putNumber("Current unbound angle" + m_driveMotor.getDeviceID(), getAngle());
-    
+
   }
 
   public void toSmartDashboard() {
     SmartDashboard.putNumber("voltage" + m_driveMotor.getDeviceID(), m_turningEncoder.getVoltage());
-    
 
   }
 }

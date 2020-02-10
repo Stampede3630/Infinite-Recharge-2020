@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_swerve;
   private Compressor compp = new Compressor(0);
+  private Climber climber;
 
   private IntakeIndex ballProcessor;
   private Shooter shoot;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
     m_swerve = Drivetrain.getInstance();
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();
+    climber = new Climber();
     SmartDashboard.putNumber("kP", 0);
     SmartDashboard.putNumber("kF", 0);
     SmartDashboard.putNumber("kI", 0);
@@ -46,7 +48,6 @@ public class Robot extends TimedRobot {
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
-    
 
   }
 
@@ -62,14 +63,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    //m_swerve.driveWithJoystick(true);
-    //RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
-    //RobotMap.trolleySpark.set(RobotMap.controller.getY(Hand.kRight) *-.5);
-    //System.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
+    //m_swerve.driveWithJoystick(false);
+    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
     shoot.control();
     ballProcessor.manualControl();
     ballProcessor.ToggleSolenoids();
-  
+    climber.climberPeriodic();
 
   }
 
@@ -78,5 +77,4 @@ public class Robot extends TimedRobot {
 
   }
 
-  
 }
