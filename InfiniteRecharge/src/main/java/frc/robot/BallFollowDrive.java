@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+import frc.robot.Limelight.Target.TargetType;
 
 /**
  * Add your docs here.
@@ -23,8 +24,6 @@ public class BallFollowDrive {
 	private static PIDController yPID = new PIDController(0.03, 0, 0);
 	private static PIDController xVelPID = new PIDController(0.03, 0, 0);
 	private static PIDController yVelPID = new PIDController(0.03, 0, 0);
-
-	private static TargetPos targetPos = new TargetPos();
 
 	private enum IntakeState {
 		Searching, Intaking, Done
@@ -86,12 +85,12 @@ public class BallFollowDrive {
 	 * @return True if the process is considered done.
 	 */
 	public static boolean intake() {
-		targetPos.getPosFromLimelight();
+		Limelight.Target.trackTarget(TargetType.PowerCell);
 		double xTargetAngle = Limelight.getTX();
 
 		// System.out.println(xScreenPos);
 
-		boolean hasTarget = targetPos.isValid();
+		boolean hasTarget = Limelight.Target.isValid();
 		boolean isInCenter = Math.abs(xTargetAngle) < 16;
 
 		switch (intakeState) {
@@ -173,15 +172,15 @@ public class BallFollowDrive {
 	 * @return True if a target is being followed, false if no target is visible.
 	 */
 	public static boolean followTarget(double targetX, double targetY) {
-		if (!targetPos.isValid()) {
+		if (!Limelight.Target.isValid()) {
 			drivetrain.stop();
 			return false;
 		}
 		double xMotion = 0;
 		double yMotion = 0;
 
-		double xDelta = targetPos.getX() - targetX;
-		double yDelta = targetPos.getY() - targetY;
+		double xDelta = Limelight.Target.getX() - targetX;
+		double yDelta = Limelight.Target.getY() - targetY;
 
 		xMotion = -xPID.calculate(xDelta, 0);
 		yMotion = yPID.calculate(yDelta, 0);
@@ -205,8 +204,8 @@ public class BallFollowDrive {
 
 		final double DELTA_MULT = 0.5;
 
-		double xVel = xVelPID.calculate(targetPos.getXVel()) * -DELTA_MULT;
-		double yVel = yVelPID.calculate(targetPos.getYVel()) * -DELTA_MULT;
+		double xVel = xVelPID.calculate(Limelight.Target.getXVel()) * -DELTA_MULT;
+		double yVel = yVelPID.calculate(Limelight.Target.getYVel()) * -DELTA_MULT;
 
 		xVel = Math.pow(Math.abs(xVel), 2) * Math.signum(xVel);
 		yVel = Math.pow(Math.abs(yVel), 2) * Math.signum(yVel);

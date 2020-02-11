@@ -25,6 +25,11 @@ public class Limelight {
 	}
 
 	public static class Target {
+
+		public enum TargetType {
+			Undefined, PowerCell, UpperTarget
+		}
+
 		public static final double CAM_X_OFFSET = -3;
 
 		private static double x;
@@ -33,6 +38,8 @@ public class Limelight {
 		private static double xVel;
 		private static double yVel;
 		private static boolean valid;
+
+		private static TargetType trackedTargetType = TargetType.Undefined;
 
 		public static double getX() {
 			return x;
@@ -54,14 +61,49 @@ public class Limelight {
 			return valid;
 		}
 
-		public static void getPos(double camAngle, double verticalOffset) {
+		public static TargetType getTrackedTargetType() {
+			return trackedTargetType;
+		}
+
+		public static void reset() {
+			xVel = 0;
+			yVel = 0;
+			valid = false;
+			trackedTargetType = TargetType.Undefined;
+		}
+
+		public static boolean trackTarget(TargetType targetType) {
+			if (trackedTargetType != targetType) {
+				reset();
+				trackedTargetType = targetType;
+
+				// TODO: Manually set the pipeline too?
+			}
+
+			// TODO: set camAngle based on the actual camera angle (using the servo/encoder)
+
+			switch (targetType) {
+			case Undefined:
+				break;
+			case PowerCell:
+				getPos(-30, -33);
+				break;
+			case UpperTarget:
+				getPos(0, 60); // TODO: Verify and set actual values
+				break;
+			}
+			return isValid();
+		}
+
+		private static void getPos(double camAngle, double verticalOffset) {
 			double yAngle = 90 + camAngle + Limelight.getTY();
 
 			// The target is invalid if it is:
 			// Not visible,
 			// Above the horizon when verticalOffset is < 0, or
 			// below the horizon when verticalOffset it > 0
-			if (!Limelight.isTargetValid() || (verticalOffset < 0 && yAngle > 89.99) || (verticalOffset > 0 && yAngle < 89.99)) {
+			if (!Limelight.isTargetValid() || (verticalOffset < 0 && yAngle > 89.99)
+					|| (verticalOffset > 0 && yAngle < 89.99)) {
 				xVel = 0;
 				yVel = 0;
 				valid = false;
