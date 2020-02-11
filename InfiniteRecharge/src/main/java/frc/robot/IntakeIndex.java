@@ -34,6 +34,8 @@ public class IntakeIndex {
 
     public IntakeIndex() {
         timer = new Timer();
+        
+
         intakeChooser = new SendableChooser<Integer>();
         intakeChooser.addDefault("Automatic", 1);
         intakeChooser.addObject("Manual", 0);
