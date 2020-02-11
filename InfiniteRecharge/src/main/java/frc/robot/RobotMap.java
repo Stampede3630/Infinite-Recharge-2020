@@ -82,7 +82,7 @@ public class RobotMap {
         public static final int TARGET_LINEUP = 4;
     }
 
-    public static class BALL_FOLLOW {
+    public static class BallFollowMap {
 
         public static final int FLICKER_PROTECTION = 4;
         public static final double FAST_SEARCH = 0.9;

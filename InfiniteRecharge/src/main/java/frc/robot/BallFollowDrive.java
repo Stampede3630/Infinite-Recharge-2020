@@ -122,10 +122,10 @@ public class BallFollowDrive {
 					lastYAngle = Limelight.getTY();
 					break;
 				} else {
-					drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BALL_FOLLOW.SLOW_SEARCH, false); // TODO Verify rotation speed
+					drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.SLOW_SEARCH, false); // TODO Verify rotation speed
 				}
 			} else {
-				drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BALL_FOLLOW.FAST_SEARCH, false); // TODO Verify rotation speed
+				drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.FAST_SEARCH, false); // TODO Verify rotation speed
 			}
 			break;
 		case Intaking:
@@ -134,7 +134,7 @@ public class BallFollowDrive {
 				// stop();
 				followTarget(0, 0);
 			} else {
-				if (lastAngleInvalidTicks < RobotMap.BALL_FOLLOW.FLICKER_PROTECTION) // The ball was last seen in the lower quarter of the screen
+				if (lastAngleInvalidTicks < RobotMap.BallFollowMap.FLICKER_PROTECTION) // The ball was last seen in the lower quarter of the screen
 				{
 					intakeState = IntakeState.Done;
 				} else {
@@ -199,8 +199,8 @@ public class BallFollowDrive {
 			yMotion *= Math.sqrt((DIST_THRESHOLD - dist) / DIST_THRESHOLD);
 		}
 
-		xMotion *= -RobotMap.BALL_FOLLOW.FOLLOW_SPEED_MULTIPLIER;
-		yMotion *= -RobotMap.BALL_FOLLOW.FOLLOW_SPEED_MULTIPLIER;
+		xMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
+		yMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 
 		final double DELTA_MULT = 0.5;
 
