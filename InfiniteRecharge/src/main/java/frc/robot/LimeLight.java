@@ -24,6 +24,63 @@ public class Limelight {
 		Current, ForceOff, ForceBlink, ForceOn,
 	}
 
+	public static class Target {
+		public static final double CAM_X_OFFSET = -3;
+
+		private static double x;
+		private static double y;
+
+		private static double xVel;
+		private static double yVel;
+		private static boolean valid;
+
+		public static double getX() {
+			return x;
+		}
+
+		public static double getY() {
+			return y;
+		}
+
+		public static double getXVel() {
+			return xVel;
+		}
+
+		public static double getYVel() {
+			return yVel;
+		}
+
+		public static boolean isValid() {
+			return valid;
+		}
+
+		public static void getPos(double camAngle, double verticalOffset) {
+			double yAngle = 90 + camAngle + Limelight.getTY();
+
+			// The target is invalid if it is:
+			// Not visible,
+			// Above the horizon when verticalOffset is < 0, or
+			// below the horizon when verticalOffset it > 0
+			if (!Limelight.isTargetValid() || (verticalOffset < 0 && yAngle > 89.99) || (verticalOffset > 0 && yAngle < 89.99)) {
+				xVel = 0;
+				yVel = 0;
+				valid = false;
+				return;
+			}
+			valid = true;
+
+			double newY = Math.tan(MathHelper.deg2Rad(yAngle)) * -verticalOffset;
+
+			double newX = Math.tan(MathHelper.deg2Rad(Limelight.getTX())) * y + CAM_X_OFFSET;
+
+			xVel = newX - x;
+			yVel = newY - y;
+
+			x = newX;
+			y = newY;
+		}
+	}
+
 	private static double getEntry(String entry) {
 		return table.getEntry(entry).getDouble(0);
 	}
