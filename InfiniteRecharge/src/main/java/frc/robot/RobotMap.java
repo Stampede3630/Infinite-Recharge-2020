@@ -24,114 +24,99 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class RobotMap {
 
-    // climbing stuff
-    public static CANSparkMax trolleySpark = new CANSparkMax(14, MotorType.kBrushless);
-    public static CANSparkMax elevatorSpark = new CANSparkMax(8, MotorType.kBrushless);
-    public static DigitalInput maxLimitSwitch = new DigitalInput(20);
-    public static DigitalInput minLimitSwitch = new DigitalInput(19);
+    public static class ClimbMap {
+        // Climbing stuff
+        public static final CANSparkMax TROLLEY_SPARK = new CANSparkMax(14, MotorType.kBrushless);
+        public static final CANSparkMax ELEVATOR_SPARK = new CANSparkMax(8, MotorType.kBrushless);
+        public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(20);
+        public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(19);
+    }
 
-    // shooter stuff
-    public static WPI_TalonFX leftShooterFalcon = new WPI_TalonFX(12);
-    public static WPI_TalonFX rightShooterFalcon = new WPI_TalonFX(13);
+    public static class ShooterMap {
+        // Shooter stuff
+        public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(12);
+        public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(13);
+    }
 
     /*
      * public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
      * public static DigitalInput elevatorMinExtension = new DigitalInput(19);
      */
 
-    public static XboxController controller = new XboxController(0);
 
-    public static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+    public static class SensorMap {
+        public static final AHRS GYRO = new AHRS(SPI.Port.kMXP);
+    }
 
-    // Swerve hardware
-    public static final WPI_TalonSRX DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(2);
-    public static final WPI_TalonFX DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
-    public static final AnalogInput DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-    public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.607 + Math.PI;
+    public static class DriveMap {
+        // Swerve hardware
+        public static final WPI_TalonSRX FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(2);
+        public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
+        public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
+        public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.607 + Math.PI;
 
-    public static final WPI_TalonSRX DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(6);
-    public static final WPI_TalonFX DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
-    public static final AnalogInput DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
-    public static final double BACK_LEFT_ANGLE_OFFSET = -0.339;
+        public static final WPI_TalonSRX BACK_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(6);
+        public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
+        public static final AnalogInput BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
+        public static final double BACK_LEFT_ANGLE_OFFSET = -0.339;
 
-    public static final WPI_TalonSRX DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(4);
-    public static final WPI_TalonFX DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
-    public static final AnalogInput DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-    public static final double BACK_RIGHT_ANGLE_OFFSET = -1.596 + Math.PI;
+        public static final WPI_TalonSRX BACK_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(4);
+        public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
+        public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
+        public static final double BACK_RIGHT_ANGLE_OFFSET = -1.596 + Math.PI;
 
-    public static final WPI_TalonSRX DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(8);
-    public static final WPI_TalonFX DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
-    public static final AnalogInput DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-    public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
+        public static final WPI_TalonSRX FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(8);
+        public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
+        public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
+        public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
+    }
 
-    // PID Constants/Contraints
-    public static final double kMaxSpeed = 4; // 3 meters per second
-    public static final double kMaxAngularSpeed = Math.PI;
+    public static class PIDConstraints {
+        // PID Constants/Contraints
+        public static final double MAX_SPEED = 4; // 3 meters per second
+        public static final double MAX_ANGULAR_SPEED = Math.PI;
+    }
 
-    public static final int PIPELINE_BALL_FOLLOW = 1;
-    public static final int PIPELINE_TARGET_LINEUP = 4;
+    public static class Pipelines {
+        public static final int BALL_FOLLOW = 1;
+        public static final int TARGET_LINEUP = 4;
+    }
 
-    public static final int BALL_FOLLOW_FLICKER_PROTECTION = 4;
-    public static final double BALL_FOLLOW_FAST_SEARCH = 0.9;
-    public static final double BALL_FOLLOW_SLOW_SEARCH = 0.6;
-    public static final double BALL_FOLLOW_FOLLOW_SPEED_MULTIPLIER = 0.7;
+    public static class BALL_FOLLOW {
+
+        public static final int FLICKER_PROTECTION = 4;
+        public static final double FAST_SEARCH = 0.9;
+        public static final double SLOW_SEARCH = 0.6;
+        public static final double FOLLOW_SPEED_MULTIPLIER = 0.7;
+    }
+    
+    public static final XboxController CONTROLLER = new XboxController(0);
 
     static {
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setInverted(false);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
 
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 
-        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
-        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
 
-        DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-        DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
 
-        DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1); // setting to integrated sensor
-        DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
-        DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
-        DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1); // setting to integrated sensor
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
 
     }
-    /*
-     * private static RobotMap thisInstance;
-     * 
-     * 
-     * private RobotMap() { DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-     * DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setInverted(false);
-     * DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
-     * DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
-     * 
-     * DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-     * DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-     * DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-     * DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-     * 
-     * DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR.setInverted(true);
-     * DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
-     * DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
-     * DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
-     * 
-     * DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-     * DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-     * DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-     * DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
-     * 
-     * }
-     * 
-     * public static RobotMap getInstance() { if (thisInstance == null) {
-     * thisInstance = new RobotMap();
-     * 
-     * } return thisInstance; }
-     */
 }

@@ -22,9 +22,9 @@ public class Shooter {
 
     public Shooter() {
         rotpm = 4000;// 3800
-        leftShooterFalcon = RobotMap.leftShooterFalcon; // GOOD + is right
-        rightShooterFalcon = RobotMap.rightShooterFalcon;
-        rightShooterFalcon.set(ControlMode.Follower, RobotMap.leftShooterFalcon.getDeviceID());
+        leftShooterFalcon = RobotMap.ShooterMap.LEFT_SHOOTER_FALCON; // GOOD + is right
+        rightShooterFalcon = RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON;
+        rightShooterFalcon.set(ControlMode.Follower, RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
         rightShooterFalcon.setInverted(InvertType.OpposeMaster);
         controller = new XboxController(0);
         belt = new WPI_TalonSRX(11);
@@ -85,7 +85,7 @@ public class Shooter {
         leftShooterFalcon.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
         leftShooterFalcon.config_kD(kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), kTimeoutMs);
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kLeft) > .6) {
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // belt.set(-.6);

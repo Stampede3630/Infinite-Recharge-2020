@@ -107,7 +107,7 @@ public class IntakeIndex {
     }
 
     public void manualControl() {
-        if (RobotMap.controller.getAButton()) {
+        if (RobotMap.CONTROLLER.getAButton()) {
             intakeWheels.set(.75);
             pinwheel.set(-.4);
         } else {
@@ -115,9 +115,9 @@ public class IntakeIndex {
             pinwheel.set(0);
         }
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kRight) > 0.5) {
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.5) {
             belt.set(-.7);
-        } else if (RobotMap.controller.getBumper(Hand.kRight)) {
+        } else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
             belt.set(0.7);
         } else {
             belt.set(0);
@@ -152,8 +152,8 @@ public class IntakeIndex {
             armsSolenoid.set(DoubleSolenoid.Value.kReverse);
         }
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
-                && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
+                && RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
             belt.set(beltForwardTwo);
             System.out.println("shooter up to speed");
@@ -206,8 +206,8 @@ public class IntakeIndex {
             armsSolenoid.set(DoubleSolenoid.Value.kReverse);
         }
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
-                && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
+                && RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
             belt.set(beltForwardTwo);
             System.out.println("shooter up to speed");
@@ -262,7 +262,7 @@ public class IntakeIndex {
     }
 
     public void ToggleSolenoids() {
-        if (RobotMap.controller.getXButtonPressed()) {
+        if (RobotMap.CONTROLLER.getXButtonPressed()) {
 
             if (newMattyState == false) {
                 armsSolenoid.set(DoubleSolenoid.Value.kForward);

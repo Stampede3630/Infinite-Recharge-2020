@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 public class BallFollowDrive {
 
 	private static ProfiledPIDController turnPID = new ProfiledPIDController(0.03, 0, 0,
-			new TrapezoidProfile.Constraints(RobotMap.kMaxAngularSpeed, Math.PI * 6)); // TODO?
+			new TrapezoidProfile.Constraints(RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
 	private static PIDController xPID = new PIDController(0.03, 0, 0);
 	private static PIDController yPID = new PIDController(0.03, 0, 0);
 	private static PIDController xVelPID = new PIDController(0.03, 0, 0);
@@ -48,7 +48,7 @@ public class BallFollowDrive {
 	 */
 	public static void initLimelight() {
 		Limelight.enableVisionProcessing();
-		Limelight.setPipeline(RobotMap.PIPELINE_BALL_FOLLOW);
+		Limelight.setPipeline(RobotMap.Pipelines.BALL_FOLLOW);
 	}
 
 	/**
@@ -123,10 +123,10 @@ public class BallFollowDrive {
 					lastYAngle = Limelight.getTY();
 					break;
 				} else {
-					drivetrain.drive(0, 0, RobotMap.kMaxAngularSpeed * RobotMap.BALL_FOLLOW_SLOW_SEARCH, false); // TODO Verify rotation speed
+					drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BALL_FOLLOW.SLOW_SEARCH, false); // TODO Verify rotation speed
 				}
 			} else {
-				drivetrain.drive(0, 0, RobotMap.kMaxAngularSpeed * RobotMap.BALL_FOLLOW_FAST_SEARCH, false); // TODO Verify rotation speed
+				drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BALL_FOLLOW.FAST_SEARCH, false); // TODO Verify rotation speed
 			}
 			break;
 		case Intaking:
@@ -135,7 +135,7 @@ public class BallFollowDrive {
 				// stop();
 				followTarget(0, 0);
 			} else {
-				if (lastAngleInvalidTicks < RobotMap.BALL_FOLLOW_FLICKER_PROTECTION) // The ball was last seen in the lower quarter of the screen
+				if (lastAngleInvalidTicks < RobotMap.BALL_FOLLOW.FLICKER_PROTECTION) // The ball was last seen in the lower quarter of the screen
 				{
 					intakeState = IntakeState.Done;
 				} else {
@@ -200,8 +200,8 @@ public class BallFollowDrive {
 			yMotion *= Math.sqrt((DIST_THRESHOLD - dist) / DIST_THRESHOLD);
 		}
 
-		xMotion *= -RobotMap.BALL_FOLLOW_FOLLOW_SPEED_MULTIPLIER;
-		yMotion *= -RobotMap.BALL_FOLLOW_FOLLOW_SPEED_MULTIPLIER;
+		xMotion *= -RobotMap.BALL_FOLLOW.FOLLOW_SPEED_MULTIPLIER;
+		yMotion *= -RobotMap.BALL_FOLLOW.FOLLOW_SPEED_MULTIPLIER;
 
 		final double DELTA_MULT = 0.5;
 
@@ -225,9 +225,9 @@ public class BallFollowDrive {
 		// MathHelper.remap(yMotion, -1, 1, -Robot.kMaxSpeed, Robot.kMaxSpeed) / 4,
 		// MathHelper.remap(angleVel, -1, 1, -Robot.kMaxAngularSpeed,
 		// Robot.kMaxAngularSpeed) / 2, false);
-		drivetrain.drive(MathHelper.clampUnit(yMotion) * RobotMap.kMaxSpeed / 2,
-				MathHelper.clampUnit(xMotion) * RobotMap.kMaxSpeed / 2,
-				MathHelper.clampUnit(angleVel) * RobotMap.kMaxAngularSpeed, false);
+		drivetrain.drive(MathHelper.clampUnit(yMotion) * RobotMap.PIDConstraints.MAX_SPEED / 2,
+				MathHelper.clampUnit(xMotion) * RobotMap.PIDConstraints.MAX_SPEED / 2,
+				MathHelper.clampUnit(angleVel) * RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, false);
 
 		SmartDashboard.putNumber("X Delta", xDelta); // TODO Move into its own SmartDashboard method
 		SmartDashboard.putNumber("Y Delta", yDelta);

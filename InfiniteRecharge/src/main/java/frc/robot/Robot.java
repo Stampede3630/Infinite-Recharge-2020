@@ -45,8 +45,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Current trolleySpark", RobotMap.trolleySpark.getOutputCurrent());
-    SmartDashboard.putNumber("Current Elevator", RobotMap.elevatorSpark.getOutputCurrent());
+    SmartDashboard.putNumber("Current trolleySpark", RobotMap.ClimbMap.TROLLEY_SPARK.getOutputCurrent());
+    SmartDashboard.putNumber("Current Elevator", RobotMap.ClimbMap.ELEVATOR_SPARK.getOutputCurrent());
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
@@ -84,12 +84,12 @@ public class Robot extends TimedRobot {
 
     // Button A on the XBOX makes the robot start searching again (if it marked
     // intake as done)
-    if (RobotMap.controller.getAButton()) {
+    if (RobotMap.CONTROLLER.getAButton()) {
       BallFollowDrive.resetIntakeState();
     }
 
     // Intake code runs only while the right bumber is held (otherwise it stops)
-    if (RobotMap.controller.getBumper(Hand.kRight)) {
+    if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
       BallFollowDrive.intake();
     } else {
       BallFollowDrive.stop();

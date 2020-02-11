@@ -30,18 +30,18 @@ public class Drivetrain {
   private final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
-  public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR,
-      RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER,
-      RobotMap.FRONT_LEFT_ANGLE_OFFSET, m_gyro);
-  public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR,
-      RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER,
-      RobotMap.FRONT_RIGHT_ANGLE_OFFSET, m_gyro);
-  private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR,
-      RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER,
-      RobotMap.BACK_LEFT_ANGLE_OFFSET, m_gyro);
-  private final SwerveModule m_backRight = new SwerveModule(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR,
-      RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER,
-      RobotMap.BACK_RIGHT_ANGLE_OFFSET, m_gyro);
+  public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
+      RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
+      RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET, m_gyro);
+  public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
+      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
+      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET, m_gyro);
+  private final SwerveModule m_backLeft = new SwerveModule(RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
+      RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
+      RobotMap.DriveMap.BACK_LEFT_ANGLE_OFFSET, m_gyro);
+  private final SwerveModule m_backRight = new SwerveModule(RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR,
+      RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
+      RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET, m_gyro);
 
   public static final double kMaxSpeed = 4; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
@@ -96,7 +96,7 @@ public class Drivetrain {
      * violently when you have ultrawide robots 0 1 Ybl 1 0 Xbr 0 1 YBr
      */
 
-    SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.kMaxSpeed);
+    SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.PIDConstraints.MAX_SPEED);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -104,7 +104,7 @@ public class Drivetrain {
   }
 
   public void setModuleStates(SwerveModuleState[] swerveModuleStates) {
-    SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.kMaxSpeed);
+    SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.PIDConstraints.MAX_SPEED);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -168,7 +168,7 @@ public class Drivetrain {
 
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    var xSpeed = RobotMap.controller.getY(Hand.kLeft) * kMaxSpeed;
+    var xSpeed = RobotMap.CONTROLLER.getY(Hand.kLeft) * kMaxSpeed;
     if (Math.abs(xSpeed) < (0.2 * kMaxSpeed)) {
       xSpeed = 0;
     }
@@ -176,7 +176,7 @@ public class Drivetrain {
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    var ySpeed = RobotMap.controller.getX(Hand.kLeft) * kMaxSpeed;
+    var ySpeed = RobotMap.CONTROLLER.getX(Hand.kLeft) * kMaxSpeed;
     if (Math.abs(ySpeed) < (0.2 * kMaxSpeed)) {
       ySpeed = 0;
     }
@@ -184,7 +184,7 @@ public class Drivetrain {
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    var rot = RobotMap.controller.getX(Hand.kRight) * kMaxAngularSpeed;
+    var rot = RobotMap.CONTROLLER.getX(Hand.kRight) * kMaxAngularSpeed;
     if (Math.abs(rot) < (0.2 * kMaxAngularSpeed)) {
       rot = 0;
     }
