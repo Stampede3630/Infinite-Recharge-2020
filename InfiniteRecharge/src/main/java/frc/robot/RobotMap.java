@@ -27,7 +27,10 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
  */
 public class RobotMap {
 
-    public static class AutoConstants { // Is this being used?
+    /**
+     * TODO: What is this for?
+     */
+    public static class AutoConstants { // Is this even being used?
         public static final double MAX_SPEED_METERS_PER_SECOND = 3;
         public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
@@ -42,16 +45,20 @@ public class RobotMap {
                 MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
     }
 
-    public static class ClimbMap {
-        // Climbing stuff
+    /**
+     * Constants for the Climber class
+     */
+    public static class ClimberMap {
         public static final CANSparkMax TROLLEY_SPARK = new CANSparkMax(14, MotorType.kBrushless);
         public static final CANSparkMax ELEVATOR_SPARK = new CANSparkMax(8, MotorType.kBrushless);
         public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(20);
         public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(19);
     }
 
-    public static class TargetTrackingPIDMap {
-        // PIDs used by target tracking classes
+    /**
+     * PIDs used by target tracking classes
+     */
+    public static class TrackingPIDMap {
         public static final ProfiledPIDController TURN = new ProfiledPIDController(0.03, 0, 0,
                 new TrapezoidProfile.Constraints(RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
         public static final PIDController X = new PIDController(0.03, 0, 0);
@@ -60,23 +67,25 @@ public class RobotMap {
         public static final PIDController Y_VEL = new PIDController(0.03, 0, 0);
     }
 
+    /**
+     * Constants used by the Shooter class
+     */
     public static class ShooterMap {
-        // Shooter stuff
         public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(12);
         public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(13);
     }
 
-    /*
-     * public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
-     * public static DigitalInput elevatorMinExtension = new DigitalInput(19);
+    /**
+     * Constants for sensors
      */
-
     public static class SensorMap {
         public static final AHRS GYRO = new AHRS(SPI.Port.kMXP);
     }
 
+    /**
+     * Constants used by Drivetrain (swerve chassis)
+     */
     public static class DriveMap {
-        // Swerve hardware
         public static final WPI_TalonSRX FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(2);
         public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
         public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
@@ -98,17 +107,26 @@ public class RobotMap {
         public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
     }
 
+    /**
+     * TODO: What is this for?
+     */
     public static class PIDConstraints {
         // PID Constants/Contraints
         public static final double MAX_SPEED = 4; // 3 meters per second
         public static final double MAX_ANGULAR_SPEED = Math.PI;
     }
 
+    /**
+     * Limelight pipeline constants
+     */
     public static class Pipelines {
         public static final int BALL_FOLLOW = 1;
         public static final int TARGET_LINEUP = 4;
     }
 
+    /**
+     * Constants used by BallFollowDrive
+     */
     public static class BallFollowMap {
 
         public static final int FLICKER_PROTECTION = 4;
@@ -119,6 +137,9 @@ public class RobotMap {
         public static final double VELOCITY_MODIFIER_MULT = 0.5;
     }
 
+    /**
+     * Constants used by TargetAlignDrive
+     */
     public static class TargetAlignMap
     {
         public static final double ANGLE_THRESHOLD = 1;

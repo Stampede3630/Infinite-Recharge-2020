@@ -177,8 +177,8 @@ public class BallFollowDrive {
 		double xDelta = Limelight.Target.getX() - targetX;
 		double yDelta = Limelight.Target.getY() - targetY;
 
-		xMotion = -RobotMap.TargetTrackingPIDMap.X.calculate(xDelta, 0);
-		yMotion = RobotMap.TargetTrackingPIDMap.Y.calculate(yDelta, 0);
+		xMotion = -RobotMap.TrackingPIDMap.X.calculate(xDelta, 0);
+		yMotion = RobotMap.TrackingPIDMap.Y.calculate(yDelta, 0);
 
 		// final double POWER = 1;
 		//
@@ -197,8 +197,8 @@ public class BallFollowDrive {
 		xMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 		yMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 
-		double xVel = RobotMap.TargetTrackingPIDMap.X_VEL.calculate(Limelight.Target.getXVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
-		double yVel = RobotMap.TargetTrackingPIDMap.Y_VEL.calculate(Limelight.Target.getYVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
+		double xVel = RobotMap.TrackingPIDMap.X_VEL.calculate(Limelight.Target.getXVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
+		double yVel = RobotMap.TrackingPIDMap.Y_VEL.calculate(Limelight.Target.getYVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
 
 		xVel = Math.pow(Math.abs(xVel), 2) * Math.signum(xVel);
 		yVel = Math.pow(Math.abs(yVel), 2) * Math.signum(yVel);
@@ -211,7 +211,7 @@ public class BallFollowDrive {
 		double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180; // TODO Incorporate turnToAngle stuff and all
 																		// that
 		// System.out.println(angleDelta);
-		double angleVel = RobotMap.TargetTrackingPIDMap.TURN.calculate(angleDelta, 0);
+		double angleVel = RobotMap.TrackingPIDMap.TURN.calculate(angleDelta, 0);
 
 		// Drivetrain.drive(-MathHelper.remap(xMotion, -1, 1, -Robot.kMaxSpeed,
 		// Robot.kMaxSpeed) / 4,

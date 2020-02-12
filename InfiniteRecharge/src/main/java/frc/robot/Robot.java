@@ -42,8 +42,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Current trolleySpark", RobotMap.ClimbMap.TROLLEY_SPARK.getOutputCurrent());
-    SmartDashboard.putNumber("Current Elevator", RobotMap.ClimbMap.ELEVATOR_SPARK.getOutputCurrent());
+    SmartDashboard.putNumber("Current trolleySpark", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
+    SmartDashboard.putNumber("Current Elevator", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();

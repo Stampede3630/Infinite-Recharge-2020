@@ -29,35 +29,35 @@ public class Climber {
             strafeRight();
         }
         else {
-            RobotMap.ClimbMap.ELEVATOR_SPARK.set(0);
-            RobotMap.ClimbMap.TROLLEY_SPARK.set(0);
+            RobotMap.ClimberMap.ELEVATOR_SPARK.set(0);
+            RobotMap.ClimberMap.TROLLEY_SPARK.set(0);
         }
     }
 
     public void extend() {
-        if (RobotMap.ClimbMap.MAX_LIMIT_SWITCH.get() == false) {
-          RobotMap.ClimbMap.ELEVATOR_SPARK.set(elevatorSpeed); 
+        if (RobotMap.ClimberMap.MAX_LIMIT_SWITCH.get() == false) {
+          RobotMap.ClimberMap.ELEVATOR_SPARK.set(elevatorSpeed); 
         }
         else{
-            RobotMap.ClimbMap.ELEVATOR_SPARK.set((0));     
+            RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
            }
     }
 
     public void retract() {
-        if (RobotMap.ClimbMap.MIN_LIMIT_SWITCH.get() == false) {
-         RobotMap.ClimbMap.ELEVATOR_SPARK.set((-elevatorSpeed)); 
+        if (RobotMap.ClimberMap.MIN_LIMIT_SWITCH.get() == false) {
+         RobotMap.ClimberMap.ELEVATOR_SPARK.set((-elevatorSpeed)); 
         }
         else{
-         RobotMap.ClimbMap.ELEVATOR_SPARK.set((0));     
+         RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
         }
 
     }
 
     public void strafeLeft() {
-        RobotMap.ClimbMap.TROLLEY_SPARK.set(-(strafeSpeed));
+        RobotMap.ClimberMap.TROLLEY_SPARK.set(-(strafeSpeed));
     }
 
     public void strafeRight() {
-       RobotMap.ClimbMap.TROLLEY_SPARK.set(strafeSpeed);
+       RobotMap.ClimberMap.TROLLEY_SPARK.set(strafeSpeed);
     }
 }
