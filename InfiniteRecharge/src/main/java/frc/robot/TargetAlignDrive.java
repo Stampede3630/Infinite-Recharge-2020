@@ -7,12 +7,45 @@
 
 package frc.robot;
 
+import frc.robot.Limelight.Target.TargetType;
+
 /**
  * Add your docs here.
  */
 public class TargetAlignDrive {
 
 	public static void stop() {
-		//Drivetrain.stop(); TODO stop being lazy
+		Drivetrain.stop();
+	}
+
+	public static boolean drive()
+	{
+		Limelight.Target.trackTarget(TargetType.UpperTarget);
+
+		if (Limelight.Target.isValid())
+		{
+			return align();
+		}
+		else
+		{
+			searchTarget();
+			return false;
+		}
+	}
+
+	private static boolean align()
+	{
+		if (!Limelight.Target.isValid()) return false; // Failsafe
+
+		double angleVel = RobotMap.TargetTrackingPIDMap.TURN.calculate(Limelight.Target.getAngle(), 0);
+
+		Drivetrain.drive(0, 0, angleVel, false); // TODO: Clamp the angle velocity?
+
+		return Limelight.Target.getAngle() < RobotMap.TargetAlignMap.ANGLE_THRESHOLD;
+	}
+
+	private static void searchTarget()
+	{
+
 	}
 }
