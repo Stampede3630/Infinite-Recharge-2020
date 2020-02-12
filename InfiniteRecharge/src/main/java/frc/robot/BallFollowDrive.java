@@ -18,12 +18,7 @@ import frc.robot.Limelight.Target.TargetType;
  */
 public class BallFollowDrive {
 
-	private static ProfiledPIDController turnPID = new ProfiledPIDController(0.03, 0, 0,
-			new TrapezoidProfile.Constraints(RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
-	private static PIDController xPID = new PIDController(0.03, 0, 0);
-	private static PIDController yPID = new PIDController(0.03, 0, 0);
-	private static PIDController xVelPID = new PIDController(0.03, 0, 0);
-	private static PIDController yVelPID = new PIDController(0.03, 0, 0);
+	
 
 	private enum IntakeState {
 		Searching, Intaking, Done
@@ -34,11 +29,6 @@ public class BallFollowDrive {
 	private static double lastYAngle;
 
 	private static int lastAngleInvalidTicks;
-
-	private static Drivetrain drivetrain;
-	static {
-		drivetrain = Drivetrain.getInstance();
-	}
 
 	/**
 	 * Initializes the LimeLight pipeline to {@value RobotMap#PIPELINE_BALL_FOLLOW}
@@ -83,7 +73,7 @@ public class BallFollowDrive {
 	 * 
 	 * @return True if the process is considered done.
 	 */
-	public static boolean intake() {
+	public static boolean drive() {
 		Limelight.Target.trackTarget(TargetType.PowerCell);
 		double xTargetAngle = Limelight.getTX();
 
@@ -121,14 +111,14 @@ public class BallFollowDrive {
 					lastYAngle = Limelight.getTY();
 					break;
 				} else {
-					drivetrain.drive(0, 0,
+					Drivetrain.drive(0, 0,
 							RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.SLOW_SEARCH, false); // TODO
 																													// Verify
 																													// rotation
 																													// speed
 				}
 			} else {
-				drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.FAST_SEARCH,
+				Drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.FAST_SEARCH,
 						false); // TODO Verify rotation speed
 			}
 			break;
@@ -160,7 +150,7 @@ public class BallFollowDrive {
 	 * Stops the robot. Currently only a shortcut for {@link Drivetrain#stop()}.
 	 */
 	public static void stop() {
-		drivetrain.stop();
+		Drivetrain.stop();
 	}
 
 	/**
@@ -176,9 +166,9 @@ public class BallFollowDrive {
 	 * @param targetY Target Y position (positive away from the robot).
 	 * @return True if a target is being followed, false if no target is visible.
 	 */
-	public static boolean followTarget(double targetX, double targetY) {
+	private static boolean followTarget(double targetX, double targetY) {
 		if (!Limelight.Target.isValid()) {
-			drivetrain.stop();
+			Drivetrain.stop();
 			return false;
 		}
 		double xMotion = 0;
@@ -187,8 +177,8 @@ public class BallFollowDrive {
 		double xDelta = Limelight.Target.getX() - targetX;
 		double yDelta = Limelight.Target.getY() - targetY;
 
-		xMotion = -xPID.calculate(xDelta, 0);
-		yMotion = yPID.calculate(yDelta, 0);
+		xMotion = -RobotMap.TargetTrackingPIDMap.X.calculate(xDelta, 0);
+		yMotion = RobotMap.TargetTrackingPIDMap.Y.calculate(yDelta, 0);
 
 		// final double POWER = 1;
 		//
@@ -207,8 +197,8 @@ public class BallFollowDrive {
 		xMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 		yMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 
-		double xVel = xVelPID.calculate(Limelight.Target.getXVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
-		double yVel = yVelPID.calculate(Limelight.Target.getYVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
+		double xVel = RobotMap.TargetTrackingPIDMap.X_VEL.calculate(Limelight.Target.getXVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
+		double yVel = RobotMap.TargetTrackingPIDMap.Y_VEL.calculate(Limelight.Target.getYVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
 
 		xVel = Math.pow(Math.abs(xVel), 2) * Math.signum(xVel);
 		yVel = Math.pow(Math.abs(yVel), 2) * Math.signum(yVel);
@@ -221,14 +211,14 @@ public class BallFollowDrive {
 		double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180; // TODO Incorporate turnToAngle stuff and all
 																		// that
 		// System.out.println(angleDelta);
-		double angleVel = turnPID.calculate(angleDelta, 0);
+		double angleVel = RobotMap.TargetTrackingPIDMap.TURN.calculate(angleDelta, 0);
 
 		// Drivetrain.drive(-MathHelper.remap(xMotion, -1, 1, -Robot.kMaxSpeed,
 		// Robot.kMaxSpeed) / 4,
 		// MathHelper.remap(yMotion, -1, 1, -Robot.kMaxSpeed, Robot.kMaxSpeed) / 4,
 		// MathHelper.remap(angleVel, -1, 1, -Robot.kMaxAngularSpeed,
 		// Robot.kMaxAngularSpeed) / 2, false);
-		drivetrain.drive(MathHelper.clampUnit(yMotion) * RobotMap.PIDConstraints.MAX_SPEED / 2,
+		Drivetrain.drive(MathHelper.clampUnit(yMotion) * RobotMap.PIDConstraints.MAX_SPEED / 2,
 				MathHelper.clampUnit(xMotion) * RobotMap.PIDConstraints.MAX_SPEED / 2,
 				MathHelper.clampUnit(angleVel) * RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, false);
 

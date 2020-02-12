@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 
 /**
@@ -46,6 +48,16 @@ public class RobotMap {
         public static final CANSparkMax ELEVATOR_SPARK = new CANSparkMax(8, MotorType.kBrushless);
         public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(20);
         public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(19);
+    }
+
+    public static class TargetTrackingPIDMap {
+        // PIDs used by target tracking classes
+        public static final ProfiledPIDController TURN = new ProfiledPIDController(0.03, 0, 0,
+                new TrapezoidProfile.Constraints(RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
+        public static final PIDController X = new PIDController(0.03, 0, 0);
+        public static final PIDController Y = new PIDController(0.03, 0, 0);
+        public static final PIDController X_VEL = new PIDController(0.03, 0, 0);
+        public static final PIDController Y_VEL = new PIDController(0.03, 0, 0);
     }
 
     public static class ShooterMap {
@@ -105,6 +117,11 @@ public class RobotMap {
         public static final double FOLLOW_SPEED_MULTIPLIER = 0.7;
 
         public static final double VELOCITY_MODIFIER_MULT = 0.5;
+    }
+
+    public static class TargetAlignMap
+    {
+        public static final double ANGLE_THRESHOLD = 1;
     }
 
     public static final XboxController CONTROLLER = new XboxController(0);

@@ -39,14 +39,14 @@ public class TrajectoryFollowing {
 		config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
 		RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 						// Add kinematics to ensure max speed is actually obeyed
-						.setKinematics(Drivetrain.getInstance().m_kinematics);
+						.setKinematics(Drivetrain.m_kinematics);
 		trajectory = traj;
-		m_kinematics = Drivetrain.getInstance().m_kinematics;
+		m_kinematics = Drivetrain.m_kinematics;
 		m_xController = xController;
 		m_yController = yController;
 		m_thetaController = thetaController;
 		m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
-		m_odometry = Drivetrain.getInstance().m_odometry;
+		m_odometry = Drivetrain.m_odometry;
 
 		m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
 		m_timer.reset();
@@ -56,7 +56,7 @@ public class TrajectoryFollowing {
 
 	public void auto() {
 		updateAutoStates();
-		Drivetrain.getInstance().setModuleStates(m_outputModuleStates);
+		Drivetrain.setModuleStates(m_outputModuleStates);
 	}
 
 	@SuppressWarnings("LocalVariableName")

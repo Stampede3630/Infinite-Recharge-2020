@@ -37,26 +37,69 @@ public class Limelight {
 
 		private static double xVel;
 		private static double yVel;
+
+		private static double angle;
+
 		private static boolean valid;
 
 		private static TargetType trackedTargetType = TargetType.Undefined;
 
+		/**
+		 * Returns relative target X. If invalid, returns the last value.
+		 * @return Relative target X offset (positive to the right [VERIFY]).
+		 */
 		public static double getX() {
 			return x;
 		}
 
+		/**
+		 * Returns relative target Y. If invalid, returns the last value.
+		 * @return Relative target Y offset (positive away).
+		 */
 		public static double getY() {
 			return y;
 		}
 
+		/**
+		 * Returns relative target angle in degrees. If invalid, returns the last value.
+		 * @return Relative target angle in degrees (positive counterclockwise [VERIFY]).
+		 */
+		public static double getAngle() {
+			return angle;
+		}
+
+		/**
+		 * Returns relative target X velocity. If invalid, returns the last value.
+		 * <p>
+		 * Doesn't take the robot's velocity into account.
+		 * <p>
+		 * This value is 0 on the first frame a new object is tracked.
+		 * @return Relative target X velocity (positive to the right [VERIFY]).
+		 */
 		public static double getXVel() {
 			return xVel;
 		}
 
+		/**
+		 * Returns relative target Y velocity. If invalid, returns the last value.
+		 * <p>
+		 * Doesn't take the robot's velocity into account.
+		 * <p>
+		 * This value is 0 on the first frame a new object is tracked.
+		 * @return Relative target Y velocity (positive to the right [VERIFY]).
+		 */
 		public static double getYVel() {
 			return yVel;
 		}
 
+		/**
+		 * Returns whether the target is valid.
+		 * <p>
+		 * The target has to be both visible and below/above the horizon appropriately (based on the input Camera Offset value).
+		 * <p>
+		 * Values are not updated while the target is invalid
+		 * @return True if the target is valid.
+		 */
 		public static boolean isValid() {
 			return valid;
 		}
@@ -66,8 +109,11 @@ public class Limelight {
 		}
 
 		public static void reset() {
+			x = 0;
+			y = 0;
 			xVel = 0;
 			yVel = 0;
+			angle = 0;
 			valid = false;
 			trackedTargetType = TargetType.Undefined;
 		}
@@ -104,22 +150,33 @@ public class Limelight {
 			// below the horizon when verticalOffset it > 0
 			if (!Limelight.isTargetValid() || (verticalOffset < 0 && yAngle > 89.99)
 					|| (verticalOffset > 0 && yAngle < 89.99)) {
-				xVel = 0;
-				yVel = 0;
 				valid = false;
 				return;
 			}
-			valid = true;
 
 			double newY = Math.tan(MathHelper.deg2Rad(yAngle)) * -verticalOffset;
 
 			double newX = Math.tan(MathHelper.deg2Rad(Limelight.getTX())) * y + CAM_X_OFFSET;
 
-			xVel = newX - x;
-			yVel = newY - y;
+
+			// Velocities get updated only if the target was previously valid
+			if (valid)
+			{
+				xVel = newX - x;
+				yVel = newY - y;
+			}
+			else
+			{
+				xVel = 0;
+				yVel = 0;
+			}
+
+			valid = true;
 
 			x = newX;
 			y = newY;
+
+			angle = Math.atan2(x, y) / Math.PI * 180;
 		}
 	}
 

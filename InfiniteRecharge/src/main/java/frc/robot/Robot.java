@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  private Drivetrain m_swerve;
   private Compressor comp = new Compressor(0);
   private Climber climber;
 
@@ -30,8 +29,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-
-    m_swerve = Drivetrain.getInstance();
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();
     climber = new Climber();
@@ -90,12 +87,12 @@ public class Robot extends TimedRobot {
 
     // Intake code runs only while the right bumber is held (otherwise it stops)
     if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
-      BallFollowDrive.intake();
+      BallFollowDrive.drive();
     } else {
       BallFollowDrive.stop();
     }
 
-    m_swerve.postToSmartDashboard();
+    Drivetrain.postToSmartDashboard();
   }
 
 }
