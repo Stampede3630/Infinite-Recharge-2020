@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -36,7 +37,7 @@ public class Drivetrain {
     public static final double kMaxSpeed = 4; // 3 meters per second
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
   
-    
+    PIDController turnToAngle;
   
     SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
@@ -195,4 +196,17 @@ public class Drivetrain {
         System.out.println(xSpeed + "," + ySpeed);
         drive(xSpeed, ySpeed, rot, fieldRelative);
       }
-  }
+
+      public void rotate() {
+        double kP = 0.1; 
+        double kI = 0;
+        double kD = 0;
+        double endrot = 90;
+        turnToAngle = new PIDController(kP, kI, kD);
+
+        double turnAngle = turnToAngle.calculate(endrot, m_gyro.getCompassHeading());
+        
+        drive(0, 0, turnAngle, false);
+      }
+    
+}
