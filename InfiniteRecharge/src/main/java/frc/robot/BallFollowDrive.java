@@ -36,7 +36,6 @@ public class BallFollowDrive {
 	private static int lastAngleInvalidTicks;
 
 	private static Drivetrain drivetrain;
-
 	static {
 		drivetrain = Drivetrain.getInstance();
 	}
@@ -122,10 +121,15 @@ public class BallFollowDrive {
 					lastYAngle = Limelight.getTY();
 					break;
 				} else {
-					drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.SLOW_SEARCH, false); // TODO Verify rotation speed
+					drivetrain.drive(0, 0,
+							RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.SLOW_SEARCH, false); // TODO
+																													// Verify
+																													// rotation
+																													// speed
 				}
 			} else {
-				drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.FAST_SEARCH, false); // TODO Verify rotation speed
+				drivetrain.drive(0, 0, RobotMap.PIDConstraints.MAX_ANGULAR_SPEED * RobotMap.BallFollowMap.FAST_SEARCH,
+						false); // TODO Verify rotation speed
 			}
 			break;
 		case Intaking:
@@ -134,7 +138,8 @@ public class BallFollowDrive {
 				// stop();
 				followTarget(0, 0);
 			} else {
-				if (lastAngleInvalidTicks < RobotMap.BallFollowMap.FLICKER_PROTECTION) // The ball was last seen in the lower quarter of the screen
+				if (lastAngleInvalidTicks < RobotMap.BallFollowMap.FLICKER_PROTECTION) // The ball was last seen in the
+																						// lower quarter of the screen
 				{
 					intakeState = IntakeState.Done;
 				} else {
@@ -202,10 +207,8 @@ public class BallFollowDrive {
 		xMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 		yMotion *= -RobotMap.BallFollowMap.FOLLOW_SPEED_MULTIPLIER;
 
-		final double DELTA_MULT = 0.5;
-
-		double xVel = xVelPID.calculate(Limelight.Target.getXVel()) * -DELTA_MULT;
-		double yVel = yVelPID.calculate(Limelight.Target.getYVel()) * -DELTA_MULT;
+		double xVel = xVelPID.calculate(Limelight.Target.getXVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
+		double yVel = yVelPID.calculate(Limelight.Target.getYVel()) * -RobotMap.BallFollowMap.VELOCITY_MODIFIER_MULT;
 
 		xVel = Math.pow(Math.abs(xVel), 2) * Math.signum(xVel);
 		yVel = Math.pow(Math.abs(yVel), 2) * Math.signum(yVel);
@@ -215,7 +218,8 @@ public class BallFollowDrive {
 
 		SmartDashboard.putNumber("dist", dist);
 
-		double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180; // TODO Incorporate turnToAngle stuff and all that
+		double angleDelta = Math.atan2(xDelta, yDelta) / Math.PI * 180; // TODO Incorporate turnToAngle stuff and all
+																		// that
 		// System.out.println(angleDelta);
 		double angleVel = turnPID.calculate(angleDelta, 0);
 

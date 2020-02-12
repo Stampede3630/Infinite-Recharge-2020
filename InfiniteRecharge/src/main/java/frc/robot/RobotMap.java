@@ -18,11 +18,27 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 
 /**
  * Add your docs here.
  */
 public class RobotMap {
+
+    public static class AutoConstants { // Is this being used?
+        public static final double MAX_SPEED_METERS_PER_SECOND = 3;
+        public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
+        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
+        public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
+
+        public static final double KPX_CONTROLLER = 1;
+        public static final double KPY_CONTROLLER = 1;
+        public static final double KP_THETA_CONTROLLER = 1;
+
+        // Constraint for the motion profilied robot angle controller
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+                MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+    }
 
     public static class ClimbMap {
         // Climbing stuff
@@ -42,7 +58,6 @@ public class RobotMap {
      * public static DigitalInput elevatorMaxExtension = new DigitalInput(20);
      * public static DigitalInput elevatorMinExtension = new DigitalInput(19);
      */
-
 
     public static class SensorMap {
         public static final AHRS GYRO = new AHRS(SPI.Port.kMXP);
@@ -88,8 +103,10 @@ public class RobotMap {
         public static final double FAST_SEARCH = 0.9;
         public static final double SLOW_SEARCH = 0.6;
         public static final double FOLLOW_SPEED_MULTIPLIER = 0.7;
+
+        public static final double VELOCITY_MODIFIER_MULT = 0.5;
     }
-    
+
     public static final XboxController CONTROLLER = new XboxController(0);
 
     static {

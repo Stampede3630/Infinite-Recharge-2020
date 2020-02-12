@@ -23,15 +23,15 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
  */
 public class TrajectoryContainer {
 	// private Robot robot;
-	private PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-	private PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-	private TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-			AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+	private PIDController xController = new PIDController(RobotMap.AutoConstants.KPX_CONTROLLER, 0, 0);
+	private PIDController yController = new PIDController(RobotMap.AutoConstants.KPY_CONTROLLER, 0, 0);
+	private TrajectoryConfig config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
+			RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 					// Add kinematics to ensure max speed is actually obeyed
 					.setKinematics(Drivetrain.getInstance().m_kinematics);
 
-	private ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
-			AutoConstants.kThetaControllerConstraints);
+	private ProfiledPIDController thetaController = new ProfiledPIDController(RobotMap.AutoConstants.KP_THETA_CONTROLLER, 0, 0,
+	RobotMap.AutoConstants.kThetaControllerConstraints);
 	private Trajectory traj = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)),
 			List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)), config);
 

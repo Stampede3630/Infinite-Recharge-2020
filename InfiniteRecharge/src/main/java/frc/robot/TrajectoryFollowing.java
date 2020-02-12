@@ -36,8 +36,8 @@ public class TrajectoryFollowing {
 
 	public TrajectoryFollowing(Trajectory traj, PIDController xController, PIDController yController,
 			ProfiledPIDController thetaController) {
-		config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-				AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+		config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
+		RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 						// Add kinematics to ensure max speed is actually obeyed
 						.setKinematics(Drivetrain.getInstance().m_kinematics);
 		trajectory = traj;
