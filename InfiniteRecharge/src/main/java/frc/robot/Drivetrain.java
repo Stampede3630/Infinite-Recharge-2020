@@ -78,8 +78,8 @@ public class Drivetrain {
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
     @SuppressWarnings("ParameterName")
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-      var swerveModuleStates = m_kinematics.toSwerveModuleStates(
+    public void drive(final double xSpeed, final double ySpeed, final double rot, final boolean fieldRelative) {
+      final var swerveModuleStates = m_kinematics.toSwerveModuleStates(
           fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
               xSpeed, ySpeed, rot, getAngle())
               : new ChassisSpeeds(xSpeed, ySpeed, rot)
@@ -103,7 +103,7 @@ public class Drivetrain {
      m_backRight.setDesiredState(swerveModuleStates[3]);
     }
     
-    public void setModuleStates(SwerveModuleState[] swerveModuleStates)
+    public void setModuleStates(final SwerveModuleState[] swerveModuleStates)
     {
       SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.kMaxSpeed);
      m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -164,7 +164,7 @@ public class Drivetrain {
       SmartDashboard.putNumber("meters dist Y", m_odometry.getPoseMeters().getTranslation().getY());
 
     }
-    public void driveWithJoystick(boolean fieldRelative) {
+    public void driveWithJoystick(final boolean fieldRelative) {
         
         // Get the x speed. We are inverting this because Xbox controllers return
         // negative values when we push forward.
@@ -198,13 +198,18 @@ public class Drivetrain {
       }
 
       public void rotate() {
-        double kP = 0.1; 
-        double kI = 0;
-        double kD = 0;
-        double endrot = 90;
-        turnToAngle = new PIDController(kP, kI, kD);
+        final double kP = 0.1; 
+        final double kI = 0;
+        final double kD = 0;
+        final double endrot = 90;
 
-        double turnAngle = turnToAngle.calculate(endrot, m_gyro.getCompassHeading());
+        
+        rotate() {
+          
+        turnToAngle = new PIDController(kP, kI, kD);
+        }
+
+        final double turnAngle = turnToAngle.calculate(endrot, m_gyro.getCompassHeading());
         
         drive(0, 0, turnAngle, false);
       }
