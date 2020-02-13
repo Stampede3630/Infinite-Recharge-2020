@@ -1,6 +1,9 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,8 +22,51 @@ public class Shooter {
 
     public Shooter() {
         rotpm = 4000;// 3800
-        leftShooterFalcon = RobotMap.leftShooterFalcon; // GOOD + is right
-        rightShooterFalcon = RobotMap.rightShooterFalcon;
+        leftShooterFalcon = RobotMap.ShooterMap.LEFT_SHOOTER_FALCON; // GOOD + is right
+        rightShooterFalcon = RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON;
+        rightShooterFalcon.set(ControlMode.Follower, RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
+        rightShooterFalcon.setInverted(InvertType.OpposeMaster);
+        controller = new XboxController(0);
+        belt = new WPI_TalonSRX(11);
+        belt.setNeutralMode(NeutralMode.Coast);
+
+        leftShooterFalcon.configFactoryDefault();
+        // rightShooterFalcon.configFactoryDefault();
+
+        leftShooterFalcon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx,
+                kTimeoutMs);
+        // rightShooterFalcon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        // kPIDLoopIdx,
+        // kTimeoutMs);
+
+        leftShooterFalcon.setSensorPhase(true);
+        // rightShooterFalcon.setSensorPhase(true);
+
+        leftShooterFalcon.setSelectedSensorPosition(1);
+
+        /* Config the peak and nominal outputs */
+        leftShooterFalcon.configNominalOutputForward(0, kTimeoutMs);
+        leftShooterFalcon.configNominalOutputReverse(0, kTimeoutMs);
+        leftShooterFalcon.configPeakOutputForward(1, kTimeoutMs);
+        leftShooterFalcon.configPeakOutputReverse(-1, kTimeoutMs);
+
+        /* Config the Velocity closed loop gains in slot0 */
+        leftShooterFalcon.config_kF(kPIDLoopIdx, 0.055, kTimeoutMs); // .45 *(1023.0/7200.0)
+        leftShooterFalcon.config_kP(kPIDLoopIdx, 0.4, kTimeoutMs);
+        leftShooterFalcon.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
+        leftShooterFalcon.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
+
+        /* Config the peak and nominal outputs */
+        // rightShooterFalcon.configNominalOutputForward(0, kTimeoutMs);
+        // rightShooterFalcon.configNominalOutputReverse(0, kTimeoutMs);
+        // rightShooterFalcon.configPeakOutputForward(1, kTimeoutMs);
+        // rightShooterFalcon.configPeakOutputReverse(-1, kTimeoutMs);
+
+        /* Config the Velocity closed loop gains in slot0 */
+        // rightShooterFalcon.config_kF(kPIDLoopIdx, kGains_Velocit.kF, kTimeoutMs);
+        // rightShooterFalcon.config_kP(kPIDLoopIdx, kGains_Velocit.kP, kTimeoutMs);
+        // rightShooterFalcon.config_kI(kPIDLoopIdx, kGains_Velocit.kI, kTimeoutMs);
+        // rightShooterFalcon.config_kD(kPIDLoopIdx, kGains_Velocit.kD, kTimeoutMs);
 
     }
 
@@ -39,7 +85,7 @@ public class Shooter {
         leftShooterFalcon.config_kI(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), RobotMap.kTimeoutMs);
         leftShooterFalcon.config_kD(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), RobotMap.kTimeoutMs);
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kLeft) > .6) {
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // belt.set(-.6);
