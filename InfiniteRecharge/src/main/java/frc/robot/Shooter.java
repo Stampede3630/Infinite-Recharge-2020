@@ -80,10 +80,10 @@ public class Shooter {
     public void control() {
         double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(rotpm) * kEncoderUnitsPerRev;
         /* 500 RPM in either direction */
-        leftShooterFalcon.config_kF(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kF", 0), RobotMap.kTimeoutMs); // .45 *(1023.0/7200.0)
-        leftShooterFalcon.config_kP(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), RobotMap.kTimeoutMs);
-        leftShooterFalcon.config_kI(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), RobotMap.kTimeoutMs);
-        leftShooterFalcon.config_kD(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), RobotMap.kTimeoutMs);
+        leftShooterFalcon.config_kF(kPIDLoopIdx, SmartDashboard.getNumber("kF", 0), kTimeoutMs); // .45 *(1023.0/7200.0)
+        leftShooterFalcon.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), kTimeoutMs);
+        leftShooterFalcon.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
+        leftShooterFalcon.config_kD(kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), kTimeoutMs);
 
         if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
@@ -100,6 +100,18 @@ public class Shooter {
      * or 3. Only the first two (0,1) are visible in web-based configuration.
      */
     public static final int kSlotIdx = 0;
+
+    /**
+     * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For now
+     * we just want the primary one.
+     */
+    public static final int kPIDLoopIdx = 0;
+
+    /**
+     * Set to zero to skip waiting for confirmation, set to nonzero to wait and
+     * report to DS if action fails.
+     */
+    public static final int kTimeoutMs = 30;
 
     public static final double kEncoderUnitsPerRev = 2048;// 4096;
 
