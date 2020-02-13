@@ -202,8 +202,11 @@ public class Drivetrain {
       }
 
       public void driveAtAngle (double endrot) {
-        double turnAngle = turnToAngle.calculate(endrot, m_gyro.getCompassHeading());
-        drive(0, 0, turnAngle, false);
+        double xSpeed = (RobotMap.controller.getX(Hand.kLeft) * kMaxSpeed);
+        double ySpeed = 0;
+
+        double turnAngle = turnToAngle.calculate(m_gyro.getAngle(), endrot);
+        drive(xSpeed, ySpeed, turnAngle, false);
       }
     
 }
