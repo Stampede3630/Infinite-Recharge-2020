@@ -26,10 +26,14 @@ public class Robot extends TimedRobot {
 
   private IntakeIndex ballProcessor;
   private Shooter shoot;
+  private BreakBeam breakBeam;
+
+  private boolean detectBallLow;
+  private boolean detectBallMid;
+  private boolean detectBallTop;
 
   @Override
   public void robotInit() {
-
     m_swerve = Drivetrain.getInstance();
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();

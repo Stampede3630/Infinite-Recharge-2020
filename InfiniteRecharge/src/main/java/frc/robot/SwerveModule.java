@@ -9,6 +9,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -27,7 +29,7 @@ public class SwerveModule {
   private static final double kModuleMaxAngularAcceleration = 6 * Math.PI; // radians per second squared //4
 
   public final WPI_TalonFX m_driveMotor;
-  private final WPI_TalonSRX m_turningMotor;
+  private final WPI_VictorSPX m_turningMotor;
   private double m_steeringAngle;
   private int m_driveScalar = 1;
   private final AnalogInput m_turningEncoder;
@@ -53,7 +55,7 @@ public class SwerveModule {
    * @param drivetrainFrontLeftAngleMotor ID for the turning motor.
    */
 
-  public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_TalonSRX drivetrainFrontLeftAngleMotor,
+  public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_VictorSPX drivetrainFrontLeftAngleMotor,
       AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
     if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
 

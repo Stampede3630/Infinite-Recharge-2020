@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -66,22 +68,22 @@ public class RobotMap {
 
 
     // Swerve hardware
-    public static final WPI_TalonSRX DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(2);
+    public static final WPI_VictorSPX DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
     public static final WPI_TalonFX DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
     public static final AnalogInput DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
     public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.607 + Math.PI;
 
-    public static final WPI_TalonSRX DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(6);
+    public static final WPI_VictorSPX DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
     public static final WPI_TalonFX DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
     public static final AnalogInput DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
     public static final double BACK_LEFT_ANGLE_OFFSET = -0.339;
 
-    public static final WPI_TalonSRX DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = new WPI_TalonSRX(4);
+    public static final WPI_VictorSPX DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
     public static final WPI_TalonFX DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
     public static final AnalogInput DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
     public static final double BACK_RIGHT_ANGLE_OFFSET = -1.596 + Math.PI;
 
-    public static final WPI_TalonSRX DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = new WPI_TalonSRX(8);
+    public static final WPI_VictorSPX DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
     public static final WPI_TalonFX DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
     public static final AnalogInput DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
     public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
@@ -95,7 +97,7 @@ public class RobotMap {
 
 
     //Intake stuff
-    public static WPI_TalonSRX intakeWheels;// first spin wheel
+    public static CANSparkMax intakeWheels;// first spin wheel
     public static WPI_TalonSRX pinwheel; // from box to belt
     public static DoubleSolenoid armsSolenoid; // lowers the arms
     public static Ultrasonic ultrasonic; // on the ground of the belt box
@@ -166,7 +168,7 @@ public class RobotMap {
 
         // Intake
 
-        intakeWheels = new WPI_TalonSRX(9);
+        intakeWheels = new CANSparkMax(9, MotorType.kBrushless);
         armsSolenoid = new DoubleSolenoid(2, 3); // 2 solenoid on r
         colorSensorHigh = new ColorSensorV3(I2C.Port.kMXP);
         pinwheel = new WPI_TalonSRX(10);

@@ -24,7 +24,10 @@ public class IntakeIndex {
     Shooter shoot;
     double threshold;
     double thresholdWeak;
-    boolean bottom, middle, top, none, middleWeak;
+    boolean bottom, middle, top, none;
+    boolean indexYes;
+
+    private BreakBeam breakBeam;
     private boolean newMattyState = false;
 
     private double beltForwardOne = -.32;
@@ -32,64 +35,54 @@ public class IntakeIndex {
     private double beltForwardTwo = -.5;
     private double beltBackwardsTwo = .5;
 
+
     public IntakeIndex() {
         timer = new Timer();
-        intakeChooser = new SendableChooser<Integer>();
-        intakeChooser.addDefault("Automatic", 1);
-        intakeChooser.addObject("Manual", 0);
-
+        breakBeam = BreakBeam.getInstance();
+        indexYes = true;
     }
 
     public void updateBooleans() {
-        threshold = 40000;
-        thresholdWeak = 15000;
-
         bottom = false;
-        middle = false;
-        top = false;
+        middle = breakBeam.detectBallMid();
+        top = breakBeam.detectBallHigh();
         none = false;
-        middleWeak = false;
 
         if (RobotMap.ultrasonic.getRangeInches() > 200 || RobotMap.ultrasonic.getRangeInches() < 6) {
             bottom = true;
         }
-
-        if (RobotMap.colorSensorHigh.getGreen() > threshold) {
-            top = true;
-        }
-
-        if (RobotMap.colorSensorMid.getGreen() > threshold) {
-            middle = true;
-        }
-
         if (RobotMap.ultrasonic.getRangeInches() < 200 && RobotMap.ultrasonic.getRangeInches() > 20) {
             none = true;
-        }
-
-        if (RobotMap.colorSensorMid.getGreen() > thresholdWeak) {
-            middleWeak = true;
-        }
+        }  
     }
 
-    public void intakeChooser(boolean choice) {
-        if (choice) {
+    public void intakeChooser(boolean indexYes) {
+        if (RobotMap.controller.getStartButtonPressed() && !indexYes) {
             index();
-        } else {
+            indexYes = true;
+        } 
+        if(RobotMap.controller.getStartButtonPressed() && indexYes){
             manualControl();
+            indexYes = false;
         }
     }
 
     public void manualControl() {
+        
+
         if (RobotMap.controller.getAButton()) {
             RobotMap.intakeWheels.set(.75);
             RobotMap.pinwheel.set(-.4);
+            //intakeChooser(false);
         } else {
             RobotMap.intakeWheels.set(0);
             RobotMap.pinwheel.set(0);
+            //intakeChooser(true);
         }
 
         if (RobotMap.controller.getTriggerAxis(Hand.kRight) > 0.5) {
             RobotMap.belt.set(-.7);
+            //intakeChooser(false);
         } else if (RobotMap.controller.getBumper(Hand.kRight)) {
             RobotMap.belt.set(0.7);
         } else {
@@ -131,28 +124,31 @@ public class IntakeIndex {
             RobotMap.belt.set(beltForwardTwo);
             System.out.println("shooter up to speed");
 
-        } else if (top && middle) {
+        } 
+        else if (top && middle) {
             RobotMap.belt.set(0);
             System.out.println("yes top, yes middle");
-        } else if (top && middleWeak) {
-            RobotMap.belt.set(0);
-            System.out.println("top, middle weak");
-        } else if (top && !middle) {
+        } 
+        else if (top && !middle) {
             RobotMap.belt.set(beltBackwardsOne);
             System.out.println("yes top, no middle");
 
-        } else if (!top && middle && bottom) {
+        } 
+        else if (!top && middle && bottom) {
             RobotMap.belt.set(beltForwardTwo);
             System.out.println("middle and bottom");
 
-        } else if (!top && !middle && bottom) {
+        } 
+        else if (!top && !middle && bottom) {
             RobotMap.belt.set(beltForwardOne);
             System.out.println("only bottom");
 
-        } else if (middle) {
+        } 
+        else if (middle) {
             RobotMap.belt.set(0);
             System.out.println("middle");
-        } else if (none) {
+        } 
+        else if (none) {
             System.out.println("none");
             RobotMap.belt.set(0);
         }
@@ -173,6 +169,8 @@ public class IntakeIndex {
      * add a timer so that the belt stops in case of errors? Maybe run for 1-2
      * seconds at most?
      */
+
+    /*
     public void tempBelt() {
         // BELT STUFF!!!!!!!!!!!!!!!!!
         if (RobotMap.controller.getBButton()) {
@@ -222,6 +220,7 @@ public class IntakeIndex {
             }
         }
     }
+    */
 
     public void toSmartDashboard() {
         SmartDashboard.putNumber("colorSensorHigh Green", RobotMap.colorSensorHigh.getGreen());
@@ -230,7 +229,6 @@ public class IntakeIndex {
         SmartDashboard.putBoolean("bottom", bottom);
         SmartDashboard.putBoolean("middle", middle);
         SmartDashboard.putBoolean("top", top);
-        SmartDashboard.putBoolean("middle weak", middleWeak);
         SmartDashboard.putBoolean("none", none);
     }
 
@@ -249,5 +247,6 @@ public class IntakeIndex {
         }
 
     }
+    
 
 }
