@@ -48,7 +48,11 @@ public class Drivetrain {
     static Drivetrain drivetrain;
 
     private Drivetrain() {
+      final double kP = 0.1; 
+      final double kI = 0;
+      final double kD = 0;
       m_gyro.reset();
+      turnToAngle = new PIDController(kP, kI, kD);
     }
 
     public static Drivetrain getInstance(){
@@ -197,20 +201,8 @@ public class Drivetrain {
         drive(xSpeed, ySpeed, rot, fieldRelative);
       }
 
-      public void rotate() {
-        final double kP = 0.1; 
-        final double kI = 0;
-        final double kD = 0;
-        final double endrot = 90;
-
-        
-        rotate() {
-          
-        turnToAngle = new PIDController(kP, kI, kD);
-        }
-
-        final double turnAngle = turnToAngle.calculate(endrot, m_gyro.getCompassHeading());
-        
+      public void driveAtAngle (double endrot) {
+        double turnAngle = turnToAngle.calculate(endrot, m_gyro.getCompassHeading());
         drive(0, 0, turnAngle, false);
       }
     
