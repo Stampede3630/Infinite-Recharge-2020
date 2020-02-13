@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Servo;
  * Add your docs here.
  */
 public class ServoTest {
-    /*
+    
 
     Servo servo1;
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -39,9 +39,14 @@ public ServoTest() {
         }
     }
 
-public void TestServo () {
-
-        servo1.set(0.5);
+public void servoPointUp() {
+    servo1.set(0.5);
     }
-    */
+public void servoPointForward() {
+    servo1.set(0);
+}
+public void servoPointBack() {
+    servo1.set(1);
+}
+    
 }
