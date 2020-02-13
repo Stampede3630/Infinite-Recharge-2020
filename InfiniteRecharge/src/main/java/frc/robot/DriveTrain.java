@@ -203,7 +203,7 @@ public class Drivetrain {
 
       public void driveAtAngle (double endrot) {
         double xSpeed = (RobotMap.controller.getX(Hand.kLeft) * kMaxSpeed);
-        double ySpeed = 0;
+        double ySpeed = (RobotMap.controller.getY(Hand.kLeft) * kMaxSpeed);
 
         double turnAngle = turnToAngle.calculate(m_gyro.getAngle(), endrot);
         drive(xSpeed, ySpeed, turnAngle, false);

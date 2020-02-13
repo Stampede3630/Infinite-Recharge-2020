@@ -49,4 +49,10 @@ class Constants {
 		return senUnits * 600 / kEncoderUnitsPerRev;
 
 	}
+
+	//Field angles
+	public static final int climberAngle = 330;
+	public static final int climberAngleBackwards = 150;
+	public static final int shootFromSpinnerAngle = 11;
+	
 }
