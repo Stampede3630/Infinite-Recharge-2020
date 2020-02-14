@@ -8,8 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -29,6 +32,7 @@ public class Robot extends TimedRobot {
   private BreakBeam breakBeam;
   private Drivetrain m_swerve; 
   private Chooser chooser;
+  
 
   @Override
   public void robotInit() {
@@ -43,6 +47,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("kD", 0);
     breakBeam = BreakBeam.getInstance();
     BallFollowDrive.resetIntakeState();
+
   }
 
   @Override
@@ -51,12 +56,10 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Current Elevator", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
-    //shoot.smartDashboardOutput();
+    shoot.smartDashboardOutput();
     m_swerve.postToSmartDashboard();
     m_swerve.updateModuleAngles();
     breakBeam.toSmartDashBoard();
-    shoot.control();
-
   }
 
   @Override
@@ -80,6 +83,8 @@ public class Robot extends TimedRobot {
     //ballProcessor.ToggleSolenoids();
     climber.climberPeriodic();
     ballProcessor.index();
+    shoot.control();
+
 
 
   }
@@ -92,7 +97,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-
+    /*
     // Button A on the XBOX makes the robot start searching again (if it marked
     // intake as done)
     if (RobotMap.CONTROLLER.getAButton()) {
@@ -105,8 +110,10 @@ public class Robot extends TimedRobot {
     } else {
       BallFollowDrive.stop();
     }
+  */
+    //Drivetrain.postToSmartDashboard();
 
-    Drivetrain.postToSmartDashboard();
+
   }
 
 }

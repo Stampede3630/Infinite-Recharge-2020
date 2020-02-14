@@ -93,8 +93,8 @@ public class RobotMap {
      * Constants used by the Shooter class
      */
     public static class ShooterMap {
-        public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(12);
-        public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(13);
+        public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(13);
+        public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(12);
         public static final WPI_TalonSRX BELT = new WPI_TalonSRX(11);
     }
 
@@ -187,6 +187,7 @@ public class RobotMap {
     // Intake stuff
 
     static {
+        //DriveMap
         DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);
         DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);
         DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(true);
@@ -213,6 +214,7 @@ public class RobotMap {
         DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
 
         // Shooter
+        ShooterMap.LEFT_SHOOTER_FALCON.setInverted(false);
         ShooterMap.RIGHT_SHOOTER_FALCON.set(ControlMode.Follower, ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
         ShooterMap.RIGHT_SHOOTER_FALCON.setInverted(InvertType.OpposeMaster);
         ShooterMap.BELT.setNeutralMode(NeutralMode.Brake);
@@ -220,7 +222,7 @@ public class RobotMap {
         ShooterMap.LEFT_SHOOTER_FALCON.configFactoryDefault();
         // ShooterMap.RIGHT_SHOOTER_FALCON.configFactoryDefault();
 
-        ShooterMap.LEFT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        ShooterMap.LEFT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,
                 kPIDLoopIdx, kTimeoutMs);
         // ShooterMap.RIGHT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
         // kPIDLoopIdx,
