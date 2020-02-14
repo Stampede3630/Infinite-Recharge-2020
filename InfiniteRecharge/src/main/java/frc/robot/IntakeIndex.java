@@ -91,7 +91,7 @@ public class IntakeIndex {
         // updateBooleans();
 
         if (RobotMap.CONTROLLER.getAButton()) {
-            System.out.println("tester");
+            //System.out.println("tester");
             timer.reset();
             timer.start();
             RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);

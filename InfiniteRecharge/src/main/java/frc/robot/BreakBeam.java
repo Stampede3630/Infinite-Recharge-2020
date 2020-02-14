@@ -7,30 +7,36 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
 public class BreakBeam {
 
-    private DigitalOutput beam[];
-    public static BreakBeam breakBeam;
-    
+    private static BreakBeam breakBeam;
+    DigitalInput beam0;
+    DigitalInput beam1;
+    DigitalInput beam2;
+    DigitalInput beam3;
+    DigitalInput beam4;
+    DigitalInput beam5;
+
+
+
     private BreakBeam() {
-        beam[0] = new DigitalOutput(10);
-        beam[1] = new DigitalOutput(11);
-        beam[2] = new DigitalOutput(12);
-        beam[3] = new DigitalOutput(13);
-        beam[4] = new DigitalOutput(14);
-        beam[5] = new DigitalOutput(15);
         
+        beam0 = new DigitalInput(10);
+        beam1 = new DigitalInput(11);
+        beam2 = new DigitalInput(12);
+        beam3 = new DigitalInput(13);
+        beam4 = new DigitalInput(18);
+        beam5 = new DigitalInput(19);      
     }
     /**
      * @return the beam
      */
-    public DigitalOutput[] getBeam() {
-        return beam;
-    }
 
     public static BreakBeam getInstance() {
         if (breakBeam == null) {
@@ -40,7 +46,7 @@ public class BreakBeam {
       }
 
     public boolean detectBallHigh(){
-        if(beam[10].get() && beam[11].get() &&beam[12].get()){
+        if(beam0.get() && beam1.get() &&beam2.get()){
             return true;
         }
         else{
@@ -49,12 +55,23 @@ public class BreakBeam {
     }
 
     public boolean detectBallMid(){
-        if(!beam[13].get() && beam[14].get() &&beam[15].get()){
+        if(!beam3.get() && beam4.get() && beam5.get()){
             return true;
         }
         else{
             return false;
         }
+    }
+
+    public void toSmartDashBoard()
+    {
+        SmartDashboard.putBoolean("beam0", beam0.get());
+        SmartDashboard.putBoolean("beam1", beam1.get());
+        SmartDashboard.putBoolean("beam2", beam2.get());
+        SmartDashboard.putBoolean("beam3", beam3.get());
+        SmartDashboard.putBoolean("beam4", beam4.get());
+        SmartDashboard.putBoolean("beam5", beam5.get());
+
     }
 
 

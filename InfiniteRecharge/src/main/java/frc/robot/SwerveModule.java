@@ -178,7 +178,7 @@ public class SwerveModule {
     // Calculate the drive output from the drive PID controller.
     // var driveOutput = m_drivePIDController.calculate(
     // 0, /*INSERT DRIVE ENCODER VALUE HERE*/ 0);
-    readAngle();
+   // readAngle();
     m_driveScalar = 1;
     // Calculate the turning motor output from the turning PID controller.
     double setpoint = bound(state.angle.getRadians());// state.angle.getRadians();//

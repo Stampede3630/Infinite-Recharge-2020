@@ -192,4 +192,12 @@ public class Drivetrain {
     System.out.println(xSpeed + "," + ySpeed);
     drive(xSpeed, ySpeed, rot, fieldRelative);
   }
+
+  public void updateModuleAngles()
+  {
+    m_backLeft.readAngle();
+    m_backRight.readAngle();
+    m_frontLeft.readAngle();
+    m_frontRight.readAngle();
+  }
 }

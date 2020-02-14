@@ -71,10 +71,10 @@ public class RobotMap {
      * Constants for the Climber class
      */
     public static class ClimberMap {
-        public static final CANSparkMax TROLLEY_SPARK = new CANSparkMax(14, MotorType.kBrushless);
-        public static final CANSparkMax ELEVATOR_SPARK = new CANSparkMax(8, MotorType.kBrushless);
-        public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(20);
-        public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(19);
+        public static final CANSparkMax TROLLEY_SPARK = new CANSparkMax(15, MotorType.kBrushless);
+        public static final CANSparkMax ELEVATOR_SPARK = new CANSparkMax(14, MotorType.kBrushless);
+        public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(1);
+        public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(0);
     }
 
     /**
@@ -100,10 +100,11 @@ public class RobotMap {
 
     public static class IntakeMap {
 
-        public static final WPI_TalonSRX INTAKE_WHEELS = new WPI_TalonSRX(9);// first spin wheel
+        public static final CANSparkMax INTAKE_WHEELS = new CANSparkMax(9, MotorType.kBrushless);// first spin wheel
         public static final WPI_TalonSRX PINWHEEL = new WPI_TalonSRX(10); // from box to belt
-        public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(2, 3); // lowers the arms
-        public static final Ultrasonic ULTRASONIC = new Ultrasonic(5, 3); // on the ground of the belt box
+        public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
+        public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6,7);
+        public static final Ultrasonic ULTRASONIC = new Ultrasonic(7, 8); // on the ground of the belt box
         public static final ColorSensorV3 COLOR_SENSOR_MID = new ColorSensorV3(I2C.Port.kOnboard);
         public static final ColorSensorV3 COLOR_SENSOR_HIGH = new ColorSensorV3(I2C.Port.kMXP);
     }
@@ -122,26 +123,26 @@ public class RobotMap {
         public static final WPI_VictorSPX FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
         public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
         public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-        public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.607 + Math.PI;
+        public static final double FRONT_RIGHT_ANGLE_OFFSET = 0;
 
         public static final WPI_VictorSPX BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
         public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
         public static final AnalogInput BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
-        public static final double BACK_LEFT_ANGLE_OFFSET = -0.339;
+        public static final double BACK_LEFT_ANGLE_OFFSET = 0;
 
         public static final WPI_VictorSPX BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
         public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
         public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-        public static final double BACK_RIGHT_ANGLE_OFFSET = -1.596 + Math.PI;
+        public static final double BACK_RIGHT_ANGLE_OFFSET = 0;
 
         public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
         public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
         public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-        public static final double FRONT_LEFT_ANGLE_OFFSET = 0.364; // radians
+        public static final double FRONT_LEFT_ANGLE_OFFSET = 0; // radians
     }
 
     /**
-     * TODO: What is this for?
+     * TODO: What is this for?\
      */
     public static class PIDConstraints {
         // PID Constants/Contraints
@@ -186,8 +187,8 @@ public class RobotMap {
     // Intake stuff
 
     static {
-        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-        DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
         DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
         DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
 

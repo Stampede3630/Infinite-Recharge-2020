@@ -74,7 +74,7 @@ public class Shooter {
         // falcon.getSelectedSensorPosition();
         SmartDashboard.putNumber("RPM", (sensorUnitsToRPM(leftShooterFalcon.getSelectedSensorVelocity(1))));
         SmartDashboard.putNumber("Falcon Output", leftShooterFalcon.getMotorOutputPercent());
-        System.out.println(leftShooterFalcon.getSelectedSensorVelocity(0));
+        //System.out.println(leftShooterFalcon.getSelectedSensorVelocity(0));
     }
 
     public void control() {
