@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  */
 public class Chooser {
     public SendableChooser<Boolean> climbChooser;
-
+    private Climber climber;
     public Chooser(){
+
         climbChooser = new SendableChooser<Boolean>();
+        climber = new Climber();
         climbChooser.setDefaultOption("angles", true);
         climbChooser.addOption("climb", false);
     }
@@ -28,6 +30,7 @@ public class Chooser {
         }
         else{
             //run climb d-pad, climb angle
+            climber.climberPeriodic();
         }
     }
 

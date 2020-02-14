@@ -9,6 +9,7 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,7 +49,7 @@ public class IntakeIndex {
         top = breakBeam.detectBallHigh();
         none = false;
 
-        if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 200 || RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 6) {
+        if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 200 || RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 10) {
             bottom = true;
         }
         if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 200 && RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 20) {
@@ -95,24 +96,23 @@ public class IntakeIndex {
             timer.reset();
             timer.start();
             RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);
+            RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
         }
 
         else {
             RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
             // System.out.print(timer.get());
+            RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
+
         }
 
         if (timer.get() > 1.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
             RobotMap.IntakeMap.PINWHEEL.set(0);
         } else {
-            RobotMap.IntakeMap.PINWHEEL.set(-.8);
+            RobotMap.IntakeMap.PINWHEEL.set(.8);
         }
 
         // BELT STUFF!!!!!!!!!!!!!!!!!
-        if (RobotMap.CONTROLLER.getBButton()) {
-            RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
-        }
-
         if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
                 && RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
@@ -142,6 +142,9 @@ public class IntakeIndex {
             System.out.println("none");
             RobotMap.ShooterMap.BELT.set(0);
         }
+        /*else if (!none && !bottom && !middle && !top){
+            RobotMap.ShooterMap.BELT.set(beltForwardOne);
+        }*/
 
     }
 
@@ -213,8 +216,8 @@ public class IntakeIndex {
     */
 
     public void toSmartDashboard() {
-        SmartDashboard.putNumber("colorSensorHigh Green", RobotMap.IntakeMap.COLOR_SENSOR_HIGH.getGreen());
-        SmartDashboard.putNumber("colorSensorMid Green", RobotMap.IntakeMap.COLOR_SENSOR_MID.getGreen());
+        //SmartDashboard.putNumber("colorSensorHigh Green", RobotMap.IntakeMap.COLOR_SENSOR_HIGH.getGreen());
+        //SmartDashboard.putNumber("colorSensorMid Green", RobotMap.IntakeMap.COLOR_SENSOR_MID.getGreen());
         SmartDashboard.putNumber("ultrasonic", RobotMap.IntakeMap.ULTRASONIC.getRangeInches());
         SmartDashboard.putBoolean("bottom", bottom);
         SmartDashboard.putBoolean("middle", middle);

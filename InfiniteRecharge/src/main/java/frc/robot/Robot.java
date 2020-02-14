@@ -28,13 +28,12 @@ public class Robot extends TimedRobot {
   private Shooter shoot;
   private BreakBeam breakBeam;
   private Drivetrain m_swerve; 
-  private boolean detectBallLow;
-  private boolean detectBallMid;
-  private boolean detectBallTop;
+  private Chooser chooser;
 
   @Override
   public void robotInit() {
     m_swerve = Drivetrain.getInstance();
+    chooser = new Chooser();
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();
     climber = new Climber();
@@ -42,7 +41,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("kF", 0);
     SmartDashboard.putNumber("kI", 0);
     SmartDashboard.putNumber("kD", 0);
-
+    breakBeam = BreakBeam.getInstance();
     BallFollowDrive.resetIntakeState();
   }
 
@@ -50,11 +49,14 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //SmartDashboard.putNumber("Current trolleySpark", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
     //SmartDashboard.putNumber("Current Elevator", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
-    //ballProcessor.toSmartDashboard();
-    //ballProcessor.updateBooleans();
+    ballProcessor.toSmartDashboard();
+    ballProcessor.updateBooleans();
     //shoot.smartDashboardOutput();
     m_swerve.postToSmartDashboard();
     m_swerve.updateModuleAngles();
+    breakBeam.toSmartDashBoard();
+    shoot.control();
+
   }
 
   @Override
@@ -64,18 +66,22 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    
 
   }
 
   @Override
   public void teleopPeriodic() {
-    // m_swerve.driveWithJoystick(false);
+    m_swerve.driveWithJoystick(false);
     // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
     // RobotMap.controller.getX(Hand.kRight) *.5);
-    shoot.control();
-    ballProcessor.manualControl();
-    ballProcessor.ToggleSolenoids();
+    //shoot.control();
+    //ballProcessor.manualControl();
+    //ballProcessor.ToggleSolenoids();
     climber.climberPeriodic();
+    ballProcessor.index();
+
+
   }
 
   @Override

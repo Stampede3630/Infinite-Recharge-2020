@@ -46,7 +46,7 @@ public class BreakBeam {
       }
 
     public boolean detectBallHigh(){
-        if(beam0.get() && beam1.get() &&beam2.get()){
+        if(!beam0.get() && !beam1.get() &&!beam2.get()){
             return true;
         }
         else{
@@ -55,7 +55,7 @@ public class BreakBeam {
     }
 
     public boolean detectBallMid(){
-        if(!beam3.get() && beam4.get() && beam5.get()){
+        if(beam3.get() && !beam4.get() && !beam5.get()){
             return true;
         }
         else{

@@ -87,11 +87,11 @@ public class Shooter {
 
         if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
             leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-            // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+            rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
             // belt.set(-.6);
         } else {
             leftShooterFalcon.set(0);
-            // rightShooterFalcon.set(0);
+            rightShooterFalcon.set(0);
         }
     }
 

@@ -9,7 +9,7 @@ package frc.robot;
 
 public class Climber {
 
-    public static final double elevatorSpeed = 0.9;
+    public static final double elevatorSpeed = -0.7;
     public static final double strafeSpeed = 0.5;
 
     public void climberPeriodic() {

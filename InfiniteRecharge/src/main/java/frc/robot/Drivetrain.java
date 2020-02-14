@@ -43,7 +43,7 @@ public class Drivetrain {
       RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
       RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
 
-  public static final double kMaxSpeed = 4; // 3 meters per second
+  public static final double kMaxSpeed = 3.627; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
   public static final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation,
@@ -94,12 +94,7 @@ public class Drivetrain {
      * XSpeed 0 1 Yfr MULTIPLIED BY SPEED VECTOR: YSpeed 1 0 Xbl ROTATION Responds
      * violently when you have ultrawide robots 0 1 Ybl 1 0 Xbr 0 1 YBr
      */
-
-    SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.PIDConstraints.MAX_SPEED);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_backLeft.setDesiredState(swerveModuleStates[2]);
-    m_backRight.setDesiredState(swerveModuleStates[3]);
+    setModuleStates(swerveModuleStates);
   }
 
   public static void setModuleStates(SwerveModuleState[] swerveModuleStates) {
@@ -160,6 +155,13 @@ public class Drivetrain {
 
     SmartDashboard.putNumber("meters dist X", m_odometry.getPoseMeters().getTranslation().getX());
     SmartDashboard.putNumber("meters dist Y", m_odometry.getPoseMeters().getTranslation().getY());
+    SmartDashboard.putNumber("FR encoder rate", m_frontRight.getTalonFXRate());
+    SmartDashboard.putNumber("FL encoder rate", m_frontLeft.getTalonFXRate());
+
+    SmartDashboard.putNumber("FR drive output", m_frontRight.getDriveOutput());
+    SmartDashboard.putNumber("FL drive output", m_frontLeft.getDriveOutput());
+    SmartDashboard.putNumber("BL drive output", m_backLeft.getDriveOutput());
+
 
   }
 

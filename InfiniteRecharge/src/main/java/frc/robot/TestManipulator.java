@@ -21,7 +21,7 @@ public class TestManipulator {
 	private Counter counter = new Counter(4);
 	private WPI_TalonSRX intake = new WPI_TalonSRX(9);
 	private WPI_TalonSRX belt = new WPI_TalonSRX(11);
-	private WPI_TalonSRX highRoller = new WPI_TalonSRX(10);
+	private WPI_TalonSRX pinwheel = new WPI_TalonSRX(10);
 
 	public TestManipulator() {
 		belt.setNeutralMode(NeutralMode.Brake);
@@ -31,10 +31,10 @@ public class TestManipulator {
 	public void periodic() {
 		if (RobotMap.CONTROLLER.getAButton()) {
 			intake.set(.75);
-			highRoller.set(-.4);
+			pinwheel.set(-.4);
 		} else {
 			intake.set(0);
-			highRoller.set(0);
+			pinwheel.set(0);
 		}
 		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.5) {
 			belt.set(-.7);
@@ -44,8 +44,8 @@ public class TestManipulator {
 			belt.set(0);
 		}
 		/*
-		 * if(Robot.m_controller.getXButton()) { highRoller.set(-.8); } else {
-		 * highRoller.set(0); }
+		 * if(Robot.m_controller.getXButton()) { pinwheel.set(-.8); } else {
+		 * pinwheel.set(0); }
 		 */
 	}
 
