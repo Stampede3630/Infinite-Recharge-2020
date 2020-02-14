@@ -48,45 +48,40 @@ public class IntakeIndex {
         top = breakBeam.detectBallHigh();
         none = false;
 
-        if (RobotMap.ultrasonic.getRangeInches() > 200 || RobotMap.ultrasonic.getRangeInches() < 6) {
+        if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 200 || RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 6) {
             bottom = true;
         }
-        if (RobotMap.ultrasonic.getRangeInches() < 200 && RobotMap.ultrasonic.getRangeInches() > 20) {
+        if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 200 && RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 20) {
             none = true;
         }  
     }
 
     public void intakeChooser(boolean indexYes) {
-        if (RobotMap.controller.getStartButtonPressed() && !indexYes) {
+        if (RobotMap.CONTROLLER.getStartButtonPressed() && !indexYes) {
             index();
             indexYes = true;
         } 
-        if(RobotMap.controller.getStartButtonPressed() && indexYes){
+        if(RobotMap.CONTROLLER.getStartButtonPressed() && indexYes){
             manualControl();
             indexYes = false;
         }
     }
 
     public void manualControl() {
-        
-
-        if (RobotMap.controller.getAButton()) {
-            RobotMap.intakeWheels.set(.75);
-            RobotMap.pinwheel.set(-.4);
-            //intakeChooser(false);
+        if (RobotMap.CONTROLLER.getAButton()) {
+            RobotMap.IntakeMap.INTAKE_WHEELS.set(.75);
+            RobotMap.IntakeMap.PINWHEEL.set(-.4);
         } else {
-            RobotMap.intakeWheels.set(0);
-            RobotMap.pinwheel.set(0);
-            //intakeChooser(true);
+            RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
+            RobotMap.IntakeMap.PINWHEEL.set(0);
         }
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kRight) > 0.5) {
-            RobotMap.belt.set(-.7);
-            //intakeChooser(false);
-        } else if (RobotMap.controller.getBumper(Hand.kRight)) {
-            RobotMap.belt.set(0.7);
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.5) {
+            RobotMap.ShooterMap.BELT.set(-.7);
+        } else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
+            RobotMap.ShooterMap.BELT.set(0.7);
         } else {
-            RobotMap.belt.set(0);
+            RobotMap.ShooterMap.BELT.set(0);
         }
 
     }
@@ -95,62 +90,57 @@ public class IntakeIndex {
         // System.out.println(pinwheel.get());
         // updateBooleans();
 
-        if (RobotMap.controller.getAButton()) {
+        if (RobotMap.CONTROLLER.getAButton()) {
             System.out.println("tester");
             timer.reset();
             timer.start();
-            RobotMap.intakeWheels.set(.5);
+            RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);
         }
 
         else {
-            RobotMap.intakeWheels.set(0);
+            RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
             // System.out.print(timer.get());
         }
 
         if (timer.get() > 1.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
-            RobotMap.pinwheel.set(0);
+            RobotMap.IntakeMap.PINWHEEL.set(0);
         } else {
-            RobotMap.pinwheel.set(-.8);
+            RobotMap.IntakeMap.PINWHEEL.set(-.8);
         }
 
         // BELT STUFF!!!!!!!!!!!!!!!!!
-        if (RobotMap.controller.getBButton()) {
-            RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kReverse);
+        if (RobotMap.CONTROLLER.getBButton()) {
+            RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
         }
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
-                && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
+                && RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
-            RobotMap.belt.set(beltForwardTwo);
+            RobotMap.ShooterMap.BELT.set(beltForwardTwo);
             System.out.println("shooter up to speed");
 
-        } 
-        else if (top && middle) {
-            RobotMap.belt.set(0);
+        } else if (top && middle) {
+            RobotMap.ShooterMap.BELT.set(0);
             System.out.println("yes top, yes middle");
-        } 
-        else if (top && !middle) {
-            RobotMap.belt.set(beltBackwardsOne);
+        } else if (top && !middle) {
+            RobotMap.ShooterMap.BELT.set(beltBackwardsOne);
             System.out.println("yes top, no middle");
 
-        } 
-        else if (!top && middle && bottom) {
-            RobotMap.belt.set(beltForwardTwo);
+        } else if (!top && middle && bottom) {
+            RobotMap.ShooterMap.BELT.set(beltForwardTwo);
             System.out.println("middle and bottom");
 
-        } 
-        else if (!top && !middle && bottom) {
-            RobotMap.belt.set(beltForwardOne);
+        } else if (!top && !middle && bottom) {
+            RobotMap.ShooterMap.BELT.set(beltForwardOne);
             System.out.println("only bottom");
 
-        } 
-        else if (middle) {
-            RobotMap.belt.set(0);
+        } else if (middle) {
+            RobotMap.ShooterMap.BELT.set(0);
             System.out.println("middle");
         } 
         else if (none) {
             System.out.println("none");
-            RobotMap.belt.set(0);
+            RobotMap.ShooterMap.BELT.set(0);
         }
 
     }
@@ -173,46 +163,46 @@ public class IntakeIndex {
     /*
     public void tempBelt() {
         // BELT STUFF!!!!!!!!!!!!!!!!!
-        if (RobotMap.controller.getBButton()) {
-            RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kReverse);
+        if (RobotMap.CONTROLLER.getBButton()) {
+            RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
         }
 
-        if (RobotMap.controller.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
-                && RobotMap.leftShooterFalcon.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > .6 // if shooter up to speed
+                && RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity() >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
                         * Shooter.kEncoderUnitsPerRev) {
-            RobotMap.belt.set(beltForwardTwo);
+            RobotMap.ShooterMap.BELT.set(beltForwardTwo);
             System.out.println("shooter up to speed");
         } else if (none) {
             System.out.println("none, reset to 0");
-            RobotMap.belt.set(0.0);
+            RobotMap.ShooterMap.BELT.set(0.0);
         } else if (top && middleWeak && bottom) {
-            RobotMap.belt.set(0.0);
+            RobotMap.ShooterMap.BELT.set(0.0);
             System.out.println("top, middleWeak and bottom, reset to/stay at 0");
-        } else if (RobotMap.belt.get() == 0.0) {
+        } else if (RobotMap.ShooterMap.BELT.get() == 0.0) {
             // ready for new command
             if (top && bottom) {
-                RobotMap.belt.set(beltBackwardsOne);
+                RobotMap.ShooterMap.BELT.set(beltBackwardsOne);
                 System.out.println("top, bottom, go BACK");
             } else if (middleWeak && bottom) {
-                RobotMap.belt.set(beltForwardTwo);
+                RobotMap.ShooterMap.BELT.set(beltForwardTwo);
                 System.out.println("middle weak, bottom, go FORWARD");
             } else if (bottom) {
-                RobotMap.belt.set(beltForwardOne);
+                RobotMap.ShooterMap.BELT.set(beltForwardOne);
                 System.out.println("bottom, go FORWARD");
             }
-        } else if (RobotMap.belt.get() < 0.0) {
+        } else if (RobotMap.ShooterMap.BELT.get() < 0.0) {
             // currently moving forward
             if (top) {
-                RobotMap.belt.set(0.0);
+                RobotMap.ShooterMap.BELT.set(0.0);
                 System.out.println("top, STOP forward");
                 if (middleWeak) {
                     System.out.println("\t also middle weak");
                 }
             }
-        } else if (RobotMap.belt.get() > 0.0) {
+        } else if (RobotMap.ShooterMap.BELT.get() > 0.0) {
             // currently moving backward
             if (middle) {
-                RobotMap.belt.set(0.0);
+                RobotMap.ShooterMap.BELT.set(0.0);
                 System.out.println("middle, STOP backward");
                 if (bottom) {
                     System.out.println("\t also bottom");
@@ -223,9 +213,9 @@ public class IntakeIndex {
     */
 
     public void toSmartDashboard() {
-        SmartDashboard.putNumber("colorSensorHigh Green", RobotMap.colorSensorHigh.getGreen());
-        SmartDashboard.putNumber("colorSensorMid Green", RobotMap.colorSensorMid.getGreen());
-        SmartDashboard.putNumber("ultrasonic", RobotMap.ultrasonic.getRangeInches());
+        SmartDashboard.putNumber("colorSensorHigh Green", RobotMap.IntakeMap.COLOR_SENSOR_HIGH.getGreen());
+        SmartDashboard.putNumber("colorSensorMid Green", RobotMap.IntakeMap.COLOR_SENSOR_MID.getGreen());
+        SmartDashboard.putNumber("ultrasonic", RobotMap.IntakeMap.ULTRASONIC.getRangeInches());
         SmartDashboard.putBoolean("bottom", bottom);
         SmartDashboard.putBoolean("middle", middle);
         SmartDashboard.putBoolean("top", top);
@@ -233,14 +223,14 @@ public class IntakeIndex {
     }
 
     public void ToggleSolenoids() {
-        if (RobotMap.controller.getXButtonPressed()) {
+        if (RobotMap.CONTROLLER.getXButtonPressed()) {
 
             if (newMattyState == false) {
-                RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kForward);
+                RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
                 newMattyState = true;
 
             } else if (newMattyState == true) {
-                RobotMap.armsSolenoid.set(DoubleSolenoid.Value.kReverse);
+                RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
                 newMattyState = false;
             }
 

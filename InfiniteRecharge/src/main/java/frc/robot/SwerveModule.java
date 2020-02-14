@@ -56,7 +56,7 @@ public class SwerveModule {
    */
 
   public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_VictorSPX drivetrainFrontLeftAngleMotor,
-      AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange, AHRS driveAngle) {
+      AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange) {
     if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
 
       kPSpecial = .6;

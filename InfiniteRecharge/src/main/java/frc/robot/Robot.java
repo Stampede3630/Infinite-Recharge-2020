@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,14 +21,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  private Drivetrain m_swerve;
-  private Compressor compp = new Compressor(0);
+  private Compressor comp = new Compressor(0);
   private Climber climber;
 
   private IntakeIndex ballProcessor;
   private Shooter shoot;
   private BreakBeam breakBeam;
-
+  private Drivetrain m_swerve; 
   private boolean detectBallLow;
   private boolean detectBallMid;
   private boolean detectBallTop;
@@ -43,16 +43,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("kI", 0);
     SmartDashboard.putNumber("kD", 0);
 
+    BallFollowDrive.resetIntakeState();
   }
 
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Current trolleySpark", RobotMap.trolleySpark.getOutputCurrent());
-    SmartDashboard.putNumber("Current Elevator", RobotMap.elevatorSpark.getOutputCurrent());
+    SmartDashboard.putNumber("Current trolleySpark", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
+    SmartDashboard.putNumber("Current Elevator", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
     ballProcessor.toSmartDashboard();
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
-
   }
 
   @Override
@@ -67,18 +67,38 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    //m_swerve.driveWithJoystick(false);
-    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " + RobotMap.controller.getX(Hand.kRight) *.5);
+    // m_swerve.driveWithJoystick(false);
+    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
+    // RobotMap.controller.getX(Hand.kRight) *.5);
     shoot.control();
     ballProcessor.manualControl();
     ballProcessor.ToggleSolenoids();
     climber.climberPeriodic();
+  }
 
+  @Override
+  public void testInit() {
+    // Sets up the limelight pipeline
+    BallFollowDrive.initLimelight();
   }
 
   @Override
   public void testPeriodic() {
 
+    // Button A on the XBOX makes the robot start searching again (if it marked
+    // intake as done)
+    if (RobotMap.CONTROLLER.getAButton()) {
+      BallFollowDrive.resetIntakeState();
+    }
+
+    // Intake code runs only while the right bumber is held (otherwise it stops)
+    if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
+      BallFollowDrive.drive();
+    } else {
+      BallFollowDrive.stop();
+    }
+
+    Drivetrain.postToSmartDashboard();
   }
 
 }
