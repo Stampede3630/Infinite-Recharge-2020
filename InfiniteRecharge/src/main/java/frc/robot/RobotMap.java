@@ -95,7 +95,7 @@ public class RobotMap {
     public static class ShooterMap {
         public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(13);
         public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(12);
-        public static final WPI_TalonSRX BELT = new WPI_TalonSRX(11);
+
     }
 
     public static class IntakeMap {
@@ -105,6 +105,7 @@ public class RobotMap {
         public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
         public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6,7);
         public static final Ultrasonic ULTRASONIC = new Ultrasonic(9,8); // on the ground of the belt box
+        public static final WPI_TalonSRX BELT = new WPI_TalonSRX(11);
        // public static final ColorSensorV3 COLOR_SENSOR_MID = new ColorSensorV3(I2C.Port.kOnboard);
        // public static final ColorSensorV3 COLOR_SENSOR_HIGH = new ColorSensorV3(I2C.Port.kMXP);
     }
@@ -138,7 +139,7 @@ public class RobotMap {
         public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
         public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
         public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-        public static final double FRONT_LEFT_ANGLE_OFFSET = 2.604712; // radians
+        public static final double FRONT_LEFT_ANGLE_OFFSET =-2.21; // radians
     }
 
     /**
@@ -191,7 +192,7 @@ public class RobotMap {
         DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);
         DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);
         DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(true);
-        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(true);
 
         DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
         DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
@@ -217,7 +218,7 @@ public class RobotMap {
         ShooterMap.LEFT_SHOOTER_FALCON.setInverted(false);
         ShooterMap.RIGHT_SHOOTER_FALCON.set(ControlMode.Follower, ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
         ShooterMap.RIGHT_SHOOTER_FALCON.setInverted(InvertType.OpposeMaster);
-        ShooterMap.BELT.setNeutralMode(NeutralMode.Brake);
+        IntakeMap.BELT.setNeutralMode(NeutralMode.Brake);
 
         ShooterMap.LEFT_SHOOTER_FALCON.configFactoryDefault();
         // ShooterMap.RIGHT_SHOOTER_FALCON.configFactoryDefault();

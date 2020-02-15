@@ -13,7 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  * Add your docs here.
  */
 public class Chooser {
-    public SendableChooser<Boolean> climbChooser;
+    private SendableChooser<Boolean> climbChooser;
+    private  Drivetrain m_swerve;
+  
+    private enum DesiredAngle
+    {
+        k0, k90, k180,k270,kLONGSHOT, kNOTHING
+    }
     private Climber climber;
     public Chooser(){
 
@@ -21,6 +27,7 @@ public class Chooser {
         climber = new Climber();
         climbChooser.setDefaultOption("angles", true);
         climbChooser.addOption("climb", false);
+        m_swerve = Drivetrain.getInstance();
     }
 
     public void updateChooser(){
@@ -33,5 +40,29 @@ public class Chooser {
             climber.climberPeriodic();
         }
     }
+
+    public void driveChooser()
+    {
+        if (RobotMap.CONTROLLER.getPOV() == 0) {
+            m_swerve.driveAtAngle(0);
+        }
+        else if (RobotMap.CONTROLLER.getPOV()==180) {
+            m_swerve.driveAtAngle(180);
+        }
+        else if (RobotMap.CONTROLLER.getPOV()==270) {
+            m_swerve.driveAtAngle(270);
+        }
+        else if (RobotMap.CONTROLLER.getPOV()==90) {
+            m_swerve.driveAtAngle(90);
+        }
+        else if (RobotMap.CONTROLLER.getPOV() == 45) //BAD
+        {
+            m_swerve.driveAtAngle(11);
+        }
+        else {
+            m_swerve.driveWithJoystick();
+        }
+    }
+
 
 }

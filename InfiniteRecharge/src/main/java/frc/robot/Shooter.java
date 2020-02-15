@@ -28,8 +28,8 @@ public class Shooter {
     public void control() {
         double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(rotpm) * kEncoderUnitsPerRev;
         /* 500 RPM in either direction */
-        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kF(kPIDLoopIdx, SmartDashboard.getNumber("kF", 0), kTimeoutMs); // .45 *(1023.0/7200.0)
-        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), kTimeoutMs);
+        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kF(kPIDLoopIdx, SmartDashboard.getNumber("kF", 0.055), kTimeoutMs); // .45 *(1023.0/7200.0)
+        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 1), kTimeoutMs);
         RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
         RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kD(kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), kTimeoutMs);
         

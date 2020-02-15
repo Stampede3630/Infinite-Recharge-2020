@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -20,6 +21,8 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain {
 
+
+  public static boolean fieldRelative = false;
   // ******************THESE locations must be in Meters .....
   // SwerveDriveKinematics computes in Meters****************** */
   // Ensure Gyro reading is not crazy (we may need to do a full long reset)
@@ -44,12 +47,14 @@ public class Drivetrain {
       RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
 
   public static final double kMaxSpeed = 3.627; // 3 meters per second
-  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  public static final double kMaxAngularSpeed = Math.PI *4; // 1/2 rotation per second
 
   public static final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation,
       m_backLeftLocation, m_backRightLocation);
 
   public static final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
+
+  private PIDController robotAnglePID = new PIDController(0.1, 0, 0);
   private static Drivetrain drive;
   private Drivetrain() {
     m_gyro.reset();
@@ -85,7 +90,7 @@ public class Drivetrain {
    *                      field.
    */
   @SuppressWarnings("ParameterName")
-  public static void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+  public static void drive(double xSpeed, double ySpeed, double rot) {
     var swerveModuleStates = m_kinematics
         .toSwerveModuleStates(fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getAngle())
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
@@ -111,7 +116,7 @@ public class Drivetrain {
    * Alias for {@link #drive(double, double, double, boolean) drive(0, 0, 0, false)}.
    */
   public static void stop() {
-    drive(0, 0, 0, false);
+    drive(0, 0, 0);
   }
 
   /**
@@ -165,10 +170,47 @@ public class Drivetrain {
 
   }
 
-  public static void driveWithJoystick(boolean fieldRelative) {
+  public static void driveWithJoystick() {
 
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
+    var xSpeed = Math.pow(RobotMap.CONTROLLER.getY(Hand.kLeft), 2) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * kMaxSpeed;
+    if (Math.abs(xSpeed) < (0.2 * kMaxSpeed)) {
+      xSpeed = 0;
+    }
+
+    // Get the y speed or sideways/strafe speed. We are inverting this because
+    // we want a positive value when we pull to the left. Xbox controllers
+    // return positive values when you pull to the right by default.
+    var ySpeed = Math.pow(RobotMap.CONTROLLER.getX(Hand.kLeft), 2) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft)) * kMaxSpeed;
+    if (Math.abs(ySpeed) < (0.2 * kMaxSpeed)) {
+      ySpeed = 0;
+    }
+    // Get the rate of angular rotatpion. We are inverting this because we want a
+    // positive value when we pull to the left (remember, CCW is positive in
+    // mathematics). Xbox controllers return positive values when you pull to
+    // the right by default.
+    var rot = Math.pow(RobotMap.CONTROLLER.getX(Hand.kRight), 2) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight)) * kMaxAngularSpeed;
+    if (Math.abs(rot) < (0.2 * kMaxAngularSpeed)) {
+      rot = 0;
+    }
+    // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
+    // System.out.println("rot-c: " + rot);
+    //System.out.println(xSpeed + "," + ySpeed);
+    drive(xSpeed, ySpeed, rot);
+  }
+
+  public void updateModuleAngles()
+
+  {
+    m_backLeft.readAngle();
+    m_backRight.readAngle();
+    m_frontLeft.readAngle();
+    m_frontRight.readAngle();
+  }
+
+  public void driveAtAngle(double angle)
+  {
     var xSpeed = RobotMap.CONTROLLER.getY(Hand.kLeft) * kMaxSpeed;
     if (Math.abs(xSpeed) < (0.2 * kMaxSpeed)) {
       xSpeed = 0;
@@ -181,25 +223,9 @@ public class Drivetrain {
     if (Math.abs(ySpeed) < (0.2 * kMaxSpeed)) {
       ySpeed = 0;
     }
-    // Get the rate of angular rotatpion. We are inverting this because we want a
-    // positive value when we pull to the left (remember, CCW is positive in
-    // mathematics). Xbox controllers return positive values when you pull to
-    // the right by default.
-    var rot = RobotMap.CONTROLLER.getX(Hand.kRight) * kMaxAngularSpeed;
-    if (Math.abs(rot) < (0.2 * kMaxAngularSpeed)) {
-      rot = 0;
-    }
-    // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
-    // System.out.println("rot-c: " + rot);
-    //System.out.println(xSpeed + "," + ySpeed);
-    drive(xSpeed, ySpeed, rot, fieldRelative);
-  }
 
-  public void updateModuleAngles()
-  {
-    m_backLeft.readAngle();
-    m_backRight.readAngle();
-    m_frontLeft.readAngle();
-    m_frontRight.readAngle();
+    double turnSpeed = robotAnglePID.calculate(getAngle().getDegrees(), angle);
+    drive(xSpeed, ySpeed, turnSpeed);
+
   }
 }

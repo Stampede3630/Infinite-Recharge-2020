@@ -41,12 +41,12 @@ public class Robot extends TimedRobot {
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();
     climber = new Climber();
-    SmartDashboard.putNumber("kP", 0);
-    SmartDashboard.putNumber("kF", 0);
+    SmartDashboard.putNumber("kP", 1);
+    SmartDashboard.putNumber("kF", 0.055);
     SmartDashboard.putNumber("kI", 0);
     SmartDashboard.putNumber("kD", 0);
     breakBeam = BreakBeam.getInstance();
-    BallFollowDrive.resetIntakeState();
+    //BallFollowDrive.resetIntakeState();
 
   }
 
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
     m_swerve.postToSmartDashboard();
-    m_swerve.updateModuleAngles();
+ 
     breakBeam.toSmartDashBoard();
   }
 
@@ -75,14 +75,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_swerve.driveWithJoystick(false);
+    m_swerve.driveWithJoystick();
     // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
     // RobotMap.controller.getX(Hand.kRight) *.5);
     //shoot.control();
     //ballProcessor.manualControl();
     //ballProcessor.ToggleSolenoids();
     climber.climberPeriodic();
-    ballProcessor.index();
+    //ballProcessor.index();
     shoot.control();
 
 
@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Sets up the limelight pipeline
-    BallFollowDrive.initLimelight();
+    //BallFollowDrive.initLimelight();
   }
 
   @Override

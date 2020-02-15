@@ -66,7 +66,7 @@ public class SwerveModule {
       //kModuleMaxAngularVelocity = Math.PI;
      // kModuleMaxAngularAcceleration = Math.PI/2;
     } else {
-      kPSpecial = .8;
+      kPSpecial = 1.2;
       kD = 0.02;
     }
 
@@ -147,7 +147,7 @@ public class SwerveModule {
    */
 
   public double bound(double setpoint) {
-    double dTheta = setpoint - getAngle();
+    double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI);
     double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
 
     if (Math.abs(
@@ -157,12 +157,33 @@ public class SwerveModule {
       m_driveScalar = -1;
     }
 
-    if (trueDTheta < 90) {
+    if (Math.abs(trueDTheta) < Math.PI/2) {
       return getAngle() + trueDTheta;
     } else {
-      return getAngle() + (trueDTheta - Math.PI);
+      return getAngle() + (trueDTheta - Math.PI) ;
     }
+    
+//New Bound
+    // final double wrap = 2 * Math.PI; // in encoder counts
+    // final double current = getAngle() ;//+ Math.PI ;
+    // double newPosition;
 
+
+    // if(false){
+    //     newPosition = minChange(setpoint, current, wrap / 2.0) + current;
+    //     if(Math.abs(minChange(newPosition, setpoint, wrap)) < .001){ // check if equal
+    //         m_driveScalar = 1;
+    //     } else {
+    //         m_driveScalar = -1;
+    //     }
+    // }
+    //   else {
+    //     m_driveScalar = 1;
+    //     newPosition = minChange(setpoint, current, wrap) + current;
+    // }
+
+    // return newPosition;// - Math.PI;
+    
     /*
      * if (angle > (Math.PI / 2)) { m_driveScalar = -m_driveScalar; return angle -
      * Math.PI; } else if (angle < (-Math.PI / 2)) { m_driveScalar = -m_driveScalar;
@@ -170,7 +191,9 @@ public class SwerveModule {
      */
 
   }
-
+  public double minChange(double a, double b, double wrap) {
+    return Math.IEEEremainder(a - b, wrap);
+}
   /*
    * public double bound (double angle, double setpoint) { change1 =
    * setpoint-angle change2 = setpoint + Math.PI - angle bestChange = Math. }
@@ -186,74 +209,23 @@ public class SwerveModule {
     return driveOutput;
   }
   public void setDesiredState(SwerveModuleState state) {
-    // Calculate the drive output from the drive PID controller.
-    // var driveOutput = m_drivePIDController.calculate(
-    // 0, /*INSERT DRIVE ENCODER VALUE HERE*/ 0);
-   // readAngle();
+   readAngle();
     m_driveScalar = 1;
-    double setpoint;
-    // Calculate the turning motor output from the turning PID controller.
-    if(m_driveMotor.getDeviceID() == RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getDeviceID())
-    {
-      setpoint = state.angle.getRadians();
-    }
-    else
-    {
-      setpoint = bound(state.angle.getRadians());
-    }
-    //double setpoint = bound(state.angle.getRadians());// state.angle.getRadians();//
-    double currentAngle = getAngle(); // getAngle();//
+    double setpoint = bound(state.angle.getRadians());
+    double currentAngle = getAngle(); 
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
-    if (m_turningMotor.getDeviceID() == 4) {
-      //turnOutput = (double) turnOutput * -1;
-    }
     
-    // double driveOutput = state.speedMetersPerSecond / RobotMap.kMaxSpeed *
-    // m_driveScalar;
-
     driveOutput = m_drivePIDController.calculate(getTalonFXRate(), state.speedMetersPerSecond) *m_driveScalar;
-    if (driveOutput == 0) {
-      turnOutput = 0;
-    }
+  
 
-    // Calculate the turning motor output from the turning PID controller.
-    // m_driveMotor.set(driveOutput);
     m_turningMotor.set(-turnOutput);
-    // if (Math.abs(turnOutput) <.3){
     m_driveMotor.set(driveOutput);
-
-    // }
-    // else {
-    // m_driveMotor.set(0);
-
-    // }
-    // m_driveMotor.set(0);
-    // System.out.println(m_driveMotor.getDeviceID() + "," + turnOutput + "," +
-    // driveOutput );
-    // SUPER FANCY MATH TO NORMALIZE WHEEL SPEED
-
-    /*
-     * if(state.angle.getRadians() != setpoint) { driveOutput = driveOutput * -1;
-     * System.out.println("State of " + m_driveMotor.getDeviceID() +
-     * " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); } if(getAngle() != currentAngle) {
-     * driveOutput = driveOutput *-1; System.out.println("Measurement of " +
-     * m_driveMotor.getDeviceID() + " Has Been Bounded !!!!!!!!!!!!!!!!!!!!"); }
-     */
-
-    /*
-     * if((Math.abs(setpoint - readAngle())) < 2) { m_driveMotor.set(driveOutput); }
-     */
-
-    // System.out.println(state.speedMetersPerSecond);
-
-    // System.out.println("Current State" + readAngle() + " requested state," +
-    // state.angle.getRadians() + "turn output: " + turnOutput);
-
-    SmartDashboard.putNumber("Setpoint bound angle" + m_driveMotor.getDeviceID(), setpoint);
-    SmartDashboard.putNumber("setpoint unbound angle" + m_driveMotor.getDeviceID(), state.angle.getRadians());
-    // SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(),
-    // currentAngle);
-    SmartDashboard.putNumber("Current unbound angle" + m_driveMotor.getDeviceID(), getAngle());
+      
+    System.out.println("measurement:" + currentAngle + ", setpoint: " +setpoint + ", = (turn output) " + turnOutput);
+    SmartDashboard.putNumber("Setpoint bound angle: " + m_driveMotor.getDeviceID(), Math.toDegrees(setpoint));
+    SmartDashboard.putNumber("setpoint unbound angle: " + m_driveMotor.getDeviceID(), state.angle.getDegrees());
+    SmartDashboard.putNumber("Current unbound angle: " + m_driveMotor.getDeviceID(), Math.toDegrees(getAngle()));
+    SmartDashboard.putNumber("turn output: " + m_driveMotor.getDeviceID(), turnOutput);
   
 
   }
