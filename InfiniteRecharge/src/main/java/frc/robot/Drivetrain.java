@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -20,8 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain {
-
-
+  
   public static boolean fieldRelative = false;
   // ******************THESE locations must be in Meters .....
   // SwerveDriveKinematics computes in Meters****************** */
@@ -53,7 +45,6 @@ public class Drivetrain {
       m_backLeftLocation, m_backRightLocation);
 
   public static final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
-
   private PIDController robotAnglePID = new PIDController(0.1, 0, 0);
   private static Drivetrain drive;
   private Drivetrain() {
