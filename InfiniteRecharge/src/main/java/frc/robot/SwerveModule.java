@@ -254,6 +254,7 @@ public class SwerveModule {
     // SmartDashboard.putNumber("Current bound angle" + m_driveMotor.getDeviceID(),
     // currentAngle);
     SmartDashboard.putNumber("Current unbound angle" + m_driveMotor.getDeviceID(), getAngle());
+  
 
   }
 

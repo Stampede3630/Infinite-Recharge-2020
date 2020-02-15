@@ -90,7 +90,7 @@ public class IntakeIndex {
     public void index() { // most recent intake machine
         // System.out.println(pinwheel.get());
         // updateBooleans();
-        System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
+        //System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
         if (RobotMap.CONTROLLER.getAButton()) {
             //System.out.println("tester");
             timer.reset();
@@ -225,6 +225,9 @@ public class IntakeIndex {
         SmartDashboard.putBoolean("none", none);
         SmartDashboard.putNumber("falcon velocity", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
         SmartDashboard.putNumber("desired velocity", Shooter.rpmToRotatPer100Mili(Shooter.rotpm)* Shooter.kEncoderUnitsPerRev);
+        SmartDashboard.putBoolean("Shooter boolean",RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed
+        && Math.abs(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0)) >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm)
+                * Shooter.kEncoderUnitsPerRev );
         }
 
     public void ToggleSolenoids() {
