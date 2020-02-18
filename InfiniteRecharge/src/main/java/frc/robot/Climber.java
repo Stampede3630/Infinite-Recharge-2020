@@ -9,52 +9,52 @@ package frc.robot;
 
 public class Climber {
 
-    public static final double elevatorSpeed = 0.9;
+    public static final double elevatorSpeed = -0.7;
     public static final double strafeSpeed = 0.5;
 
     public void climberPeriodic() {
-        if (RobotMap.controller.getPOV() == 0) {
+        if (RobotMap.CONTROLLER.getPOV() == 0) {
             extend();
         }
-        else if (RobotMap.controller.getPOV()==180) {
+        else if (RobotMap.CONTROLLER.getPOV()==180) {
             retract();
         }
-        else if (RobotMap.controller.getPOV()==270) {
+        else if (RobotMap.CONTROLLER.getPOV()==270) {
             strafeLeft();
         }
-        else if (RobotMap.controller.getPOV()==90) {
+        else if (RobotMap.CONTROLLER.getPOV()==90) {
             strafeRight();
         }
         else {
-            RobotMap.elevatorSpark.set(0);
-            RobotMap.trolleySpark.set(0);
+            RobotMap.ClimberMap.ELEVATOR_SPARK.set(0);
+            RobotMap.ClimberMap.TROLLEY_SPARK.set(0);
         }
     }
 
     public void extend() {
-        if (RobotMap.maxLimitSwitch.get() == false) {
-          RobotMap.elevatorSpark.set(elevatorSpeed); 
+        if (RobotMap.ClimberMap.MAX_LIMIT_SWITCH.get() == false) {
+          RobotMap.ClimberMap.ELEVATOR_SPARK.set(elevatorSpeed); 
         }
         else{
-            RobotMap.elevatorSpark.set((0));     
+            RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
            }
     }
 
     public void retract() {
-        if (RobotMap.minLimitSwitch.get() == false) {
-         RobotMap.elevatorSpark.set((-elevatorSpeed)); 
+        if (RobotMap.ClimberMap.MIN_LIMIT_SWITCH.get() == false) {
+         RobotMap.ClimberMap.ELEVATOR_SPARK.set((-elevatorSpeed)); 
         }
         else{
-         RobotMap.elevatorSpark.set((0));     
+         RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
         }
 
     }
 
     public void strafeLeft() {
-        RobotMap.trolleySpark.set(-(strafeSpeed));
+        RobotMap.ClimberMap.TROLLEY_SPARK.set(-(strafeSpeed));
     }
 
     public void strafeRight() {
-       RobotMap.trolleySpark.set(strafeSpeed);
+       RobotMap.ClimberMap.TROLLEY_SPARK.set(strafeSpeed);
     }
 }

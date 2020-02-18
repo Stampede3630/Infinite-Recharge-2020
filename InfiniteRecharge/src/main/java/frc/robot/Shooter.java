@@ -1,6 +1,9 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.XboxController;
@@ -11,41 +14,30 @@ public class Shooter {
 
     double xSpeed;
     static double rotpm;
-    WPI_TalonFX leftShooterFalcon;
-    WPI_TalonFX rightShooterFalcon;
-    // sparks
-    XboxController controller;
-    WPI_TalonSRX belt; // belt talon
-
     public Shooter() {
         rotpm = 4000;// 3800
-        leftShooterFalcon = RobotMap.leftShooterFalcon; // GOOD + is right
-        rightShooterFalcon = RobotMap.rightShooterFalcon;
-
     }
 
     public void smartDashboardOutput() {
         // falcon.getSelectedSensorPosition();
-        SmartDashboard.putNumber("RPM", (sensorUnitsToRPM(leftShooterFalcon.getSelectedSensorVelocity(1))));
-        SmartDashboard.putNumber("Falcon Output", leftShooterFalcon.getMotorOutputPercent());
-        System.out.println(leftShooterFalcon.getSelectedSensorVelocity(0));
+        SmartDashboard.putNumber("RPM", (sensorUnitsToRPM(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(1))));
+        SmartDashboard.putNumber("Falcon Output", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getMotorOutputPercent());
+        //System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0));
     }
 
     public void control() {
         double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(rotpm) * kEncoderUnitsPerRev;
         /* 500 RPM in either direction */
-        leftShooterFalcon.config_kF(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kF", 0), RobotMap.kTimeoutMs); // .45 *(1023.0/7200.0)
-        leftShooterFalcon.config_kP(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kP", 0), RobotMap.kTimeoutMs);
-        leftShooterFalcon.config_kI(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), RobotMap.kTimeoutMs);
-        leftShooterFalcon.config_kD(RobotMap.kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), RobotMap.kTimeoutMs);
-
-        if (RobotMap.controller.getTriggerAxis(Hand.kLeft) > .6) {
-            leftShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-            // rightShooterFalcon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kF(kPIDLoopIdx, SmartDashboard.getNumber("kF", 0.055), kTimeoutMs); // .45 *(1023.0/7200.0)
+        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kP(kPIDLoopIdx, SmartDashboard.getNumber("kP", 1), kTimeoutMs);
+        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kI(kPIDLoopIdx, SmartDashboard.getNumber("kI", 0), kTimeoutMs);
+        RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kD(kPIDLoopIdx, SmartDashboard.getNumber("kD", 0), kTimeoutMs);
+        
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
+            RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
             // belt.set(-.6);
         } else {
-            leftShooterFalcon.set(0);
-            // rightShooterFalcon.set(0);
+            RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.set(0);
         }
     }
 
@@ -54,6 +46,18 @@ public class Shooter {
      * or 3. Only the first two (0,1) are visible in web-based configuration.
      */
     public static final int kSlotIdx = 0;
+
+    /**
+     * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For now
+     * we just want the primary one.
+     */
+    public static final int kPIDLoopIdx = 0;
+
+    /**
+     * Set to zero to skip waiting for confirmation, set to nonzero to wait and
+     * report to DS if action fails.
+     */
+    public static final int kTimeoutMs = 30;
 
     public static final double kEncoderUnitsPerRev = 2048;// 4096;
 

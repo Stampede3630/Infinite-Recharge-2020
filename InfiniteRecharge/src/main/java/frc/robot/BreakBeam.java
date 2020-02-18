@@ -7,42 +7,83 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
 public class BreakBeam {
 
-    private DigitalOutput beam[];
-    
-    public BreakBeam() {
+    private static BreakBeam breakBeam;
+    DigitalInput beam0;
+    DigitalInput beam1;
+    DigitalInput beam2;
+    DigitalInput beam3;
+    DigitalInput beam4;
+    DigitalInput beam5;
+    DigitalInput beam6;
+    DigitalInput beam7;
 
-        beam[0] = new DigitalOutput(0);
-        beam[1] = new DigitalOutput(1);
-        beam[2] = new DigitalOutput(2);
-        beam[3] = new DigitalOutput(3);
-        beam[4] = new DigitalOutput(4);
-        beam[5] = new DigitalOutput(5);
-        beam[6] = new DigitalOutput(6);
-        beam[7] = new DigitalOutput(7);
-        beam[8] = new DigitalOutput(8);
-        beam[9] = new DigitalOutput(9);
 
+
+    private BreakBeam() {
+        
+        beam0 = new DigitalInput(10);
+        beam1 = new DigitalInput(11);
+        beam2 = new DigitalInput(12);
+        beam3 = new DigitalInput(13);
+        beam4 = new DigitalInput(18);
+        beam5 = new DigitalInput(19); 
+        beam6 = new DigitalInput(20);
+        beam7 = new DigitalInput(21);
     }
     /**
      * @return the beam
      */
-    public DigitalOutput[] getBeam() {
-        return beam;
-    }
 
-    public boolean detectBall(int top, int mid, int low){
-        if(beam[top].get() && beam[mid].get() &&beam[low].get()){
+    public static BreakBeam getInstance() {
+        if (breakBeam == null) {
+          breakBeam = new BreakBeam();
+        }
+        return breakBeam;
+      }
+
+    public boolean detectBallHigh(){
+        if(!beam0.get() && !beam1.get() &&beam2.get()){
             return true;
         }
         else{
             return false;
         }
+    }
+
+    public boolean detectBallMid(){
+        if(!beam3.get() && !beam4.get() && beam5.get()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public boolean detectBallLow(){
+        if(beam5.get() && !beam6.get() && !beam7.get()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void toSmartDashBoard()
+    {
+        SmartDashboard.putBoolean("beam0", beam0.get());
+        SmartDashboard.putBoolean("beam1", beam1.get());
+        SmartDashboard.putBoolean("beam2", beam2.get());
+        SmartDashboard.putBoolean("beam3", beam3.get());
+        SmartDashboard.putBoolean("beam4", beam4.get());
+        SmartDashboard.putBoolean("beam5", beam5.get());
+
     }
 
 
