@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-
+  
   private Drivetrain m_swerve;
   private Compressor comp = new Compressor(0);
   private Shoot shooter = new Shoot();
@@ -63,6 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     trajContain.trajectoryFollowing.auto();
+  
 
   }
 
