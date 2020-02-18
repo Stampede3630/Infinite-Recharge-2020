@@ -22,6 +22,8 @@ public class BreakBeam {
     DigitalInput beam3;
     DigitalInput beam4;
     DigitalInput beam5;
+    DigitalInput beam6;
+    DigitalInput beam7;
 
 
 
@@ -32,7 +34,9 @@ public class BreakBeam {
         beam2 = new DigitalInput(12);
         beam3 = new DigitalInput(13);
         beam4 = new DigitalInput(18);
-        beam5 = new DigitalInput(19);      
+        beam5 = new DigitalInput(19); 
+        beam6 = new DigitalInput(20);
+        beam7 = new DigitalInput(21);
     }
     /**
      * @return the beam
@@ -46,7 +50,7 @@ public class BreakBeam {
       }
 
     public boolean detectBallHigh(){
-        if(!beam0.get() && !beam1.get() &&!beam2.get()){
+        if(!beam0.get() && !beam1.get() &&beam2.get()){
             return true;
         }
         else{
@@ -55,7 +59,15 @@ public class BreakBeam {
     }
 
     public boolean detectBallMid(){
-        if(beam3.get() && !beam4.get() && !beam5.get()){
+        if(!beam3.get() && !beam4.get() && beam5.get()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public boolean detectBallLow(){
+        if(beam5.get() && !beam6.get() && !beam7.get()){
             return true;
         }
         else{

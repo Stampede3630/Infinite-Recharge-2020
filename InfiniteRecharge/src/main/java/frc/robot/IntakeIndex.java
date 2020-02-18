@@ -44,7 +44,7 @@ public class IntakeIndex {
     }
 
     public void updateBooleans() {
-        bottom = false;
+        bottom = breakBeam.detectBallLow();
         middle = breakBeam.detectBallMid();
         top = breakBeam.detectBallHigh();
         none = false;

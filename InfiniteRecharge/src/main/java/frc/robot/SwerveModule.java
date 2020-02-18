@@ -146,6 +146,20 @@ public class SwerveModule {
    * return 0; //WRONG!!!!!!! }
    */
 
+
+  public double angleSupp( double angle){
+    if (angle>Math.PI){
+      return angle- 2* Math.PI;
+    }
+    else if(angle<-Math.PI){
+      return angle +2*Math.PI;
+    }
+    else{
+      return angle;
+    }
+  }
+
+
   public double bound(double setpoint) {
     double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI);
     double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
@@ -158,9 +172,9 @@ public class SwerveModule {
     }
 
     if (Math.abs(trueDTheta) < Math.PI/2) {
-      return getAngle() + trueDTheta;
+      return angleSupp(getAngle() + trueDTheta);
     } else {
-      return getAngle() + (trueDTheta - Math.PI) ;
+      return angleSupp(getAngle() + (trueDTheta - Math.PI)) ;
     }
     
 //New Bound
