@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
   private Chooser chooser;
   private ServoMotor servomotor;
   
+  private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
 
   @Override
   public void robotInit() {
@@ -59,7 +60,16 @@ public class Robot extends TimedRobot {
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
     m_swerve.postToSmartDashboard();
+
+    RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
  
+    if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)){ // TODO: Remove this if not needed
+      imperialRumble.trigger();
+    }
+    if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)){
+      imperialRumble.reset();
+    }
+
     breakBeam.toSmartDashBoard();
   }
 
