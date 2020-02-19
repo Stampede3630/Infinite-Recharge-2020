@@ -35,7 +35,15 @@ public class ServoMotor {
         }
     }
 
-    public void TestServo() {
+    public void ServoUp() {
+        servo1.set(1);
+    }
+
+    public void ServoForward() {
         servo1.set(0.5);
+    }
+
+    public void ServoBackwards() {
+        servo1.set(0);
     }
 }

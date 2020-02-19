@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private BreakBeam breakBeam;
   private Drivetrain m_swerve; 
   private Chooser chooser;
+  private ServoMotor servomotor;
   
 
   @Override
@@ -81,9 +82,12 @@ public class Robot extends TimedRobot {
     //shoot.control();
     //ballProcessor.manualControl();
     //ballProcessor.ToggleSolenoids();
-    climber.climberPeriodic();
-    ballProcessor.index();
-    shoot.control();
+    //climber.climberPeriodic();
+    //ballProcessor.index();
+    //shoot.control();
+
+    // testing servo stuff
+    servomotor.ServoUp();
 
 
 
