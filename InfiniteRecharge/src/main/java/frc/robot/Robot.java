@@ -58,6 +58,8 @@ public class Robot extends TimedRobot {
     ballProcessor.updateBooleans();
     shoot.smartDashboardOutput();
     m_swerve.postToSmartDashboard();
+
+    RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
  
     breakBeam.toSmartDashBoard();
   }
