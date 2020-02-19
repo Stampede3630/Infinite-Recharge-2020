@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
 
     RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
  
-    if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)){
+    if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)){ // TODO: Remove this if not needed
       imperialRumble.trigger();
     }
     if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)){
