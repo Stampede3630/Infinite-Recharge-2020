@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("kD", 0);
     breakBeam = BreakBeam.getInstance();
     //BallFollowDrive.resetIntakeState();
-
+    servomotor = new ServoMotor();
   }
 
   @Override
