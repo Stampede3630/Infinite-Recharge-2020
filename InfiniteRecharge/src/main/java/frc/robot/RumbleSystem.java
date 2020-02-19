@@ -172,8 +172,8 @@ public class RumbleSystem
 		updatesSinceLastTick = 0;
 		currentCommandIndex = 0;
 		activeRumbleSequence = null;
-		Robot.controller.setRumble(RumbleType.kLeftRumble, 0);
-		Robot.controller.setRumble(RumbleType.kRightRumble, 0);
+		RobotMap.CONTROLLER.setRumble(RumbleType.kLeftRumble, 0);
+		RobotMap.CONTROLLER.setRumble(RumbleType.kRightRumble, 0);
 	}
 
 	/**
@@ -249,8 +249,8 @@ public class RumbleSystem
 		 */
 		public void process()
 		{
-			Robot.controller.setRumble(RumbleType.kLeftRumble, leftRumble);
-			Robot.controller.setRumble(RumbleType.kRightRumble, rightRumble);
+			RobotMap.CONTROLLER.setRumble(RumbleType.kLeftRumble, leftRumble);
+			RobotMap.CONTROLLER.setRumble(RumbleType.kRightRumble, rightRumble);
 		}
 	}
 }
