@@ -75,14 +75,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_swerve.driveWithJoystick();
+    m_swerve.driveWithJoystick(true);
     // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
     // RobotMap.controller.getX(Hand.kRight) *.5);
     //shoot.control();
     //ballProcessor.manualControl();
     //ballProcessor.ToggleSolenoids();
     climber.climberPeriodic();
-    //ballProcessor.index();
+    ballProcessor.index();
     shoot.control();
 
 

@@ -35,7 +35,7 @@ public StoreTrajectories() {
     
      new Translation2d(2.40,2.20);//avoid hitting pole 
 
- )
+ 
 }
    
 

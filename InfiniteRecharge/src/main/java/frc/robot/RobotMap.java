@@ -42,13 +42,86 @@ public class RobotMap {
      * we just want the primary one.
      */
     public static final int kPIDLoopIdx = 0;
-
+    private static RobotMap robotMap;
     /**
      * Set to zero to skip waiting for confirmation, set to nonzero to wait and
      * report to DS if action fails.
      */
     public static final int kTimeoutMs = 30;
+    public static RobotMap getInstance()
+    {
+        if(robotMap == null)
+        {
+            robotMap = new RobotMap();
+        }
+        return robotMap;
+    }
+    private RobotMap()
+    {
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(true);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(true);
 
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+
+        DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
+        DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
+
+        DriveMap.BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+        DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1); // setting to integrated sensor
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+
+        // Shooter
+        ShooterMap.LEFT_SHOOTER_FALCON.setInverted(false);
+        ShooterMap.RIGHT_SHOOTER_FALCON.set(ControlMode.Follower, ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
+        ShooterMap.RIGHT_SHOOTER_FALCON.setInverted(InvertType.OpposeMaster);
+        IntakeMap.BELT.setNeutralMode(NeutralMode.Brake);
+
+        ShooterMap.LEFT_SHOOTER_FALCON.configFactoryDefault();
+        // ShooterMap.RIGHT_SHOOTER_FALCON.configFactoryDefault();
+
+        ShooterMap.LEFT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor,
+                kPIDLoopIdx, kTimeoutMs);
+        // ShooterMap.RIGHT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        // kPIDLoopIdx,
+        // kTimeoutMs);
+
+        ShooterMap.LEFT_SHOOTER_FALCON.setSensorPhase(true);
+        // ShooterMap.RIGHT_SHOOTER_FALCON.setSensorPhase(true);
+
+        ShooterMap.LEFT_SHOOTER_FALCON.setSelectedSensorPosition(1);
+
+        /* Config the peak and nominal outputs */
+        ShooterMap.LEFT_SHOOTER_FALCON.configNominalOutputForward(0, kTimeoutMs);
+        ShooterMap.LEFT_SHOOTER_FALCON.configNominalOutputReverse(0, kTimeoutMs);
+        ShooterMap.LEFT_SHOOTER_FALCON.configPeakOutputForward(1, kTimeoutMs);
+        ShooterMap.LEFT_SHOOTER_FALCON.configPeakOutputReverse(-1, kTimeoutMs);
+
+        /* Config the Velocity closed loop gains in slot0 */
+        ShooterMap.LEFT_SHOOTER_FALCON.config_kF(kPIDLoopIdx, 0.055, kTimeoutMs); // .45 *(1023.0/7200.0)
+        ShooterMap.LEFT_SHOOTER_FALCON.config_kP(kPIDLoopIdx, 0.4, kTimeoutMs);
+        ShooterMap.LEFT_SHOOTER_FALCON.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
+        ShooterMap.LEFT_SHOOTER_FALCON.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
+
+        // Intake
+
+        IntakeMap.ULTRASONIC.setAutomaticMode(true);
+        IntakeMap.ULTRASONIC.setDistanceUnits(Ultrasonic.Unit.kInches);
+        // IntakeMap.COLOR_SENSOR_MID.setAutomaticMode(true);
+        // IntakeMap.COLOR_SENSOR_MID.setDistanceUnits(Ultrasonic.Unit.kInches);
+    }
     /**
      * TODO: What is this for?
      */
@@ -82,7 +155,7 @@ public class RobotMap {
      */
     public static class TrackingPIDMap {
         public static final ProfiledPIDController TURN = new ProfiledPIDController(0.03, 0, 0,
-                new TrapezoidProfile.Constraints(RobotMap.PIDConstraints.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
+                new TrapezoidProfile.Constraints(RobotMap.DriveMap.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
         public static final PIDController X = new PIDController(0.03, 0, 0);
         public static final PIDController Y = new PIDController(0.03, 0, 0);
         public static final PIDController X_VEL = new PIDController(0.03, 0, 0);
@@ -140,15 +213,9 @@ public class RobotMap {
         public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
         public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
         public static final double FRONT_LEFT_ANGLE_OFFSET =-2.21; // radians
-    }
 
-    /**
-     * TODO: What is this for?\
-     */
-    public static class PIDConstraints {
-        // PID Constants/Contraints
-        public static final double MAX_SPEED = 4; // 3 meters per second
-        public static final double MAX_ANGULAR_SPEED = Math.PI;
+        public static final double MAX_SPEED = 3.627;
+        public static final double MAX_ANGULAR_SPEED = 4 * Math.PI;
     }
 
     /**

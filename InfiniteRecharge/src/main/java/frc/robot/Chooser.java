@@ -15,11 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class Chooser {
     private SendableChooser<Boolean> climbChooser;
     private  Drivetrain m_swerve;
-  
-    private enum DesiredAngle
-    {
-        k0, k90, k180,k270,kLONGSHOT, kNOTHING
-    }
+    boolean fieldRelative;
+
     private Climber climber;
     public Chooser(){
 
@@ -28,6 +25,7 @@ public class Chooser {
         climbChooser.setDefaultOption("angles", true);
         climbChooser.addOption("climb", false);
         m_swerve = Drivetrain.getInstance();
+        fieldRelative = true;
     }
 
     public void updateChooser(){
@@ -44,23 +42,23 @@ public class Chooser {
     public void driveChooser()
     {
         if (RobotMap.CONTROLLER.getPOV() == 0) {
-            m_swerve.driveAtAngle(0);
+            m_swerve.driveAtAngle(0, fieldRelative);
         }
         else if (RobotMap.CONTROLLER.getPOV()==180) {
-            m_swerve.driveAtAngle(180);
+            m_swerve.driveAtAngle(180, fieldRelative);
         }
         else if (RobotMap.CONTROLLER.getPOV()==270) {
-            m_swerve.driveAtAngle(270);
+            m_swerve.driveAtAngle(270, fieldRelative);
         }
         else if (RobotMap.CONTROLLER.getPOV()==90) {
-            m_swerve.driveAtAngle(90);
+            m_swerve.driveAtAngle(90, fieldRelative);
         }
         else if (RobotMap.CONTROLLER.getPOV() == 45) //BAD
         {
-            m_swerve.driveAtAngle(11);
+            m_swerve.driveAtAngle(11, fieldRelative);
         }
         else {
-            m_swerve.driveWithJoystick();
+            m_swerve.driveWithJoystick(fieldRelative);
         }
     }
 

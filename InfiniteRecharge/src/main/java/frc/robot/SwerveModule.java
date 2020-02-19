@@ -39,7 +39,7 @@ public class SwerveModule {
 
    double driveOutput;
 
-  private final PIDController m_drivePIDController = new PIDController(0.1, 0, 0);
+  //private final PIDController m_drivePIDController = new PIDController(0.25, 0, 0);
 
   private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new
                                                              // TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
@@ -62,11 +62,11 @@ public class SwerveModule {
       AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange) {
     if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
 
-      kPSpecial = .4;
+      kPSpecial = .8;
       //kModuleMaxAngularVelocity = Math.PI;
      // kModuleMaxAngularAcceleration = Math.PI/2;
     } else {
-      kPSpecial = 1.2;
+      kPSpecial = 1.6;
       kD = 0.02;
     }
 
@@ -229,9 +229,13 @@ public class SwerveModule {
     double currentAngle = getAngle(); 
     var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
     
-    driveOutput = m_drivePIDController.calculate(getTalonFXRate(), state.speedMetersPerSecond) *m_driveScalar;
+    driveOutput = state.speedMetersPerSecond/RobotMap.DriveMap.MAX_SPEED * m_driveScalar;
+    //driveOutput = m_drivePIDController.calculate(Math.abs(getTalonFXRate()), Math.abs(state.speedMetersPerSecond)) * Math.signum(state.speedMetersPerSecond) *m_driveScalar;
   
-
+    if(driveOutput < 0.05)
+    {
+      turnOutput = 0;
+    }
     m_turningMotor.set(-turnOutput);
     m_driveMotor.set(driveOutput);
       
