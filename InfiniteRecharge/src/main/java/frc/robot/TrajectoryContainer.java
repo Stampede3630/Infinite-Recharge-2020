@@ -22,7 +22,21 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
  * Add your docs here.
  */
 public class TrajectoryContainer {
-	// private Robot robot;
+	private static TrajectoryContainer instance;
+
+	static {
+		instance = new TrajectoryContainer();
+	}
+
+	public static TrajectoryContainer getInstance() {
+		return instance;
+	}
+
+	private TrajectoryContainer() // private to prevent instantiation elsewhere
+	{
+
+	}
+	
 	private PIDController xController = new PIDController(RobotMap.AutoConstants.KPX_CONTROLLER, 0, 0);
 	private PIDController yController = new PIDController(RobotMap.AutoConstants.KPY_CONTROLLER, 0, 0);
 	private TrajectoryConfig config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,

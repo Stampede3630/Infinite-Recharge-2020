@@ -57,11 +57,11 @@ public class TrajectoryFollowing {
 	public void auto() {
 		if(m_timer.get() > trajectory.getTotalTimeSeconds())
 		{
-			Drivetrain.drive(0, 0, 0, false);
+			Drivetrain.getInstance().drive(0, 0, 0, false);
 		}
 		updateAutoStates();
 		//System.out.println(m_outputModuleStates[0].speedMetersPerSecond + "," + m_outputModuleStates[0].angle.getDegrees());
-		Drivetrain.setModuleStates(m_outputModuleStates);
+		Drivetrain.getInstance().setModuleStates(m_outputModuleStates);
 
 	}
 

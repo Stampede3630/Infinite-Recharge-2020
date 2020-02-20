@@ -9,6 +9,21 @@ package frc.robot;
 
 public class Climber {
 
+    private static Climber instance;
+
+    static {
+      instance = new Climber();
+    }
+  
+    public static Climber getInstance() {
+      return instance;
+    }
+
+    private Climber() // private to make sure it isn't instantiated elsewhere
+    {
+
+    }
+
     public static final double elevatorSpeed = -0.7;
     public static final double strafeSpeed = 0.5;
 

@@ -12,9 +12,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
 
-    double xSpeed;
-    static double rotpm;
-    public Shooter() {
+    private static Shooter instance;
+
+	static {
+		instance = new Shooter();
+	}
+
+	public static Shooter getInstance() {
+		return instance;
+    }
+    
+    private double xSpeed;
+    private double rotpm;
+    private Shooter() {
         rotpm = 4000;// 3800
     }
 
