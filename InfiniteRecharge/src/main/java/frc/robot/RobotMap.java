@@ -320,4 +320,13 @@ public class RobotMap {
         // IntakeMap.COLOR_SENSOR_MID.setAutomaticMode(true);
         // IntakeMap.COLOR_SENSOR_MID.setDistanceUnits(Ultrasonic.Unit.kInches);
     }
+
+    public static void resetEncoders()
+    {
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+    }
+
 }

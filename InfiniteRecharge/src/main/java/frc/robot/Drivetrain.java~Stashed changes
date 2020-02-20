@@ -13,56 +13,49 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain {
-    static Drivetrain drivetrain;
-
-    public Drivetrain() {
-      m_gyro.reset();
-    }
-
-    public static Drivetrain getInstance(){
-        if(drivetrain == null){
-            drivetrain = new Drivetrain();
-        }
-        return drivetrain;
-    }
   
+
+  // ******************THESE locations must be in Meters .....
+  // SwerveDriveKinematics computes in Meters****************** */
+  // Ensure Gyro reading is not crazy (we may need to do a full long reset)
+  // translation is (x,y) where x is forward and y is side-side
   private static final Translation2d m_frontLeftLocation = new Translation2d(0.3556, 0.3556);
   private static final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
   private static final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
   private static final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
   private static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
-  public static final SwerveModule m_frontLeft = new SwerveModule(
-                                                  RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
-                                                  RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, 
-                                                  RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
-                                                  RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
-  public static final SwerveModule m_frontRight = new SwerveModule(
-                                                  RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
-                                                  RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, 
-                                                  RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
-                                                  RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET);
-  private static final SwerveModule m_backLeft = new SwerveModule(
-                                                  RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
-                                                  RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, 
-                                                  RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
-                                                  RobotMap.DriveMap.BACK_LEFT_ANGLE_OFFSET);
-  private static final SwerveModule m_backRight = new SwerveModule(
-                                                  RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR,
-                                                  RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, 
-                                                  RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
-                                                  RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
+  public static final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
+      RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
+      RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
+  public static final SwerveModule m_frontRight = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
+      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
+      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET);
+  private static final SwerveModule m_backLeft = new SwerveModule(RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
+      RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
+      RobotMap.DriveMap.BACK_LEFT_ANGLE_OFFSET);
+  private static final SwerveModule m_backRight = new SwerveModule(RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR,
+      RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
+      RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
 
-  public static final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-                                                            m_frontLeftLocation, 
-                                                            m_frontRightLocation,
-                                                            m_backLeftLocation, 
-                                                            m_backRightLocation);
+  public static final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation,
+      m_backLeftLocation, m_backRightLocation);
 
   public static final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
   private PIDController robotAnglePID = new PIDController(0.1, 0, 0);
   private static Drivetrain drive;
+  private Drivetrain() {
+    m_gyro.reset();
+  }
 
+  public static Drivetrain getInstance()
+  {
+    if(drive == null)
+    {
+      drive = new Drivetrain();
+    }
+    return drive;
+  }
   /**
    * 
    * Returns the angle of the robot as a Rotation2d.
@@ -119,12 +112,8 @@ public class Drivetrain {
    */
 
   public static void updateOdometry() {
-    m_odometry.update(
-                getAngle(), 
-                m_frontLeft.getState(), 
-                m_frontRight.getState(), 
-                m_backLeft.getState(),
-                m_backRight.getState());
+    m_odometry.update(getAngle(), m_frontLeft.getState(), m_frontRight.getState(), m_backLeft.getState(),
+        m_backRight.getState());
     // System.out.println(m_frontLeft.getState());
     // System.out.println(m_frontRight.getState());
     // System.out.println(m_backLeft.getState());
@@ -169,14 +158,7 @@ public class Drivetrain {
 
   }
 
-  
-  /**
-   * Updates the field relative position of the robot.
-   */
-
- 
-
-  public void driveWithJoystick(boolean fieldRelative) {
+  public static void driveWithJoystick(boolean fieldRelative) {
 
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
@@ -206,6 +188,15 @@ public class Drivetrain {
     drive(xSpeed, ySpeed, rot, fieldRelative);
   }
 
+  public void updateModuleAngles()
+
+  {
+    m_backLeft.readAngle();
+    m_backRight.readAngle();
+    m_frontLeft.readAngle();
+    m_frontRight.readAngle();
+  }
+
   public void driveAtAngle(double angle, boolean fieldRelative)
   {
     var xSpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
@@ -220,25 +211,9 @@ public class Drivetrain {
     if (Math.abs(ySpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
       ySpeed = 0;
     }
-    // Get the rate of angular rotatpion. We are inverting this because we want a
-    // positive value when we pull to the left (remember, CCW is positive in
-    // mathematics). Xbox controllers return positive values when you pull to
-    // the right by default.
+
     double turnSpeed = robotAnglePID.calculate(getAngle().getDegrees(), angle);
     drive(xSpeed, ySpeed, turnSpeed, fieldRelative);
+
   }
-
-  public void updateModuleAngles()
-
-  {
-    m_backLeft.readAngle();
-    m_backRight.readAngle();
-    m_frontLeft.readAngle();
-    m_frontRight.readAngle();
-  }
-
-
-
-
-  
 }

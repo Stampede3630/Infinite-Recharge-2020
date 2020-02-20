@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -24,32 +25,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  private Compressor comp = new Compressor(0);
+  private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
   private Climber climber;
-
   private IntakeIndex ballProcessor;
   private Shooter shoot;
   private BreakBeam breakBeam;
   private Drivetrain m_swerve; 
   private Chooser chooser;
-  private ServoMotor servomotor;
-  
-  private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
-
+  private TrajectoryContainer tContainer;
+  private ServoMotor servoMotor;
+  private Compressor comp = new Compressor(0);
   @Override
   public void robotInit() {
     m_swerve = Drivetrain.getInstance();
+    
     chooser = new Chooser();
     shoot = new Shooter();
     ballProcessor = new IntakeIndex();
     climber = new Climber();
+    tContainer = new TrajectoryContainer();
     SmartDashboard.putNumber("kP", 1);
     SmartDashboard.putNumber("kF", 0.055);
     SmartDashboard.putNumber("kI", 0);
     SmartDashboard.putNumber("kD", 0);
     breakBeam = BreakBeam.getInstance();
     //BallFollowDrive.resetIntakeState();
-    servomotor = new ServoMotor();
+    servoMotor = new ServoMotor();
   }
 
   @Override
@@ -75,30 +76,24 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    RobotMap.resetEncoders();
 
   }
 
   @Override
   public void autonomousPeriodic() {
-    
-
+    tContainer.trajectoryFollowing.auto();
+    m_swerve.updateOdometry();
   }
 
   @Override
   public void teleopPeriodic() {
     m_swerve.driveWithJoystick(true);
-    // Systemtrue.out.println(RobotMap.controller.getY(Hand.kRight) *.5 + " , " +
-    // RobotMap.controller.getX(Hand.kRight) *.5);
-    //shoot.control();
-    //ballProcessor.manualControl();
-    //ballProcessor.ToggleSolenoids();
-    //climber.climberPeriodic();
+    servoMotor.ServoUp();
+    climber.climberPeriodic();
     //ballProcessor.index();
-    //shoot.control();
-
-    // testing servo stuff
-    servomotor.ServoUp();
-
+    shoot.control();
+    ballProcessor.ToggleSolenoids();
 
 
   }

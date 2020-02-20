@@ -102,7 +102,7 @@ public class SwerveModule {
   }
 
   public double getTalonFXPos() {
-    double ticks = m_driveMotor.getSelectedSensorPosition(0) * 10;
+    double ticks = m_driveMotor.getSelectedSensorPosition(0);
     double revs = ticks / (kEncoderResolution * 8.307692307692308);
     double meters = revs * 2 * Math.PI * kWheelRadius;
     return -meters;
@@ -232,14 +232,10 @@ public class SwerveModule {
     driveOutput = state.speedMetersPerSecond/RobotMap.DriveMap.MAX_SPEED * m_driveScalar;
     //driveOutput = m_drivePIDController.calculate(Math.abs(getTalonFXRate()), Math.abs(state.speedMetersPerSecond)) * Math.signum(state.speedMetersPerSecond) *m_driveScalar;
   
-    if(driveOutput < 0.05)
-    {
-      turnOutput = 0;
-    }
     m_turningMotor.set(-turnOutput);
-    m_driveMotor.set(driveOutput);
+    m_driveMotor.set(-driveOutput);
       
-    System.out.println("measurement:" + currentAngle + ", setpoint: " +setpoint + ", = (turn output) " + turnOutput);
+    //System.out.println("measurement:" + currentAngle + ", setpoint: " +setpoint + ", = (turn output) " + turnOutput);
     SmartDashboard.putNumber("Setpoint bound angle: " + m_driveMotor.getDeviceID(), Math.toDegrees(setpoint));
     SmartDashboard.putNumber("setpoint unbound angle: " + m_driveMotor.getDeviceID(), state.angle.getDegrees());
     SmartDashboard.putNumber("Current unbound angle: " + m_driveMotor.getDeviceID(), Math.toDegrees(getAngle()));

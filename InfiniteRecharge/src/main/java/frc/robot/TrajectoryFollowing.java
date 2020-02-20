@@ -55,8 +55,14 @@ public class TrajectoryFollowing {
 	}
 
 	public void auto() {
+		if(m_timer.get() > trajectory.getTotalTimeSeconds())
+		{
+			Drivetrain.drive(0, 0, 0, false);
+		}
 		updateAutoStates();
+		//System.out.println(m_outputModuleStates[0].speedMetersPerSecond + "," + m_outputModuleStates[0].angle.getDegrees());
 		Drivetrain.setModuleStates(m_outputModuleStates);
+
 	}
 
 	@SuppressWarnings("LocalVariableName")
@@ -70,7 +76,7 @@ public class TrajectoryFollowing {
 		var poseError = desiredPose.relativeTo(m_odometry.getPoseMeters());
 
 		double targetXVel = m_xController.calculate(m_odometry.getPoseMeters().getTranslation().getX(),
-				m_odometry.getPoseMeters().getTranslation().getX());
+				desiredPose.getTranslation().getX());
 
 		double targetYVel = m_yController.calculate(m_odometry.getPoseMeters().getTranslation().getY(),
 				desiredPose.getTranslation().getY());
@@ -85,7 +91,8 @@ public class TrajectoryFollowing {
 
 		targetXVel += vRef * poseError.getRotation().getCos();
 		targetYVel += vRef * poseError.getRotation().getSin();
-
+		System.out.println(m_odometry.getPoseMeters().getTranslation().getX());
+		//System.out.println("xvel: " + targetXVel + ", yvel: " + targetYVel + ", rot: " + targetAngularVel);
 		var targetChassisSpeeds = new ChassisSpeeds(targetXVel, targetYVel, targetAngularVel);
 
 		m_outputModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
