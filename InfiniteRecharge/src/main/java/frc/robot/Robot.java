@@ -62,13 +62,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		RobotMap.resetEncoders();
-
+		TrajectoryContainer.getInstance().trajectoryFollowing.restAll();
 	}
 
 	@Override
 	public void autonomousPeriodic() {
 		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
 		Drivetrain.getInstance().updateOdometry();
+		System.out.println("Total Time Seconds"
+				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
+		System.out.println(
+				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 	}
 
 	@Override
