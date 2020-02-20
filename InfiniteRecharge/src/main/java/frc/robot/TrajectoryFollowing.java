@@ -51,7 +51,7 @@ public class TrajectoryFollowing {
 
 	}
 
-	public void restAll(){
+	public void resetAll(){
 		m_timer.reset();
 		Rotation2d angle = Drivetrain.getInstance().getAngle();
 		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0,0, new Rotation2d(angle.getRadians())), angle);

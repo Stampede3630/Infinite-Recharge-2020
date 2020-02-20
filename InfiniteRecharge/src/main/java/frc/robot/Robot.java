@@ -7,12 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -25,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
 	private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
-	private Compressor comp = new Compressor(0);
+	// private Compressor comp = new Compressor(0);
 
 	@Override
 	public void robotInit() {
@@ -62,7 +58,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		RobotMap.resetEncoders();
-		TrajectoryContainer.getInstance().trajectoryFollowing.restAll();
+		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
 
 	@Override
