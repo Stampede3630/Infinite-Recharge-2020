@@ -231,7 +231,16 @@ public class SwerveModule {
     
     driveOutput = state.speedMetersPerSecond/RobotMap.DriveMap.MAX_SPEED * m_driveScalar;
     //driveOutput = m_drivePIDController.calculate(Math.abs(getTalonFXRate()), Math.abs(state.speedMetersPerSecond)) * Math.signum(state.speedMetersPerSecond) *m_driveScalar;
-  
+    
+    //if (m_turningPIDController.getPositionError()>Math.PI/4 && driveOutput<0.1){
+    //  driveOutput = 0;
+    //
+  //}
+
+    if (driveOutput==0){
+      turnOutput=0;
+    }
+
     m_turningMotor.set(-turnOutput);
     m_driveMotor.set(-driveOutput);
       
