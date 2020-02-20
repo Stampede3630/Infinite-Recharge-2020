@@ -130,7 +130,7 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.BELT.set(0);
 		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed
 				&& Math.abs(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0)) >= Shooter
-						.rpmToRotatPer100Mili(Shooter.rotpm) * Shooter.kEncoderUnitsPerRev * 0.97) {
+						.rpmToRotatPer100Mili(RobotMap.ShooterMap.RPM) * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV * 0.97) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			System.out.println("shooter up to speed");
 
@@ -222,12 +222,12 @@ public class IntakeIndex {
 		SmartDashboard.putNumber("falcon velocity",
 				RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
 		SmartDashboard.putNumber("desired velocity",
-				Shooter.rpmToRotatPer100Mili(Shooter.rotpm) * Shooter.kEncoderUnitsPerRev);
+				Shooter.rpmToRotatPer100Mili(RobotMap.ShooterMap.RPM) * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV);
 		SmartDashboard.putBoolean("Shooter boolean", RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter
 																											// up to
 																											// speed
 				&& Math.abs(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0)) >= Shooter
-						.rpmToRotatPer100Mili(Shooter.rotpm) * Shooter.kEncoderUnitsPerRev);
+						.rpmToRotatPer100Mili(RobotMap.ShooterMap.RPM) * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV);
 	}
 
 	public void ToggleSolenoids() {

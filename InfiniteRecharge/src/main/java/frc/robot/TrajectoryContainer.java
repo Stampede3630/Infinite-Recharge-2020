@@ -42,7 +42,7 @@ public class TrajectoryContainer {
 	private TrajectoryConfig config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
 			RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 					// Add kinematics to ensure max speed is actually obeyed
-					.setKinematics(Drivetrain.m_kinematics);
+					.setKinematics(RobotMap.DrivetrainMap.KINEMATICS);
 
 	private ProfiledPIDController thetaController = new ProfiledPIDController(RobotMap.AutoConstants.KP_THETA_CONTROLLER, 0, 0,
 	RobotMap.AutoConstants.kThetaControllerConstraints);

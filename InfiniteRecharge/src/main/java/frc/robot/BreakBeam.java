@@ -22,6 +22,7 @@ public class BreakBeam {
 		return instance;
 	}
 
+	// TODO: Move to RobotMap
 	private DigitalInput beam0;
 	private DigitalInput beam1;
 	private DigitalInput beam2;
@@ -74,6 +75,5 @@ public class BreakBeam {
 		SmartDashboard.putBoolean("beam3", beam3.get());
 		SmartDashboard.putBoolean("beam4", beam4.get());
 		SmartDashboard.putBoolean("beam5", beam5.get());
-
 	}
 }

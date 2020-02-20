@@ -1,16 +1,13 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.kauailabs.navx.frc.AHRS;
+import frc.robot.RobotMap.SensorMap;
 
 public class Drivetrain {
 
@@ -25,33 +22,10 @@ public class Drivetrain {
 	}
 
 	private Drivetrain() {
-		m_gyro.reset();
+		SensorMap.GYRO.reset();
 	}
 
-	private static final Translation2d m_frontLeftLocation = new Translation2d(0.3556, 0.3556);
-	private static final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
-	private static final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
-	private static final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
-	private static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-
-	public static final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
-			RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
-			RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
-	public static final SwerveModule m_frontRight = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
-			RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
-			RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET);
-	private static final SwerveModule m_backLeft = new SwerveModule(RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
-			RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
-			RobotMap.DriveMap.BACK_LEFT_ANGLE_OFFSET);
-	private static final SwerveModule m_backRight = new SwerveModule(RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR,
-			RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
-			RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
-
-	public static final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation,
-			m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-
-	public static final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics,
-			Rotation2d.fromDegrees(-m_gyro.getAngle()));
+	
 	private PIDController robotAnglePID = new PIDController(0.1, 0, 0);
 
 	/**
@@ -63,7 +37,7 @@ public class Drivetrain {
 	public Rotation2d getAngle() {
 		// Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES
 		// CHANGE
-		return Rotation2d.fromDegrees(-m_gyro.getAngle());
+		return Rotation2d.fromDegrees(-SensorMap.GYRO.getAngle());
 	}
 
 	/**
@@ -77,7 +51,7 @@ public class Drivetrain {
 	 */
 	@SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-		SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
+		SwerveModuleState[] swerveModuleStates = RobotMap.DrivetrainMap.KINEMATICS.toSwerveModuleStates(
 				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getAngle())
 						: new ChassisSpeeds(xSpeed, ySpeed, rot));
 		/*
@@ -90,10 +64,10 @@ public class Drivetrain {
 
 	public void setModuleStates(SwerveModuleState[] swerveModuleStates) {
 		SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.DriveMap.MAX_SPEED);
-		m_frontLeft.setDesiredState(swerveModuleStates[0]);
-		m_frontRight.setDesiredState(swerveModuleStates[1]);
-		m_backLeft.setDesiredState(swerveModuleStates[2]);
-		m_backRight.setDesiredState(swerveModuleStates[3]);
+		RobotMap.DrivetrainMap.FRONT_LEFT.setDesiredState(swerveModuleStates[0]);
+		RobotMap.DrivetrainMap.FRONT_RIGHT.setDesiredState(swerveModuleStates[1]);
+		RobotMap.DrivetrainMap.BACK_LEFT.setDesiredState(swerveModuleStates[2]);
+		RobotMap.DrivetrainMap.BACK_RIGHT.setDesiredState(swerveModuleStates[3]);
 	}
 
 	/**
@@ -111,48 +85,48 @@ public class Drivetrain {
 	 */
 
 	public void updateOdometry() {
-		m_odometry.update(getAngle(), m_frontLeft.getState(), m_frontRight.getState(), m_backLeft.getState(),
-				m_backRight.getState());
-		// System.out.println(m_frontLeft.getState());
-		// System.out.println(m_frontRight.getState());
-		// System.out.println(m_backLeft.getState());
-		// System.out.println(m_backRight.getState());
+		RobotMap.DrivetrainMap.ODOMETRY.update(getAngle(), RobotMap.DrivetrainMap.FRONT_LEFT.getState(), RobotMap.DrivetrainMap.FRONT_RIGHT.getState(), RobotMap.DrivetrainMap.BACK_LEFT.getState(),
+		RobotMap.DrivetrainMap.BACK_RIGHT.getState());
+		// System.out.println(RobotMap.DrivetrainMap.FRONT_LEFT.getState());
+		// System.out.println(RobotMap.DrivetrainMap.FRONT_RIGHT.getState());
+		// System.out.println(RobotMap.DrivetrainMap.BACK_LEFT.getState());
+		// System.out.println(RobotMap.DrivetrainMap.BACK_RIGHT.getState());
 	}
 
 	public double getRightSidePos() {
-		return m_frontRight.getTalonFXPos();
+		return RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXPos();
 	}
 
 	public double getLeftSidePos() {
-		return m_frontLeft.getTalonFXPos();
+		return RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXPos();
 	}
 
 	public double getRightSideRate() {
-		return m_frontRight.getTalonFXRate();
+		return RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate();
 	}
 
 	public double getLeftSideRate() {
-		return m_frontLeft.getTalonFXRate();
+		return RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate();
 	}
 
 	public void postToSmartDashboard() {
-		SmartDashboard.putNumber("front-right angle - (2,3)", m_frontRight.getAngle());
-		SmartDashboard.putNumber("front-left angle - (0,1)", m_frontLeft.getAngle());
-		SmartDashboard.putNumber("back-right angle - (6,7)", m_backRight.getAngle());
-		SmartDashboard.putNumber("back-left angle - (4,5)", m_backLeft.getAngle());
+		SmartDashboard.putNumber("front-right angle - (2,3)", RobotMap.DrivetrainMap.FRONT_RIGHT.getAngle());
+		SmartDashboard.putNumber("front-left angle - (0,1)", RobotMap.DrivetrainMap.FRONT_LEFT.getAngle());
+		SmartDashboard.putNumber("back-right angle - (6,7)", RobotMap.DrivetrainMap.BACK_RIGHT.getAngle());
+		SmartDashboard.putNumber("back-left angle - (4,5)", RobotMap.DrivetrainMap.BACK_LEFT.getAngle());
 		SmartDashboard.putNumber("Navx value", getAngle().getDegrees());
 		SmartDashboard.putNumber("Joysticks y", RobotMap.CONTROLLER.getY(Hand.kLeft));
-		m_backRight.toSmartDashboard();
-		m_backLeft.toSmartDashboard();
+		RobotMap.DrivetrainMap.BACK_RIGHT.toSmartDashboard();
+		RobotMap.DrivetrainMap.BACK_LEFT.toSmartDashboard();
 
-		SmartDashboard.putNumber("meters dist X", m_odometry.getPoseMeters().getTranslation().getX());
-		SmartDashboard.putNumber("meters dist Y", m_odometry.getPoseMeters().getTranslation().getY());
-		SmartDashboard.putNumber("FR encoder rate", m_frontRight.getTalonFXRate());
-		SmartDashboard.putNumber("FL encoder rate", m_frontLeft.getTalonFXRate());
+		SmartDashboard.putNumber("meters dist X", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+		SmartDashboard.putNumber("meters dist Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+		SmartDashboard.putNumber("FR encoder rate", RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate());
+		SmartDashboard.putNumber("FL encoder rate", RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate());
 
-		SmartDashboard.putNumber("FR drive output", m_frontRight.getDriveOutput());
-		SmartDashboard.putNumber("FL drive output", m_frontLeft.getDriveOutput());
-		SmartDashboard.putNumber("BL drive output", m_backLeft.getDriveOutput());
+		SmartDashboard.putNumber("FR drive output", RobotMap.DrivetrainMap.FRONT_RIGHT.getDriveOutput());
+		SmartDashboard.putNumber("FL drive output", RobotMap.DrivetrainMap.FRONT_LEFT.getDriveOutput());
+		SmartDashboard.putNumber("BL drive output", RobotMap.DrivetrainMap.BACK_LEFT.getDriveOutput());
 
 	}
 
@@ -217,9 +191,9 @@ public class Drivetrain {
 	}
 
 	public void updateModuleAngles() {
-		m_backLeft.readAngle();
-		m_backRight.readAngle();
-		m_frontLeft.readAngle();
-		m_frontRight.readAngle();
+		RobotMap.DrivetrainMap.BACK_LEFT.readAngle();
+		RobotMap.DrivetrainMap.BACK_RIGHT.readAngle();
+		RobotMap.DrivetrainMap.FRONT_LEFT.readAngle();
+		RobotMap.DrivetrainMap.FRONT_RIGHT.readAngle();
 	}
 }
