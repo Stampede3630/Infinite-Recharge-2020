@@ -23,17 +23,11 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class SwerveModule {
 
-	private static double kModuleMaxAngularVelocity = Math.PI * 2 * 2.6;
-	private static double kModuleMaxAngularAcceleration = 6 * Math.PI; // radians per second squared //4
-
 	public final WPI_TalonFX m_driveMotor;
 	private final WPI_VictorSPX m_turningMotor;
 	private double m_steeringAngle;
 	private int m_driveScalar = 1;
 	private final AnalogInput m_turningEncoder;
-	double kPSpecial;
-	double kD;
-	AHRS currentAngle;
 
 	double driveOutput;
 
@@ -59,6 +53,8 @@ public class SwerveModule {
 
 	public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_VictorSPX drivetrainFrontLeftAngleMotor,
 			AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange) {
+		double kPSpecial;
+		// double kD;
 		if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
 
 			kPSpecial = .8;
@@ -66,11 +62,12 @@ public class SwerveModule {
 			// kModuleMaxAngularAcceleration = Math.PI/2;
 		} else {
 			kPSpecial = 1.6;
-			kD = 0.02;
+			// kD = 0.02;
 		}
 
 		m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02,
-				new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
+				new TrapezoidProfile.Constraints(RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_VELOCITY,
+						RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_ACCELERATION));
 
 		m_driveMotor = drivetrainFrontLeftDriveMotor;
 		m_turningMotor = drivetrainFrontLeftAngleMotor;

@@ -230,7 +230,9 @@ public class RobotMap {
 	public static class SwerveModuleMap {
 		public static final double WHEEL_RADIUS = 0.051;
 		public static final int ENCODER_RESOLUTION = 2048;
-
+		public static double MODULE_MAX_ANGULAR_VELOCITY = Math.PI * 2 * 2.6;
+		public static double MODULE_MAX_ANGULAR_ACCELERATION = 6 * Math.PI; // radians per second squared //4
+	
 	}
 
 	public static final XboxController CONTROLLER = new XboxController(0);
