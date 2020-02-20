@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
@@ -25,7 +26,7 @@ public class TrajectoryFollowing {
 
 	private TrajectoryConfig config;
 	public Trajectory trajectory;
-	private final Timer m_timer = new Timer();
+	public final Timer m_timer = new Timer();
 	private Pose2d m_finalPose;
 	private final SwerveDriveKinematics m_kinematics;
 	private final PIDController m_xController;
@@ -54,14 +55,22 @@ public class TrajectoryFollowing {
 
 	}
 
+	public void restAll(){
+		m_timer.reset();
+		m_odometry.resetPosition(new Pose2d(0,0, new Rotation2d(Drivetrain.getAngle().getRadians())), Drivetrain.getAngle());
+	}
+
 	public void auto() {
 		if(m_timer.get() > trajectory.getTotalTimeSeconds())
 		{
 			Drivetrain.drive(0, 0, 0, false);
+			System.out.println("Triggered !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
-		updateAutoStates();
-		//System.out.println(m_outputModuleStates[0].speedMetersPerSecond + "," + m_outputModuleStates[0].angle.getDegrees());
-		Drivetrain.setModuleStates(m_outputModuleStates);
+		else{
+			updateAutoStates();
+			//System.out.println(m_outputModuleStates[0].speedMetersPerSecond + "," + m_outputModuleStates[0].angle.getDegrees());
+			Drivetrain.setModuleStates(m_outputModuleStates);
+		}
 
 	}
 
@@ -91,7 +100,7 @@ public class TrajectoryFollowing {
 
 		targetXVel += vRef * poseError.getRotation().getCos();
 		targetYVel += vRef * poseError.getRotation().getSin();
-		System.out.println(m_odometry.getPoseMeters().getTranslation().getX());
+		System.out.println(m_odometry.getPoseMeters().getTranslation().getY());
 		//System.out.println("xvel: " + targetXVel + ", yvel: " + targetYVel + ", rot: " + targetAngularVel);
 		var targetChassisSpeeds = new ChassisSpeeds(targetXVel, targetYVel, targetAngularVel);
 

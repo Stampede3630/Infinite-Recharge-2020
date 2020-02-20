@@ -131,7 +131,7 @@ public class RobotMap {
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
         public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
 
-        public static final double KPX_CONTROLLER = 1;
+        public static final double KPX_CONTROLLER = 1.2;
         public static final double KPY_CONTROLLER = 1;
         public static final double KP_THETA_CONTROLLER = 1;
 
