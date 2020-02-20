@@ -124,5 +124,15 @@ public class RobotMap {
         }
         return thisInstance;
     }
+<<<<<<< Updated upstream
     */
+=======
+    public static void resetEncoders()
+    {
+        DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+        DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
+    }
+>>>>>>> Stashed changes
 }
