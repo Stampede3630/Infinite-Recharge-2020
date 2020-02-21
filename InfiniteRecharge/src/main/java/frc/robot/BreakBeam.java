@@ -74,6 +74,8 @@ public class BreakBeam {
 		SmartDashboard.putBoolean("beam2", beam2.get());
 		SmartDashboard.putBoolean("beam3", beam3.get());
 		SmartDashboard.putBoolean("beam4", beam4.get());
-		SmartDashboard.putBoolean("beam5", beam5.get());
+        SmartDashboard.putBoolean("beam5", beam5.get());
+        SmartDashboard.putBoolean("beam6", beam6.get());
+        SmartDashboard.putBoolean("beam7", beam7.get());
 	}
 }

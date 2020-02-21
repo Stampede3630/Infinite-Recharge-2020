@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		RobotMap.setDriveTalonsBreak();
 		RobotMap.resetEncoders();
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
@@ -71,6 +72,11 @@ public class Robot extends TimedRobot {
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 	}
 
+	@Override
+	public void teleopInit() {
+		super.teleopInit();
+		RobotMap.setDriveTalonsBreak();
+	}
 	@Override
 	public void teleopPeriodic() {
 		Drivetrain.getInstance().driveWithJoystick(true);
@@ -101,6 +107,12 @@ public class Robot extends TimedRobot {
 		 */
 		// Drivetrain.postToSmartDashboard();
 
+	}
+
+	@Override
+	public void disabledInit() {
+		super.disabledInit();
+		RobotMap.setDriveTalonsCoast();
 	}
 
 }

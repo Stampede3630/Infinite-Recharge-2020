@@ -268,6 +268,7 @@ public class RobotMap {
 		ShooterMap.LEFT_SHOOTER_FALCON.setInverted(false);
 		ShooterMap.RIGHT_SHOOTER_FALCON.set(ControlMode.Follower, ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
 		ShooterMap.RIGHT_SHOOTER_FALCON.setInverted(InvertType.OpposeMaster);
+		ShooterMap.LEFT_SHOOTER_FALCON.enableVoltageCompensation(true);
 		IntakeMap.BELT.setNeutralMode(NeutralMode.Brake);
 
 		ShooterMap.LEFT_SHOOTER_FALCON.configFactoryDefault();
@@ -310,4 +311,26 @@ public class RobotMap {
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
 	}
+
+	public static void setDriveTalonsBreak()
+	{
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+	}
+
+	public static void setDriveTalonsCoast()
+	{
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
+	}
+
+	
+	
+	
+
+	
 }

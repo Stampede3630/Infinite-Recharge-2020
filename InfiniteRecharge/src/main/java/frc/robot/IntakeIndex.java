@@ -39,6 +39,7 @@ public class IntakeIndex {
 
 	private BreakBeam breakBeam;
 	private boolean newMattyState = false;
+	private boolean hoodNewMattyState = false;
 
 	private double beltForwardOne = -.32;
 	private double beltBackwardsOne = .32;
@@ -118,9 +119,15 @@ public class IntakeIndex {
 
 		if (timer.get() > 1.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		} else {
+		}
+		else if (!bottom && RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
+		{
 			RobotMap.IntakeMap.PINWHEEL.set(.8);
 		}
+		else {
+			RobotMap.IntakeMap.PINWHEEL.set(.8);
+		}
+
 
 		// BELT STUFF!!!!!!!!!!!!!!!!!
 
@@ -240,6 +247,19 @@ public class IntakeIndex {
 			} else if (newMattyState == true) {
 				RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 				newMattyState = false;
+			}
+
+		}
+
+		if (RobotMap.CONTROLLER.getYButtonPressed()) {
+
+			if (hoodNewMattyState == false) {
+				RobotMap.IntakeMap.HOOD_ANGLE.set(DoubleSolenoid.Value.kForward);
+				hoodNewMattyState = true;
+
+			} else if (hoodNewMattyState == true) {
+				RobotMap.IntakeMap.HOOD_ANGLE.set(DoubleSolenoid.Value.kReverse);
+				hoodNewMattyState = false;
 			}
 
 		}

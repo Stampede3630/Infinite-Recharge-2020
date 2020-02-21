@@ -13,10 +13,10 @@ import frc.robot.Limelight.Target.TargetType;
  * Add your docs here.
  */
 public class TargetAlignDrive {
-	/*
+	
 
 	public static void stop() {
-		Drivetrain.stop();
+		Drivetrain.getInstance().stop();
 	}
 
 	public static boolean drive()
@@ -40,7 +40,7 @@ public class TargetAlignDrive {
 
 		double angleVel = RobotMap.TrackingPIDMap.TURN.calculate(Limelight.Target.getAngle(), 0);
 
-		Drivetrain.drive(0, 0, angleVel, false); // TODO: Clamp the angle velocity?
+		Drivetrain.getInstance().drive(0, 0, angleVel, false); // TODO: Clamp the angle velocity?
 
 		return Limelight.Target.getAngle() < RobotMap.TargetAlignMap.ANGLE_THRESHOLD;
 	}
@@ -49,5 +49,5 @@ public class TargetAlignDrive {
 	{
 
 	}
-	*/
+
 }
