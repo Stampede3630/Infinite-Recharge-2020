@@ -32,6 +32,8 @@ public class Drivetrain {
   private static final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
   private static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
+  private static final PIDController turnToAngle = new PIDController(.1, 0, 0);
+
   public static final SwerveModule m_frontLeft = new SwerveModule(
                                                   RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
                                                   RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, 
@@ -237,7 +239,38 @@ public class Drivetrain {
     m_frontRight.readAngle();
   }
 
+  public void driveAtAngle (double endRot) {
+    
+    double xSpeed = (RobotMap.CONTROLLER.getX(Hand.kLeft) * RobotMap.BallFollowMap.kMaxSpeed);
+    double ySpeed = (RobotMap.CONTROLLER.getY(Hand.kLeft) * RobotMap.BallFollowMap.kMaxSpeed);
 
+    double turnAngle = turnToAngle.calculate(m_gyro.getAngle(), endRot);
+    drive(xSpeed, ySpeed, turnAngle, true);
+
+  }
+
+  public void keepAngle(){
+    double xSpeed = (RobotMap.CONTROLLER.getX(Hand.kLeft) * RobotMap.BallFollowMap.kMaxSpeed);
+    double ySpeed = (RobotMap.CONTROLLER.getY(Hand.kLeft) * RobotMap.BallFollowMap.kMaxSpeed);
+
+    double turnAngle = turnToAngle.calculate(m_gyro.getRate(), 0);
+    if (RobotMap.CONTROLLER.getX(Hand.kRight)<0.2 && RobotMap.CONTROLLER.getY(Hand.kRight)<0.2){
+      drive(xSpeed, ySpeed, turnAngle, true);
+    }
+    else{
+      driveWithJoystick(true);
+    }
+  }
+
+  public void turnToLongshot(){
+    if(RobotMap.CONTROLLER.getYButtonPressed()){
+      driveAtAngle(-.209);
+    }
+    else{
+      keepAngle();
+    }
+    
+  }
 
 
   
