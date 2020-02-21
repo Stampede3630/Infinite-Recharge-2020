@@ -159,8 +159,18 @@ public class SwerveModule {
     }
   }
 
+  public double andyTriedToBoundBecauseHesDumb(double setpoint) {
+
+    double dTheta = (setpoint - getAngle() + 2) * Math.PI % (2 * Math.PI);
+    return 1;
+
+
+  }
 
   public double bound(double setpoint) {
+
+
+    
     double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI);
     double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
 
@@ -176,7 +186,7 @@ public class SwerveModule {
     } else {
       return angleSupp(getAngle() + (trueDTheta - Math.PI)) ;
     }
-    
+
 //New Bound
     // final double wrap = 2 * Math.PI; // in encoder counts
     // final double current = getAngle() ;//+ Math.PI ;

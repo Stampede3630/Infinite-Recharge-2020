@@ -74,6 +74,14 @@ public class BreakBeam {
             return false;
         }
     }
+    public boolean noBalls(){
+        if(beam0.get() && beam1.get() && beam2.get() && beam3.get() && beam4.get() && beam5.get() && beam6.get() && beam7.get()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     public void toSmartDashBoard()
     {
@@ -83,6 +91,8 @@ public class BreakBeam {
         SmartDashboard.putBoolean("beam3", beam3.get());
         SmartDashboard.putBoolean("beam4", beam4.get());
         SmartDashboard.putBoolean("beam5", beam5.get());
+        SmartDashboard.putBoolean("beam6", beam6.get());
+        SmartDashboard.putBoolean("beam7", beam7.get());
 
     }
 

@@ -47,14 +47,16 @@ public class IntakeIndex {
         bottom = breakBeam.detectBallLow();
         middle = breakBeam.detectBallMid();
         top = breakBeam.detectBallHigh();
-        none = false;
-
-        if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 200 || RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 10) {
-            bottom = true;
-        }
-        if (RobotMap.IntakeMap.ULTRASONIC.getRangeInches() < 200 && RobotMap.IntakeMap.ULTRASONIC.getRangeInches() > 20) {
+        none = breakBeam.noBalls();
+        /* failed none attempts
+        //none = !(breakBeam.detectBallHigh()||breakBeam.detectBallLow()||breakBeam.detectBallMid());
+        if(!breakBeam.detectBallMid()&&!breakBeam.detectBallHigh()&&!breakBeam.detectBallLow()){
             none = true;
-        }  
+        }
+        else{
+            none = false;
+        }
+        */
     }
 
     public void intakeChooser(boolean indexYes) {

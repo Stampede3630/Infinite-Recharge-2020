@@ -94,9 +94,10 @@ public class Robot extends TimedRobot {
     m_swerve.driveWithJoystick(true);
     servoMotor.ServoUp();
     climber.climberPeriodic();
-    //ballProcessor.index();
+    ballProcessor.index();
     shoot.control();
     ballProcessor.ToggleSolenoids();
+    
 
 
   }
