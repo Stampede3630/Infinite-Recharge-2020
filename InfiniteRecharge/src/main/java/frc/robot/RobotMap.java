@@ -222,7 +222,7 @@ public class RobotMap {
 		 * Set to zero to skip waiting for confirmation, set to nonzero to wait and
 		 * report to DS if action fails.
 		 */
-		public static final int TIMEOUT_MS = 30;
+		public static final int TIMEOUT_MS = 50;
 
 		public static final double ENCODER_UNITS_PER_REV = 2048;// 4096;
 	}

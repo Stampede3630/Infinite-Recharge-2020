@@ -40,7 +40,7 @@ public class Chooser {
             // run angle turn, hex line up
 
         } else {
-            // run climb d-pad, climb angle
+            // run climb d-pad, climb angle //climb limelight angle
             Climber.getInstance().climberPeriodic();
         }
     }
@@ -59,6 +59,41 @@ public class Chooser {
         } else {
             Drivetrain.getInstance().driveWithJoystick(fieldRelative);
         }
+    }
+
+    public void chooserPeriodic()
+    {
+        /*
+        //Hold button lineup chooser 
+        if(button pressed)
+        {
+            hex line-up
+        }
+        else if( button pressed)
+        {
+            ball following
+        }
+        else
+        {
+            stop all automated lineup methods
+        }
+
+        //Limelight Angle Determination Co-driver override
+        if(chooser gets shooter far)
+        {
+            shooter far angle set
+        }
+        else if (chooser gets shooter close)
+        {
+            shooter close angle set
+        }
+        else if(intake gets selected)
+        {
+            inake angle set
+        }
+
+
+    */
     }
 
 }

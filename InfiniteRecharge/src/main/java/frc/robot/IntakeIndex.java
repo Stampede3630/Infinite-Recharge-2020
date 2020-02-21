@@ -45,6 +45,9 @@ public class IntakeIndex {
 	private double beltBackwardsOne = .32;
 	private double beltForwardTwo = -.5;
 	private double beltBackwardsTwo = .5;
+	private int beltForwardTriggered = 0;
+	private int beltBackwardTriggered = 0;
+	private int timeout = 5;
 
 	private IntakeIndex() {
 		timer = new Timer();
@@ -108,6 +111,8 @@ public class IntakeIndex {
 			timer.start();
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
+			beltBackwardTriggered = 0;
+			beltForwardTriggered = 0;
 		}
 
 		else {
@@ -133,6 +138,8 @@ public class IntakeIndex {
 
 		if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+			beltBackwardTriggered = timeout +1;
+			beltForwardTriggered = timeout +1;
 		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) {
 			RobotMap.IntakeMap.BELT.set(0);
 		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed
@@ -140,22 +147,33 @@ public class IntakeIndex {
 						.rpmToRotatPer100Mili(RobotMap.ShooterMap.RPM) * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV * 0.97) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			System.out.println("shooter up to speed");
+			beltForwardTriggered = 0;
+			beltBackwardTriggered = 0;
 
-		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
+		} 
+		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
 			RobotMap.IntakeMap.BELT.set(0);
-		} else if (top && middle) {
+		}
+		else if (beltBackwardTriggered > timeout && beltForwardTriggered > timeout)
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+		else if (top && middle) {
 			RobotMap.IntakeMap.BELT.set(0);
 			System.out.println("yes top, yes middle");
 		} else if (top && !middle) {
 			RobotMap.IntakeMap.BELT.set(beltBackwardsOne);
+			beltBackwardTriggered++;
 			System.out.println("yes top, no middle");
 
 		} else if (!top && middle && bottom) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+			beltForwardTriggered++;
 			System.out.println("middle and bottom");
 
 		} else if (!top && !middle && bottom) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+			beltForwardTriggered++;
 			System.out.println("only bottom");
 
 		} else if (middle) {
