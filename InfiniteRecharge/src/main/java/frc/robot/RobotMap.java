@@ -93,7 +93,7 @@ public class RobotMap {
 		public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(1);
 		public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(0);
 
-		public static final double ELEVATOR_SPEED = -0.7;
+		public static final double ELEVATOR_SPEED = -0.1;//0.7
 		public static final double STRAFE_SPEED = 0.5;
 	}
 

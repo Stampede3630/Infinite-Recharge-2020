@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotPeriodic() {
+
+    
 		// SmartDashboard.putNumber("Current trolleySpark",
 		// RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
 		// SmartDashboard.putNumber("Current Elevator",
@@ -81,17 +83,24 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
+    //Drivetrain.getInstance().keepAngle(true);
+    //Drivetrain.getInstance().driveWithJoystick(true);
+
+    
+    Drivetrain.getInstance().turnToLongshot();
+/*
     if (RobotMap.CONTROLLER.getBackButton()){
-      Drivetrain.getInstance().turnToLongshot();
-      System.out.println(RobotMap.SensorMap.GYRO.getAngle());
+      //System.out.println(RobotMap.SensorMap.GYRO.getAngle());
     }
     else{
-		Drivetrain.getInstance().driveWithJoystick(true);
+      //Drivetrain.getInstance().driveWithJoystick(true);
+      Drivetrain.getInstance().keepAngle(true);
     }
-    //ServoMotor.getInstance().ServoUp();
-	  //Climber.getInstance().climberPeriodic(); 
-    //IntakeIndex.getInstance().ToggleSolenoids();
-    
+*/
+    ServoMotor.getInstance().ServoUp();
+	  Climber.getInstance().climberPeriodic(); 
+    IntakeIndex.getInstance().ToggleSolenoids();
+
 
 
     // ballProcessor.index();

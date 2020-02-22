@@ -228,6 +228,10 @@ public class SwerveModule {
 		// Math.abs(state.speedMetersPerSecond)) *
 		// Math.signum(state.speedMetersPerSecond) *m_driveScalar;
     
+    if (Math.abs(driveOutput)==0){
+      turnOutput=0;
+    }
+
 		m_turningMotor.set(-turnOutput);
 		m_driveMotor.set(-driveOutput);
 
