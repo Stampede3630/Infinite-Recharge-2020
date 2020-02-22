@@ -38,7 +38,8 @@ public class Robot extends TimedRobot {
 		// RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
 		// SmartDashboard.putNumber("Current Elevator",
 		// RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
-		IntakeIndex.getInstance().toSmartDashboard();
+    
+    IntakeIndex.getInstance().toSmartDashboard();
 		IntakeIndex.getInstance().updateBooleans();
 		Shooter.getInstance().smartDashboardOutput();
 		Drivetrain.getInstance().postToSmartDashboard();
@@ -79,13 +80,22 @@ public class Robot extends TimedRobot {
 	}
 	@Override
 	public void teleopPeriodic() {
-		Drivetrain.getInstance().driveWithJoystick(true);
-		ServoMotor.getInstance().ServoUp();
-		Climber.getInstance().climberPeriodic();
-		// ballProcessor.index();
-		Shooter.getInstance().control();
-		IntakeIndex.getInstance().ToggleSolenoids();
 
+    if (RobotMap.CONTROLLER.getBackButton()){
+      Drivetrain.getInstance().turnToLongshot();
+      System.out.println(RobotMap.SensorMap.GYRO.getAngle());
+    }
+    else{
+		Drivetrain.getInstance().driveWithJoystick(true);
+    }
+    //ServoMotor.getInstance().ServoUp();
+	  //Climber.getInstance().climberPeriodic(); 
+    //IntakeIndex.getInstance().ToggleSolenoids();
+    
+
+
+    // ballProcessor.index();
+		//Shooter.getInstance().control();   
 	}
 
 	@Override

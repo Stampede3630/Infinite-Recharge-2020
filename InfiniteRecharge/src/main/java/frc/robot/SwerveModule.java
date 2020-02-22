@@ -227,7 +227,7 @@ public class SwerveModule {
 		// driveOutput = m_drivePIDController.calculate(Math.abs(getTalonFXRate()),
 		// Math.abs(state.speedMetersPerSecond)) *
 		// Math.signum(state.speedMetersPerSecond) *m_driveScalar;
-
+    
 		m_turningMotor.set(-turnOutput);
 		m_driveMotor.set(-driveOutput);
 
