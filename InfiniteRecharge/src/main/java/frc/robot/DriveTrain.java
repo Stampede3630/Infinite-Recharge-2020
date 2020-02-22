@@ -27,7 +27,7 @@ public class Drivetrain {
     private final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
     private final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
     private final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
-    private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+    public final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
     public final SwerveModule m_frontLeft = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, RobotMap.FRONT_LEFT_ANGLE_OFFSET, m_gyro);
     public final SwerveModule m_frontRight = new SwerveModule(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER, RobotMap.FRONT_RIGHT_ANGLE_OFFSET, m_gyro);
@@ -206,7 +206,16 @@ public class Drivetrain {
         double ySpeed = (RobotMap.controller.getY(Hand.kLeft) * kMaxSpeed);
 
         double turnAngle = turnToAngle.calculate(m_gyro.getAngle(), endrot);
-        drive(xSpeed, ySpeed, turnAngle, false);
+        drive(xSpeed, ySpeed, turnAngle, true);
+      }
+
+      public void turnToLongshot(){
+        if(RobotMap.controller.getBButtonPressed()){
+          driveAtAngle(-.209);
+        }
+        else{
+          //yeehaw
+        }
       }
     
 }
