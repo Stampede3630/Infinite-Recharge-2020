@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
     m_swerve.updateOdometry();
     shooter.smartDashboardOutput();
     kF = SmartDashboard.getNumber("kf", 0);
+    System.out.println("gyro: " + m_swerve.m_gyro.getAngle());
+
     
   }
 
@@ -72,6 +74,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     m_swerve.driveWithJoystick(true);
+    m_swerve.turnToLongshot();
 
     
      //RobotMap.elevatorSpark.set(RobotMap.controller.getX(Hand.kRight) *-.8);
