@@ -28,26 +28,22 @@ public class TrajectoryFollowing {
 	public Trajectory trajectory;
 	public final Timer m_timer = new Timer();
 	private Pose2d m_finalPose;
-	private final SwerveDriveKinematics m_kinematics;
 	private final PIDController m_xController;
 	private final PIDController m_yController;
 	private final ProfiledPIDController m_thetaController;
 	private SwerveModuleState[] m_outputModuleStates;
-	private final SwerveDriveOdometry m_odometry;
 
 	public TrajectoryFollowing(Trajectory traj, PIDController xController, PIDController yController,
 			ProfiledPIDController thetaController) {
 		config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
 		RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 						// Add kinematics to ensure max speed is actually obeyed
-						.setKinematics(Drivetrain.m_kinematics);
+						.setKinematics(RobotMap.DrivetrainMap.KINEMATICS);
 		trajectory = traj;
-		m_kinematics = Drivetrain.m_kinematics;
 		m_xController = xController;
 		m_yController = yController;
 		m_thetaController = thetaController;
-		m_outputModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
-		m_odometry = Drivetrain.m_odometry;
+		m_outputModuleStates = RobotMap.DrivetrainMap.KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
 		m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
 		m_timer.reset();
@@ -55,21 +51,22 @@ public class TrajectoryFollowing {
 
 	}
 
-	public void restAll(){
+	public void resetAll(){
 		m_timer.reset();
-		m_odometry.resetPosition(new Pose2d(0,0, new Rotation2d(Drivetrain.getAngle().getRadians())), Drivetrain.getAngle());
+		Rotation2d angle = Drivetrain.getInstance().getAngle();
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0,0, new Rotation2d(angle.getRadians())), angle);
 	}
 
 	public void auto() {
 		if(m_timer.get() > trajectory.getTotalTimeSeconds())
 		{
-			Drivetrain.drive(0, 0, 0, false);
+			Drivetrain.getInstance().drive(0, 0, 0, false);
 			System.out.println("Triggered !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
 		else{
 			updateAutoStates();
 			//System.out.println(m_outputModuleStates[0].speedMetersPerSecond + "," + m_outputModuleStates[0].angle.getDegrees());
-			Drivetrain.setModuleStates(m_outputModuleStates);
+			Drivetrain.getInstance().setModuleStates(m_outputModuleStates);
 		}
 
 	}
@@ -82,29 +79,29 @@ public class TrajectoryFollowing {
 		var desiredState = trajectory.sample(curTime);
 		var desiredPose = desiredState.poseMeters;
 
-		var poseError = desiredPose.relativeTo(m_odometry.getPoseMeters());
+		var poseError = desiredPose.relativeTo(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 
-		double targetXVel = m_xController.calculate(m_odometry.getPoseMeters().getTranslation().getX(),
+		double targetXVel = m_xController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX(),
 				desiredPose.getTranslation().getX());
 
-		double targetYVel = m_yController.calculate(m_odometry.getPoseMeters().getTranslation().getY(),
+		double targetYVel = m_yController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY(),
 				desiredPose.getTranslation().getY());
 
 		// The robot will go to the desired rotation of the final pose in the
 		// trajectory,
 		// not following the poses at individual states.
-		double targetAngularVel = m_thetaController.calculate(m_odometry.getPoseMeters().getRotation().getRadians(),
+		double targetAngularVel = m_thetaController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians(),
 				m_finalPose.getRotation().getRadians());
 
 		double vRef = desiredState.velocityMetersPerSecond;
 
 		targetXVel += vRef * poseError.getRotation().getCos();
 		targetYVel += vRef * poseError.getRotation().getSin();
-		System.out.println(m_odometry.getPoseMeters().getTranslation().getY());
+		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
 		//System.out.println("xvel: " + targetXVel + ", yvel: " + targetYVel + ", rot: " + targetAngularVel);
 		var targetChassisSpeeds = new ChassisSpeeds(targetXVel, targetYVel, targetAngularVel);
 
-		m_outputModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+		m_outputModuleStates = RobotMap.DrivetrainMap.KINEMATICS.toSwerveModuleStates(targetChassisSpeeds);
 
 	}
 

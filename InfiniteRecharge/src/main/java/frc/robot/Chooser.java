@@ -13,54 +13,87 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  * Add your docs here.
  */
 public class Chooser {
-    private SendableChooser<Boolean> climbChooser;
-    private  Drivetrain m_swerve;
-    boolean fieldRelative;
 
-    private Climber climber;
-    public Chooser(){
+    private static Chooser instance;
+
+	static {
+		instance = new Chooser();
+	}
+
+	public static Chooser getInstance() {
+		return instance;
+	}
+
+    private SendableChooser<Boolean> climbChooser;
+    private boolean fieldRelative;
+
+    private Chooser() {
 
         climbChooser = new SendableChooser<Boolean>();
-        climber = new Climber();
         climbChooser.setDefaultOption("angles", true);
         climbChooser.addOption("climb", false);
-        m_swerve = Drivetrain.getInstance();
         fieldRelative = true;
     }
 
-    public void updateChooser(){
-        if(climbChooser.getSelected()){
-            //run angle turn, hex line up
+    public void updateChooser() {
+        if (climbChooser.getSelected()) {
+            // run angle turn, hex line up
 
-        }
-        else{
-            //run climb d-pad, climb angle
-            climber.climberPeriodic();
+        } else {
+            // run climb d-pad, climb angle //climb limelight angle
+            Climber.getInstance().climberPeriodic();
         }
     }
 
-    public void driveChooser()
-    {
+    public void driveChooser() {
         if (RobotMap.CONTROLLER.getPOV() == 0) {
-            m_swerve.driveAtAngle(0, fieldRelative);
-        }
-        else if (RobotMap.CONTROLLER.getPOV()==180) {
-            m_swerve.driveAtAngle(180, fieldRelative);
-        }
-        else if (RobotMap.CONTROLLER.getPOV()==270) {
-            m_swerve.driveAtAngle(270, fieldRelative);
-        }
-        else if (RobotMap.CONTROLLER.getPOV()==90) {
-            m_swerve.driveAtAngle(90, fieldRelative);
-        }
-        else if (RobotMap.CONTROLLER.getPOV() == 45) //BAD
-        {
-            m_swerve.driveAtAngle(11, fieldRelative);
-        }
-        else {
-            m_swerve.driveWithJoystick(fieldRelative);
+            Drivetrain.getInstance().driveAtAngle(0, fieldRelative);
+        } else if (RobotMap.CONTROLLER.getPOV() == 180) {
+            Drivetrain.getInstance().driveAtAngle(180, fieldRelative);
+        } else if (RobotMap.CONTROLLER.getPOV() == 270) {
+            Drivetrain.getInstance().driveAtAngle(270, fieldRelative);
+        } else if (RobotMap.CONTROLLER.getPOV() == 90) {
+            Drivetrain.getInstance().driveAtAngle(90, fieldRelative);
+        } else if (RobotMap.CONTROLLER.getPOV() == 45) { // BAD
+            Drivetrain.getInstance().driveAtAngle(11, fieldRelative);
+        } else {
+            Drivetrain.getInstance().driveWithJoystick(fieldRelative);
         }
     }
 
+    public void chooserPeriodic()
+    {
+        /*
+        //Hold button lineup chooser 
+        if(button pressed)
+        {
+            hex line-up
+        }
+        else if( button pressed)
+        {
+            ball following
+        }
+        else
+        {
+            stop all automated lineup methods
+        }
+
+        //Limelight Angle Determination Co-driver override
+        if(chooser gets shooter far)
+        {
+            shooter far angle set
+        }
+        else if (chooser gets shooter close)
+        {
+            shooter close angle set
+        }
+        else if(intake gets selected)
+        {
+            inake angle set
+        }
+
+
+    */
+    }
 
 }

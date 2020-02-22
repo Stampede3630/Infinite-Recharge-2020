@@ -9,8 +9,21 @@ package frc.robot;
 
 public class Climber {
 
-    public static final double elevatorSpeed = -0.7;
-    public static final double strafeSpeed = 0.5;
+    private static Climber instance;
+
+    static {
+      instance = new Climber();
+    }
+  
+    public static Climber getInstance() {
+      return instance;
+    }
+
+    private Climber() // private to make sure it isn't instantiated elsewhere
+    {
+
+    }
+
 
     public void climberPeriodic() {
         if (RobotMap.CONTROLLER.getPOV() == 0) {
@@ -33,7 +46,7 @@ public class Climber {
 
     public void extend() {
         if (RobotMap.ClimberMap.MAX_LIMIT_SWITCH.get() == false) {
-          RobotMap.ClimberMap.ELEVATOR_SPARK.set(elevatorSpeed); 
+          RobotMap.ClimberMap.ELEVATOR_SPARK.set(RobotMap.ClimberMap.ELEVATOR_SPEED); 
         }
         else{
             RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
@@ -42,7 +55,7 @@ public class Climber {
 
     public void retract() {
         if (RobotMap.ClimberMap.MIN_LIMIT_SWITCH.get() == false) {
-         RobotMap.ClimberMap.ELEVATOR_SPARK.set((-elevatorSpeed)); 
+         RobotMap.ClimberMap.ELEVATOR_SPARK.set(-RobotMap.ClimberMap.ELEVATOR_SPEED); 
         }
         else{
          RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
@@ -51,10 +64,10 @@ public class Climber {
     }
 
     public void strafeLeft() {
-        RobotMap.ClimberMap.TROLLEY_SPARK.set(-(strafeSpeed));
+        RobotMap.ClimberMap.TROLLEY_SPARK.set(-RobotMap.ClimberMap.STRAFE_SPEED);
     }
 
     public void strafeRight() {
-       RobotMap.ClimberMap.TROLLEY_SPARK.set(strafeSpeed);
+       RobotMap.ClimberMap.TROLLEY_SPARK.set(RobotMap.ClimberMap.STRAFE_SPEED);
     }
 }

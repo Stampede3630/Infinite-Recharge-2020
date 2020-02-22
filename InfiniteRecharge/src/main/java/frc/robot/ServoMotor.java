@@ -13,10 +13,19 @@ import edu.wpi.first.wpilibj.Servo;
  * Add your docs here.
  */
 public class ServoMotor {
+    private static ServoMotor instance;
 
-    Servo servo1;
-    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+	static {
+		instance = new ServoMotor();
+	}
+
+	public static ServoMotor getInstance() {
+		return instance;
+    }
+
+    private Servo servo1;
+    private double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    private double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 
     public ServoMotor() {
 
