@@ -41,26 +41,25 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current Elevator",
 		// RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
     
-    IntakeIndex.getInstance().toSmartDashboard();
+    	IntakeIndex.getInstance().toSmartDashboard();
 		IntakeIndex.getInstance().updateBooleans();
 		Shooter.getInstance().smartDashboardOutput();
 		Drivetrain.getInstance().postToSmartDashboard();
+		BreakBeam.getInstance().toSmartDashBoard();
 
 		RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
 
-		// if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
-		// 	imperialRumble.trigger();
-		// }
-		// if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
-		// 	imperialRumble.reset();
-		// }
-
-		BreakBeam.getInstance().toSmartDashBoard();
+		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
+			imperialRumble.trigger();
+		}
+		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
+			imperialRumble.reset();
+		}
 	}
 
 	@Override
 	public void autonomousInit() {
-		RobotMap.setDriveTalonsBreak();
+		RobotMap.setDriveTalonsBrake();
 		RobotMap.resetEncoders();
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
@@ -78,7 +77,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		super.teleopInit();
-		RobotMap.setDriveTalonsBreak();
+		RobotMap.setDriveTalonsBrake();
 	}
 	@Override
 	public void teleopPeriodic() {
@@ -98,7 +97,7 @@ public class Robot extends TimedRobot {
     }
 */
     ServoMotor.getInstance().ServoUp();
-	  Climber.getInstance().climberPeriodic(); 
+	Climber.getInstance().climberPeriodic(); 
     IntakeIndex.getInstance().ToggleSolenoids();
 
 

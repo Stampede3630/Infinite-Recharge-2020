@@ -290,7 +290,7 @@ public class IntakeIndex {
 		// RobotMap.IntakeMap.COLOR_SENSOR_HIGH.getGreen());
 		// SmartDashboard.putNumber("colorSensorMid Green",
 		// RobotMap.IntakeMap.COLOR_SENSOR_MID.getGreen());
-		SmartDashboard.putNumber("ultrasonic", RobotMap.IntakeMap.ULTRASONIC.getRangeInches());
+		//SmartDashboard.putNumber("ultrasonic", RobotMap.IntakeMap.ULTRASONIC.getRangeInches());
 		SmartDashboard.putBoolean("bottom", bottom);
 		SmartDashboard.putBoolean("middle", middle);
 		SmartDashboard.putBoolean("top", top);

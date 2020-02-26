@@ -158,7 +158,7 @@ public class RobotMap {
 		public static final WPI_TalonSRX PINWHEEL = new WPI_TalonSRX(10); // from box to belt
 		public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
 		public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6, 7);
-		public static final Ultrasonic ULTRASONIC = new Ultrasonic(9, 8); // on the ground of the belt box
+		//public static final Ultrasonic ULTRASONIC = new Ultrasonic(9, 8); // on the ground of the belt box
 		public static final WPI_TalonFX BELT = new WPI_TalonFX(11);
 		// public static final ColorSensorV3 COLOR_SENSOR_MID = new
 		// ColorSensorV3(I2C.Port.kOnboard);
@@ -244,20 +244,12 @@ public class RobotMap {
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
 
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
 
-		DriveMap.BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
-		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
 
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1); // setting to integrated sensor
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
@@ -265,24 +257,20 @@ public class RobotMap {
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
 
 		// Shooter
+
+		ShooterMap.LEFT_SHOOTER_FALCON.configFactoryDefault();
+		ShooterMap.RIGHT_SHOOTER_FALCON.configFactoryDefault();
+
+		IntakeMap.BELT.setNeutralMode(NeutralMode.Brake);
+
 		ShooterMap.LEFT_SHOOTER_FALCON.setInverted(false);
 		ShooterMap.RIGHT_SHOOTER_FALCON.set(ControlMode.Follower, ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
 		ShooterMap.RIGHT_SHOOTER_FALCON.setInverted(InvertType.OpposeMaster);
+		
 		ShooterMap.LEFT_SHOOTER_FALCON.enableVoltageCompensation(true);
-		IntakeMap.BELT.setNeutralMode(NeutralMode.Brake);
-
-		ShooterMap.LEFT_SHOOTER_FALCON.configFactoryDefault();
-		// ShooterMap.RIGHT_SHOOTER_FALCON.configFactoryDefault();
-
 		ShooterMap.LEFT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
 				kTimeoutMs);
-		// ShooterMap.RIGHT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-		// kPIDLoopIdx,
-		// kTimeoutMs);
-
 		ShooterMap.LEFT_SHOOTER_FALCON.setSensorPhase(true);
-		// ShooterMap.RIGHT_SHOOTER_FALCON.setSensorPhase(true);
-
 		ShooterMap.LEFT_SHOOTER_FALCON.setSelectedSensorPosition(1);
 
 		/* Config the peak and nominal outputs */
@@ -299,8 +287,10 @@ public class RobotMap {
 
 		// Intake
 
-		IntakeMap.ULTRASONIC.setAutomaticMode(true);
-		IntakeMap.ULTRASONIC.setDistanceUnits(Ultrasonic.Unit.kInches);
+		//IntakeMap.ULTRASONIC.setAutomaticMode(true);
+		//IntakeMap.ULTRASONIC.setDistanceUnits(Ultrasonic.Unit.kInches);
+		// IntakeMap.COLOR_SENSOR_MID.setAutomaticMode(true);
+		// IntakeMap.COLOR_SENSOR_MID.setDistanceUnits(Ultrasonic.Unit.kInches);
 	}
 
 	public static void resetEncoders() {
@@ -310,12 +300,17 @@ public class RobotMap {
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
 	}
 
-	public static void setDriveTalonsBreak()
+	public static void setDriveTalonsBrake()
 	{
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
+
+		DriveMap.BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
+		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
 	}
 
 	public static void setDriveTalonsCoast()
@@ -324,6 +319,11 @@ public class RobotMap {
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
+
+		DriveMap.BACK_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Coast);
+		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Coast);
+		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Coast);
+		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Coast);
 	}
 
 	
