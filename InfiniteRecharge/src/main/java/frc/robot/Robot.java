@@ -48,12 +48,12 @@ public class Robot extends TimedRobot {
 
 		RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
 
-		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
-			imperialRumble.trigger();
-		}
-		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
-			imperialRumble.reset();
-		}
+		// if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
+		// 	imperialRumble.trigger();
+		// }
+		// if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
+		// 	imperialRumble.reset();
+		// }
 
 		BreakBeam.getInstance().toSmartDashBoard();
 	}
@@ -84,10 +84,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
     //Drivetrain.getInstance().keepAngle(true);
-    //Drivetrain.getInstance().driveWithJoystick(true);
+    Drivetrain.getInstance().driveWithJoystick(true);
 
     
-    Drivetrain.getInstance().turnToLongshot();
+    //Drivetrain.getInstance().turnToLongshot();
 /*
     if (RobotMap.CONTROLLER.getBackButton()){
       //System.out.println(RobotMap.SensorMap.GYRO.getAngle());
@@ -103,8 +103,8 @@ public class Robot extends TimedRobot {
 
 
 
-    // ballProcessor.index();
-		//Shooter.getInstance().control();   
+    IntakeIndex.getInstance().index();
+	Shooter.getInstance().control();   
 	}
 
 	@Override

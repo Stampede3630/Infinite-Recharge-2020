@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -32,22 +35,20 @@ public class IntakeIndex {
 	private SendableChooser<Integer> intakeChooser;
 	private Timer timer;
 	private Shooter shoot;
-	private double threshold;
-	private double thresholdWeak;
-	private boolean bottom, middle, top, none;
+	private boolean bottom, middle, top, weakTop, weakBottom, none, weakMiddle, limbo;
 	private boolean indexYes;
 
 	private BreakBeam breakBeam;
 	private boolean newMattyState = false;
 	private boolean hoodNewMattyState = false;
 
-	private double beltForwardOne = -.32;
-	private double beltBackwardsOne = .32;
-	private double beltForwardTwo = -.5;
-	private double beltBackwardsTwo = .5;
+	private double beltForwardOne = -.15;  //TalonSRX speed = -.32;
+	private double beltBackwardsOne = .15;// TalonSRX speed = .32;
+	private double beltForwardTwo = -.4; //TalonSRX speed = -.5;
+	private double beltBackwardsTwo = .4; //TalonSRX speed = .5;
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
-	private int timeout = 5;
+	private int timeout = 999999999;
 
 	private IntakeIndex() {
 		timer = new Timer();
@@ -60,6 +61,9 @@ public class IntakeIndex {
 		middle = breakBeam.detectBallMid();
 		top = breakBeam.detectBallHigh();
 		none = breakBeam.noBalls();
+		weakBottom = breakBeam.detectWeakBottom();
+		weakTop = breakBeam.detectWeakTop();
+		weakMiddle = breakBeam.detectWeakMiddle();
 	}
 
 	public void intakeChooser(boolean indexYes) {
@@ -75,8 +79,8 @@ public class IntakeIndex {
 
 	public void manualControl() {
 		if (RobotMap.CONTROLLER.getAButton()) {
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.75);
-			RobotMap.IntakeMap.PINWHEEL.set(-.4);
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);//.75
+			RobotMap.IntakeMap.PINWHEEL.set(.4); //was .2 - Andy
 		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
@@ -94,13 +98,13 @@ public class IntakeIndex {
 
 	public void index() { // most recent intake machine
 		// System.out.println(pinwheel.get());
-		// updateBooleans();
+		updateBooleans();
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
 		if (RobotMap.CONTROLLER.getAButton()) {
 			// System.out.println("tester");
 			timer.reset();
 			timer.start();
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.4); //was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
@@ -113,37 +117,89 @@ public class IntakeIndex {
 
 		}
 
-		if (timer.get() > 1.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
+		if (!bottom && RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
+		{
+			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
+		}
+		else if (!bottom && breakBeam.getVeryBottom())
+		{
+			RobotMap.IntakeMap.PINWHEEL.set(.5);
+		}
+		else if (timer.get() > 0.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		else if (!bottom && RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.8);
-		}
 		else {
-			RobotMap.IntakeMap.PINWHEEL.set(.8);
+			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
+		}
+
+/*
+		If ball on bottom then move to 3 & 4
+		If ball on (some form of bottom) & middle then move to 0 & 1
+		If ball on bottom & some form of top (do nothing)
+		If shooting trigger and up to speed … move … period
+		If shooting trigger and not (some form of bottom) start pinwheel
+*/
+		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed 
+		&& Math.abs(Shooter.getRPM()) >= RobotMap.ShooterMap.RPM * 0.90) //.9 for short shot
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+		}
+		else if (bottom && weakTop)
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+		else if(top)
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+		else if (weakBottom && middle && !top)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		/*
+		else if(top && weakMiddle && !breakBeam.getBottomGap())
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		*/
+		else if(weakBottom && !middle)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+	
+		else if (!none && !bottom && !middle && !top)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else
+		{
+			RobotMap.IntakeMap.BELT.set(0);
 		}
 
 
 		// BELT STUFF!!!!!!!!!!!!!!!!!
-
+		/*
 		if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 			beltBackwardTriggered = timeout +1;
 			beltForwardTriggered = timeout +1;
 		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) {
 			RobotMap.IntakeMap.BELT.set(0);
-		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed
-				&& Math.abs(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0)) >= Shooter
-						.rpmToRotatPer100Mili(RobotMap.ShooterMap.RPM) * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV * 0.97) {
+		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed 
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.ShooterMap.RPM * 0.85) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-			System.out.println("shooter up to speed");
+			SmartDashboard.putNumber("shooter threshold", Shooter.getRPM());
+			SmartDashboard.putNumber("Shooter value", Shooter.getRPM());
+
+			SmartDashboard.putString("shooter state","shooter up to speed");
 			beltForwardTriggered = 0;
 			beltBackwardTriggered = 0;
 
 		} 
 		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
 			RobotMap.IntakeMap.BELT.set(0);
+			SmartDashboard.putString("shooter state","shooter NOT up to speed");
+
 		}
 		else if (beltBackwardTriggered > timeout && beltForwardTriggered > timeout)
 		{
@@ -151,27 +207,31 @@ public class IntakeIndex {
 		}
 		else if (top && middle) {
 			RobotMap.IntakeMap.BELT.set(0);
-			System.out.println("yes top, yes middle");
+			SmartDashboard.putString("intake state","yes top, yes middle");
 		} else if (top && !middle) {
 			RobotMap.IntakeMap.BELT.set(beltBackwardsOne);
 			beltBackwardTriggered++;
-			System.out.println("yes top, no middle");
+			SmartDashboard.putString("intake state","yes top, no middle");
 
 		} else if (!top && middle && bottom) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			beltForwardTriggered++;
-			System.out.println("middle and bottom");
+			SmartDashboard.putString("intake state","middle and bottom");
 
 		} else if (!top && !middle && bottom) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 			beltForwardTriggered++;
-			System.out.println("only bottom");
+			SmartDashboard.putString("intake state","only bottom");
 
 		} else if (middle) {
 			RobotMap.IntakeMap.BELT.set(0);
-			System.out.println("middle");
-		} else if (none) {
-			System.out.println("none");
+			SmartDashboard.putString("intake state","middle");
+		} /*else if (limbo){
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}*/
+		/*
+		else if (none) {
+			SmartDashboard.putString("intake state","none");
 			RobotMap.IntakeMap.BELT.set(0);
 		}
 		/*
@@ -205,7 +265,7 @@ public class IntakeIndex {
 	 * speed && RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity()
 	 * >= Shooter.rpmToRotatPer100Mili(Shooter.rotpm) Shooter.kEncoderUnitsPerRev) {
 	 * RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-	 * System.out.println("shooter up to speed"); } else if (none) {
+	 * SmartDashboard.putString("shooter up to speed"); } else if (none) {
 	 * System.out.println("none, reset to 0"); RobotMap.IntakeMap.BELT.set(0.0); }
 	 * else if (top && middleWeak && bottom) { RobotMap.IntakeMap.BELT.set(0.0);
 	 * System.out.println("top, middleWeak and bottom, reset to/stay at 0"); } else

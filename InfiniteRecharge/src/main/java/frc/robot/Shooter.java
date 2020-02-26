@@ -57,5 +57,9 @@ public class Shooter {
         return senUnits * 600 / RobotMap.ShooterMap.ENCODER_UNITS_PER_REV;
 
     }
+    public static double getRPM()
+    {
+        return sensorUnitsToRPM(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(1));
+    }
 
 }
