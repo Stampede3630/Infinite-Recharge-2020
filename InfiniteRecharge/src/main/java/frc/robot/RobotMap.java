@@ -251,10 +251,14 @@ public class RobotMap {
 		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
 
 
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1); // setting to integrated sensor
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(1);
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setSelectedSensorPosition(1);
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
+		kTimeoutMs); // setting to integrated sensor
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
+		kTimeoutMs);
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
+		kTimeoutMs);
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
+		kTimeoutMs);
 
 		// Shooter
 
@@ -271,7 +275,7 @@ public class RobotMap {
 		ShooterMap.LEFT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
 				kTimeoutMs);
 		ShooterMap.LEFT_SHOOTER_FALCON.setSensorPhase(true);
-		ShooterMap.LEFT_SHOOTER_FALCON.setSelectedSensorPosition(1);
+		//ShooterMap.LEFT_SHOOTER_FALCON.setSelectedSensorPosition(1);  THE INTENT WAS TO SET TO INTEGRATED SENSOR
 
 		/* Config the peak and nominal outputs */
 		ShooterMap.LEFT_SHOOTER_FALCON.configNominalOutputForward(0, kTimeoutMs);

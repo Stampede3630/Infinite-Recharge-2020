@@ -8,18 +8,15 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.kauailabs.navx.frc.AHRS;
 
 public class SwerveModule {
 
@@ -47,15 +44,15 @@ public class SwerveModule {
 	/**
 	 * Constructs a SwerveModule.
 	 *
-	 * @param drivetrainFrontLeftDriveMotor ID for the drive motor.
-	 * @param drivetrainFrontLeftAngleMotor ID for the turning motor.
+	 * @param driveMotorObject ID for the drive motor.
+	 * @param steerMotorObject ID for the turning motor.
 	 */
 
-	public SwerveModule(WPI_TalonFX drivetrainFrontLeftDriveMotor, WPI_VictorSPX drivetrainFrontLeftAngleMotor,
-			AnalogInput drivetrainFrontLeftAngleEncoder, double angleChange) {
+	public SwerveModule(WPI_TalonFX driveMotorObject, WPI_VictorSPX steerMotorObject,
+			AnalogInput steerEncoderObject, double zeroedAngle) {
 		double kPSpecial;
 		// double kD;
-		if (drivetrainFrontLeftAngleMotor.getDeviceID() == 4) {
+		if (steerMotorObject.getDeviceID() == 4) {
 
 			kPSpecial = .8;
 			// kModuleMaxAngularVelocity = Math.PI;
@@ -69,11 +66,11 @@ public class SwerveModule {
 				new TrapezoidProfile.Constraints(RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_VELOCITY,
 						RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_ACCELERATION));
 
-		m_driveMotor = drivetrainFrontLeftDriveMotor;
-		m_turningMotor = drivetrainFrontLeftAngleMotor;
-		m_turningEncoder = drivetrainFrontLeftAngleEncoder;
+		m_driveMotor = driveMotorObject;
+		m_turningMotor = steerMotorObject;
+		m_turningEncoder = steerEncoderObject;
 
-		angleOffset = angleChange;
+		angleOffset = zeroedAngle;
 
 		// Set the distance per pulse for the drive encoder. We can simply use the
 		// distance traveled for one rotation of the wheel divided by the encoder
@@ -126,22 +123,6 @@ public class SwerveModule {
 		return m_steeringAngle;
 	}
 
-	/*
-	 * public double convertAngle(SwerveModuleState state) { double position =
-	 * readAngle(); double setpoint = state.angle.getRadians(); double newSetpoint =
-	 * state.angle.getRadians(); double finalSetpoint;
-	 * 
-	 * if(setpoint > 0) { newSetpoint -= Math.PI; } else { newSetpoint += Math.PI; }
-	 * 
-	 * double oldError = Math.abs(setpoint - position); double newError =
-	 * Math.abs(newSetpoint - position);
-	 * 
-	 * if(oldError > newError) { finalSetpoint = newSetpoint; } else { finalSetpoint
-	 * = setpoint; }
-	 * 
-	 * return 0; //WRONG!!!!!!! }
-	 */
-
 	public double angleSupp(double angle) {
 		if (angle > Math.PI) {
 			return angle - 2 * Math.PI;
@@ -163,59 +144,22 @@ public class SwerveModule {
 			m_driveScalar = -1;
 		}
 
+		//Ensure Angle is between -pi and pi
 		if (Math.abs(trueDTheta) < Math.PI / 2) {
 			return angleSupp(getAngle() + trueDTheta);
 		} else {
 			return angleSupp(getAngle() + (trueDTheta - Math.PI));
 		}
-
-		// New Bound
-		// final double wrap = 2 * Math.PI; // in encoder counts
-		// final double current = getAngle() ;//+ Math.PI ;
-		// double newPosition;
-
-		// if(false){
-		// newPosition = minChange(setpoint, current, wrap / 2.0) + current;
-		// if(Math.abs(minChange(newPosition, setpoint, wrap)) < .001){ // check if
-		// equal
-		// m_driveScalar = 1;
-		// } else {
-		// m_driveScalar = -1;
-		// }
-		// }
-		// else {
-		// m_driveScalar = 1;
-		// newPosition = minChange(setpoint, current, wrap) + current;
-		// }
-
-		// return newPosition;// - Math.PI;
-
-		/*
-		 * if (angle > (Math.PI / 2)) { m_driveScalar = -m_driveScalar; return angle -
-		 * Math.PI; } else if (angle < (-Math.PI / 2)) { m_driveScalar = -m_driveScalar;
-		 * return angle + Math.PI; } else { return angle; }
-		 */
-
+	}
+	public double getDriveOutput() {
+		return driveOutput;
 	}
 
-	public double minChange(double a, double b, double wrap) {
-		return Math.IEEEremainder(a - b, wrap);
-	}
-
-	/*
-	 * public double bound (double angle, double setpoint) { change1 =
-	 * setpoint-angle change2 = setpoint + Math.PI - angle bestChange = Math. }
-	 */
 	/**
 	 * Sets the desired state for the module.
 	 *
 	 * @param state Desired state with speed and angle.
 	 */
-
-	public double getDriveOutput() {
-		return driveOutput;
-	}
-
 	public void setDesiredState(SwerveModuleState state) {
 		readAngle();
 		m_driveScalar = 1;
@@ -228,9 +172,9 @@ public class SwerveModule {
 		// Math.abs(state.speedMetersPerSecond)) *
 		// Math.signum(state.speedMetersPerSecond) *m_driveScalar;
     
-    if (Math.abs(driveOutput)==0){
-      turnOutput=0;
-    }
+		if (Math.abs(driveOutput)==0){
+			turnOutput=0;
+		}
 
 		m_turningMotor.set(-turnOutput);
 		m_driveMotor.set(-driveOutput);
