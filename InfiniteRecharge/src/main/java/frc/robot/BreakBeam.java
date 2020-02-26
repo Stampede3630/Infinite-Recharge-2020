@@ -137,7 +137,42 @@ public class BreakBeam {
 		}
 
 	}
+	
+	public boolean bottomToMiddle()
+	{
+		if((!beam7.get() || !beam6.get() || !beam5.get() || !beam4.get()) && beam3.get())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	} 
 
+	public boolean bottomMiddleToTop()
+	{
+		if( (!beam7.get() || !beam6.get()) && (!beam4.get() || !beam3.get() || !beam2.get() || !beam1.get()) && beam0.get())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean middleTopRefine()
+	{
+		if( !beam1.get() && beam0.get())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	public void toSmartDashBoard() {
 		SmartDashboard.putBoolean("beam0 TT", beam0.get());
 		SmartDashboard.putBoolean("beam1 TB", beam1.get());

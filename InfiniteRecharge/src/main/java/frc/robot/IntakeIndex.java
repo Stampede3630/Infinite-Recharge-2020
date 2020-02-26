@@ -35,7 +35,7 @@ public class IntakeIndex {
 	private SendableChooser<Integer> intakeChooser;
 	private Timer timer;
 	private Shooter shoot;
-	private boolean bottom, middle, top, weakTop, weakBottom, none, weakMiddle, limbo;
+	private boolean bottom, middle, top, weakTop, weakBottom, none, weakMiddle, limbo, bottomToMiddle, bottomMiddleToTop, middleTopRefine;
 	private boolean indexYes;
 
 	private BreakBeam breakBeam;
@@ -64,6 +64,9 @@ public class IntakeIndex {
 		weakBottom = breakBeam.detectWeakBottom();
 		weakTop = breakBeam.detectWeakTop();
 		weakMiddle = breakBeam.detectWeakMiddle();
+		bottomToMiddle = breakBeam.bottomToMiddle();
+		bottomMiddleToTop = breakBeam.bottomMiddleToTop();
+		middleTopRefine = breakBeam.middleTopRefine();
 	}
 
 	public void intakeChooser(boolean indexYes) {
@@ -132,6 +135,34 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
 		}
 
+
+		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed 
+		&& Math.abs(Shooter.getRPM()) >= RobotMap.ShooterMap.RPM * 0.90) //.9 for short shot
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+		}
+		else if(bottomToMiddle)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else if(bottomMiddleToTop)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else if (middleTopRefine)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+
+
+
+
+
+
 /*
 		If ball on bottom then move to 3 & 4
 		If ball on (some form of bottom) & middle then move to 0 & 1
@@ -139,6 +170,9 @@ public class IntakeIndex {
 		If shooting trigger and up to speed … move … period
 		If shooting trigger and not (some form of bottom) start pinwheel
 */
+
+
+/* BELT 2
 		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed 
 		&& Math.abs(Shooter.getRPM()) >= RobotMap.ShooterMap.RPM * 0.90) //.9 for short shot
 		{
@@ -162,6 +196,7 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 		}
 		*/
+		/*
 		else if(weakBottom && !middle)
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
@@ -176,7 +211,7 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.BELT.set(0);
 		}
 
-
+		*/
 		// BELT STUFF!!!!!!!!!!!!!!!!!
 		/*
 		if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
