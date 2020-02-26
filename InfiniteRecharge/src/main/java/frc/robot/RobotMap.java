@@ -104,22 +104,22 @@ public class RobotMap {
 		public static final WPI_VictorSPX FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
 		public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
 		public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-		public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.572186;
+		public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.572186-0.05111283669824829;
 
 		public static final WPI_VictorSPX BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
 		public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
 		public static final AnalogInput BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
-		public static final double BACK_LEFT_ANGLE_OFFSET = -0.925161;
+		public static final double BACK_LEFT_ANGLE_OFFSET = -0.925161-3.128168277531419;
 
 		public static final WPI_VictorSPX BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
 		public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
 		public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-		public static final double BACK_RIGHT_ANGLE_OFFSET = -0.420229 - 2.036965;
+		public static final double BACK_RIGHT_ANGLE_OFFSET = -0.420229 - 0.8095408897871463-2.1448951380578576;
 
 		public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
 		public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
 		public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-		public static final double FRONT_LEFT_ANGLE_OFFSET = -2.21; // radians
+		public static final double FRONT_LEFT_ANGLE_OFFSET = -2.21-0.006645810835413712; // radians
 
 		public static final double MAX_SPEED = 3.627;
 		public static final double MAX_ANGULAR_SPEED = 4 * Math.PI;
@@ -159,7 +159,7 @@ public class RobotMap {
 		public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
 		public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6, 7);
 		//public static final Ultrasonic ULTRASONIC = new Ultrasonic(9, 8); // on the ground of the belt box
-		public static final WPI_TalonSRX BELT = new WPI_TalonSRX(11);
+		public static final WPI_TalonFX BELT = new WPI_TalonFX(11);
 		// public static final ColorSensorV3 COLOR_SENSOR_MID = new
 		// ColorSensorV3(I2C.Port.kOnboard);
 		// public static final ColorSensorV3 COLOR_SENSOR_HIGH = new
@@ -206,7 +206,7 @@ public class RobotMap {
 	public static class ShooterMap {
 		public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(13);
 		public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(12);
-		public static final double RPM = 4000; // Renamed from rotpm
+		public static final double RPM = 3600; //Renamed from rotpm
 		/**
 		 * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
 		 * or 3. Only the first two (0,1) are visible in web-based configuration.
@@ -239,10 +239,10 @@ public class RobotMap {
 
 	static {
 		// DriveMap
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(true);
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(true);
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
 
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);

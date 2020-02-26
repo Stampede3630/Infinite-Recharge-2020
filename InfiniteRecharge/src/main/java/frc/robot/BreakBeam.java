@@ -45,7 +45,7 @@ public class BreakBeam {
 	}
 
 	public boolean detectBallHigh() {
-		if (!beam0.get() && !beam1.get() && beam2.get()) {
+		if (!beam0.get() && !beam1.get()/* && beam2.get()*/) {
 			return true;
 		} else {
 			return false;
@@ -53,7 +53,7 @@ public class BreakBeam {
 	}
 
 	public boolean detectBallMid() {
-		if (!beam3.get() && !beam4.get() && beam5.get()) {
+		if (/*beam2.get() && */!beam3.get() && !beam4.get() /*&& beam0.get() && beam1.get() Hi andy was here*/ /*&& beam5.get()*/) {
 			return true;
 		} else {
 			return false;
@@ -61,29 +61,91 @@ public class BreakBeam {
 	}
 
 	public boolean detectBallLow() {
-		if (beam5.get() && !beam6.get() && !beam7.get()) {
+		if (/*beam5.get() &&*/ !beam6.get() && !beam7.get()) {
 			return true;
 		} else {
 			return false;
 		}
     }
     public boolean noBalls(){
-        if(beam0.get() && beam1.get() && beam2.get() && beam3.get() && beam4.get() && beam5.get() && beam6.get() && beam7.get()){
+        if(beam0.get() && beam1.get() && beam3.get() && beam4.get() && beam6.get() && beam7.get()){
             return true;
         }
         else{
             return false;
         }
-    }
+	}
+	public boolean detectLimbo(){
+		if(beam1.get() && beam3.get() && beam4.get() && beam6.get()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean detectWeakBottom()
+	{
+		if (/*beam5.get() &&*/ !beam6.get() || !beam7.get()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean detectWeakTop()
+	{
+		if (!beam0.get() || !beam1.get()/* && beam2.get()*/) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean detectWeakMiddle()
+	{
+		if (/*beam2.get() && */!beam3.get() || !beam4.get() /*&& beam0.get() && beam1.get() Hi andy was here*/ /*&& beam5.get()*/) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean getBottomGap()
+	{
+		if(!beam5.get())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+
+		}
+	}
+
+	public boolean getVeryBottom()
+	{
+		if(!beam7.get())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+
+		}
+
+	}
 
 	public void toSmartDashBoard() {
-		SmartDashboard.putBoolean("beam0", beam0.get());
-		SmartDashboard.putBoolean("beam1", beam1.get());
-		SmartDashboard.putBoolean("beam2", beam2.get());
-		SmartDashboard.putBoolean("beam3", beam3.get());
-		SmartDashboard.putBoolean("beam4", beam4.get());
-        SmartDashboard.putBoolean("beam5", beam5.get());
-        SmartDashboard.putBoolean("beam6", beam6.get());
-        SmartDashboard.putBoolean("beam7", beam7.get());
+		SmartDashboard.putBoolean("beam0 TT", beam0.get());
+		SmartDashboard.putBoolean("beam1 TB", beam1.get());
+		SmartDashboard.putBoolean("beam2 GAP", beam2.get());
+		SmartDashboard.putBoolean("beam3 MT", beam3.get());
+		SmartDashboard.putBoolean("beam4 MB", beam4.get());
+        SmartDashboard.putBoolean("beam5 GAP", beam5.get());
+        SmartDashboard.putBoolean("beam6 BT", beam6.get());
+        SmartDashboard.putBoolean("beam7 BB", beam7.get());
 	}
 }

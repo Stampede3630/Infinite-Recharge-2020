@@ -83,10 +83,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
     //Drivetrain.getInstance().keepAngle(true);
-    //Drivetrain.getInstance().driveWithJoystick(true);
+    Drivetrain.getInstance().driveWithJoystick(true);
 
     
-    Drivetrain.getInstance().turnToLongshot();
+    //Drivetrain.getInstance().turnToLongshot();
 /*
     if (RobotMap.CONTROLLER.getBackButton()){
       //System.out.println(RobotMap.SensorMap.GYRO.getAngle());
@@ -102,8 +102,8 @@ public class Robot extends TimedRobot {
 
 
 
-    // ballProcessor.index();
-		//Shooter.getInstance().control();   
+    IntakeIndex.getInstance().index();
+	Shooter.getInstance().control();   
 	}
 
 	@Override
