@@ -96,13 +96,16 @@ public class Robot extends TimedRobot {
       Drivetrain.getInstance().keepAngle(true);
     }
 */
-    ServoMotor.getInstance().ServoUp();
+	//TODO EVENTUALLY THIS SHOULD BE CALLED ONLY WHEN NEEDED?
+	ServoMotor.getInstance().ServoUp();
 	Climber.getInstance().climberPeriodic(); 
     IntakeIndex.getInstance().ToggleSolenoids();
 
 
 
-    IntakeIndex.getInstance().index();
+	IntakeIndex.getInstance().index();
+	
+	//TODO BURY THIS IN INTAKE CODE
 	Shooter.getInstance().control();   
 	}
 

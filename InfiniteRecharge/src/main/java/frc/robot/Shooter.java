@@ -23,7 +23,7 @@ public class Shooter {
     public void smartDashboardOutput() {
         // falcon.getSelectedSensorPosition();
         SmartDashboard.putNumber("RPM",
-                (sensorUnitsToRPM(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(1))));
+                (sensorUnitsToRPM(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0))));
         SmartDashboard.putNumber("Falcon Output", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getMotorOutputPercent());
         // System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0));
     }
@@ -59,7 +59,7 @@ public class Shooter {
     }
     public static double getRPM()
     {
-        return sensorUnitsToRPM(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(1));
+        return sensorUnitsToRPM(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity(0));
     }
 
 }
