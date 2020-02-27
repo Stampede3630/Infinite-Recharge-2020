@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
@@ -31,7 +32,7 @@ public class SwerveModule {
 	// private final PIDController m_drivePIDController = new PIDController(0.25, 0,
 	// 0);
 
-	private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new
+	// private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new
 																// TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
 	// kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
 
@@ -39,6 +40,7 @@ public class SwerveModule {
 	// kModuleMaxAngularAcceleration)
 	// front left -(0,1) - PID: 0.8, 0.05
 	// (4,5) -PID: 0.8, 0.05
+	private final PIDController m_turningPIDController;
 	private final double angleOffset;
 
 	/**
@@ -51,20 +53,23 @@ public class SwerveModule {
 	public SwerveModule(WPI_TalonFX driveMotorObject, WPI_VictorSPX steerMotorObject,
 			AnalogInput steerEncoderObject, double zeroedAngle) {
 		double kPSpecial;
+		double kD;
 		// double kD;
 		if (steerMotorObject.getDeviceID() == 4) {
 
 			kPSpecial = .8;
+			kD = 0.02;
 			// kModuleMaxAngularVelocity = Math.PI;
 			// kModuleMaxAngularAcceleration = Math.PI/2;
 		} else {
-			kPSpecial = 1.6;
+			kPSpecial = 4/Math.PI;
+			kD = 0.02;
 			// kD = 0.02;
 		}
-
-		m_turningPIDController = new ProfiledPIDController(kPSpecial, 0.0, 0.02,
-				new TrapezoidProfile.Constraints(RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_VELOCITY,
-						RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_ACCELERATION));
+			m_turningPIDController = new PIDController(kPSpecial, 0, kD);
+		// m_turningPIDController = new ProfiledPIDController(kPSpecial, kI, 0.0,
+		// 		new TrapezoidProfile.Constraints(RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_VELOCITY,
+		// 				RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_ACCELERATION));
 
 		m_driveMotor = driveMotorObject;
 		m_turningMotor = steerMotorObject;
@@ -175,7 +180,8 @@ public class SwerveModule {
 		if (Math.abs(driveOutput)==0){
 			turnOutput=0;
 		}
-
+	
+		//SmartDashboard.putNumber("turnOutput", turnOutput);
 		m_turningMotor.set(-turnOutput);
 		m_driveMotor.set(-driveOutput);
 

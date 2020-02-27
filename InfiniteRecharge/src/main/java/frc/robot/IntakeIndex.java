@@ -42,9 +42,9 @@ public class IntakeIndex {
 	private boolean newMattyState = false;
 	private boolean hoodNewMattyState = false;
 
-	private double beltForwardOne = -.15;  //TalonSRX speed = -.32;
+	private double beltForwardOne = -.10;  //TalonSRX speed = -.32;
 	private double beltBackwardsOne = .15;// TalonSRX speed = .32;
-	private double beltForwardTwo = -.4; //TalonSRX speed = -.5;
+	private double beltForwardTwo = -.3; //TalonSRX speed = -.5;
 	private double beltBackwardsTwo = .4; //TalonSRX speed = .5;
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
@@ -112,32 +112,17 @@ public class IntakeIndex {
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
 		}
-
 		else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			// System.out.print(timer.get());
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
 
 		}
-
-		if (!bottom && RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
-		}
-		else if (!bottom && breakBeam.getVeryBottom())
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.5);
-		}
-		else if (timer.get() > 0.5 || bottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
-			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else {
-			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
-		}
-
-
+		
 		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.ShooterMap.RPM * 0.90) //.9 for short shot
+		&& Math.abs(Shooter.getRPM()) >= /*RobotMap.ShooterMap.RPM*/SmartDashboard.getNumber("RPMEdit", 4000) //* 0.90
+		
+		) //.9 for short shot
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 		}
@@ -157,6 +142,24 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 		}
+
+
+		if (!bottom && RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
+		{
+			RobotMap.IntakeMap.PINWHEEL.set(.375); //was .375
+		}
+		else if (!bottom && breakBeam.getVeryBottom())
+		{
+			RobotMap.IntakeMap.PINWHEEL.set(.5);
+		}
+		else if (timer.get() > 0.5 || weakBottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
+			RobotMap.IntakeMap.PINWHEEL.set(0);
+		}
+		else {
+			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
+		}
+
+
 
 
 

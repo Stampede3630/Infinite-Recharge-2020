@@ -29,7 +29,7 @@ public class Shooter {
     }
 
     public void control() {
-        double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(RobotMap.ShooterMap.RPM)
+        double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(SmartDashboard.getNumber("RPMEdit", 3600))/*RobotMap.ShooterMap.RPM)*/
                 * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV;
         /* 500 RPM in either direction */
         RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kF(RobotMap.ShooterMap.PID_LOOP_IDX,

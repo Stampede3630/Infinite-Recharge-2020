@@ -50,6 +50,7 @@ public class ServoMotor {
 
     public void ServoForward() {
         servo1.set(0.5);
+        servo1.get();
     }
 
     public void ServoBackwards() {

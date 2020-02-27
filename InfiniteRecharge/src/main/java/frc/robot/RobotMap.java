@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -32,12 +33,15 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 
 /**
  * Add your docs here.
  */
 public class RobotMap {
+	
+	
 	/**
 	 * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For now
 	 * we just want the primary one.
@@ -206,7 +210,8 @@ public class RobotMap {
 	public static class ShooterMap {
 		public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(13);
 		public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(12);
-		public static final double RPM = 3600; //Renamed from rotpm
+		
+		public static final double RPM = SmartDashboard.getNumber("RPM", 3600); //Renamed from rotpm
 		/**
 		 * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
 		 * or 3. Only the first two (0,1) are visible in web-based configuration.
@@ -243,7 +248,11 @@ public class RobotMap {
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
-
+		SupplyCurrentLimitConfiguration SCLC = new SupplyCurrentLimitConfiguration(true, 40, 40, .1);
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);

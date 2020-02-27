@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -29,6 +30,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("kF", 0.055);
 		SmartDashboard.putNumber("kI", 0);
 		SmartDashboard.putNumber("kD", 0);
+		double flyWheelRPM = 3600;
+		SmartDashboard.putNumber("RPMEdit", flyWheelRPM);
 		// BallFollowDrive.resetIntakeState();
 	}
 
@@ -96,7 +99,7 @@ public class Robot extends TimedRobot {
       Drivetrain.getInstance().keepAngle(true);
     }
 */
-    ServoMotor.getInstance().ServoUp();
+    //ServoMotor.getInstance().ServoUp();
 	Climber.getInstance().climberPeriodic(); 
     IntakeIndex.getInstance().ToggleSolenoids();
 
