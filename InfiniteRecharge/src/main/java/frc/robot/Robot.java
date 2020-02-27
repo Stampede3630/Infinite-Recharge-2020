@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
 
 	IntakeIndex.getInstance().index();
 	
-	//TODO BURY THIS IN INTAKE CODE
+
 	Shooter.getInstance().control();   
 	}
 

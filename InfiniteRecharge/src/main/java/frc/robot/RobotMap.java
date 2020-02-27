@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration; //Emre
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -97,7 +97,7 @@ public class RobotMap {
 		public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(1);
 		public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(0);
 
-		public static final double ELEVATOR_SPEED = -0.1;//0.7
+		public static final double ELEVATOR_SPEED = -0.7;//0.7
 		public static final double STRAFE_SPEED = 0.5;
 	}
 
@@ -248,11 +248,13 @@ public class RobotMap {
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
-		SupplyCurrentLimitConfiguration SCLC = new SupplyCurrentLimitConfiguration(true, 40, 40, .1);
+		/* SupplyCurrentLimitConfiguration SCLC = new SupplyCurrentLimitConfiguration(true, 40, 40, .1);  //Emre
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
+
+		*/
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
