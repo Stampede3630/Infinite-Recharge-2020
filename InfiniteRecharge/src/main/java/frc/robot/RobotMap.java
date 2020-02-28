@@ -248,13 +248,14 @@ public class RobotMap {
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
-		/* SupplyCurrentLimitConfiguration SCLC = new SupplyCurrentLimitConfiguration(true, 40, 40, .1);  //Emre
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configGetSupplyCurrentLimit(SCLC);
 
-		*/
+
+
+		//Current limiting for motors
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -12,7 +14,7 @@ import frc.robot.RobotMap.SensorMap;
 public class Drivetrain {
 
   private static Drivetrain instance;
-
+  private PIDController robotAnglePID = new PIDController(0.008, 0, 0);
   static {
     instance = new Drivetrain();
   }
@@ -23,9 +25,10 @@ public class Drivetrain {
 
   private Drivetrain() {
     SensorMap.GYRO.reset();
+    robotAnglePID.enableContinuousInput(-180, 180);
   }
 
-  public PIDController turnToAngle = new PIDController(.1, 0, 0);
+ 
   
   /**
    * 
@@ -36,7 +39,7 @@ public class Drivetrain {
   public Rotation2d getAngle() {
     // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES
     // CHANGE
-    return Rotation2d.fromDegrees(-SensorMap.GYRO.getAngle());
+    return Rotation2d.fromDegrees(-SensorMap.GYRO.getYaw());
   }
 
   /**
@@ -168,40 +171,25 @@ public class Drivetrain {
     drive(xSpeed, ySpeed, rot, fieldRelative);
 
   }
-
-  public void driveAtAngle(double angle, boolean fieldRelative) {
-   
-
-    double turnSpeed = turnToAngle.calculate(RobotMap.SensorMap.GYRO.getAngle(), angle);//getAngle().getDegrees(), angle);
-
-    System.out.println(RobotMap.SensorMap.GYRO.getAngle()- angle);
-
-    if (Math.abs(turnSpeed) < 0.2) {
-      turnSpeed = 0;
-    }
-
-    
-    //System.out.println(turnSpeed);
-    //drive(0, 0, Math.pow(turnSpeed/18, 2)*RobotMap.DriveMap.MAX_ANGULAR_SPEED, fieldRelative);
-    ;
-    drive(0,0, turnSpeed*RobotMap.DriveMap.MAX_ANGULAR_SPEED,fieldRelative);
+  
+  public void updateModuleAngles() {
+    RobotMap.DrivetrainMap.BACK_LEFT.readAngle();
+    RobotMap.DrivetrainMap.BACK_RIGHT.readAngle();
+    RobotMap.DrivetrainMap.FRONT_LEFT.readAngle();
+    RobotMap.DrivetrainMap.FRONT_RIGHT.readAngle();
   }
 
-
-  public void keepAngle(boolean fieldRelative) {
-    // Get the x speed. We are inverting this because Xbox controllers return
-    // negative values when we push forward.
-    double xSpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
+  public void driveAtAngle(double angle, boolean fieldRelative)
+  {
+    var xSpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
     if (Math.abs(xSpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
       xSpeed = 0;
     }
+
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    double ySpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
-    
+    var ySpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
     if (Math.abs(ySpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
       ySpeed = 0;
     }
@@ -209,49 +197,21 @@ public class Drivetrain {
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    double rot = -Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight)) * RobotMap.DriveMap.MAX_ANGULAR_SPEED;
-    if (Math.abs(rot) < (0.2 * RobotMap.DriveMap.MAX_ANGULAR_SPEED)) {
-      rot = 0;
-    }
+    double turnSpeed = -robotAnglePID.calculate(getAngle().getDegrees(), angle) *RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+    SmartDashboard.putNumber("turnSpeed", turnSpeed);
+    SmartDashboard.putNumber("current angle", getAngle().getDegrees());
+    drive(xSpeed, ySpeed, turnSpeed, fieldRelative);
+  }
 
 
-   
-    // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
-    // System.out.println("rot-c: " + rot);
-    // System.out.println(xSpeed + "," + ySpeed);
-
-
-    //PID for keeping angle
-    double turnAngle = turnToAngle.calculate(SensorMap.GYRO.getRate(), 0);
-    if (Math.abs(turnAngle) < 0.2) {
-      turnAngle = 0;
-    }
-    if (rot==0){
-      drive(xSpeed, ySpeed, turnAngle, fieldRelative);
+ public void turnToLongshot(){
+    if(RobotMap.CONTROLLER.getYButtonPressed()){
+      driveAtAngle(-.209, true);
     }
     else{
-      drive(xSpeed, ySpeed, rot, fieldRelative);
+      //keepAngle();
     }
     
   }
 
-  public void turnToLongshot() {
-    if (RobotMap.CONTROLLER.getBackButton()) {
-      driveAtAngle(90, true);// -12);
-      //System.out.println("TRYING TO TURN");
-    }
-    else{
-      keepAngle(true);
-    }
-
-  }
-
-
-  public void updateModuleAngles() {
-    RobotMap.DrivetrainMap.BACK_LEFT.readAngle();
-    RobotMap.DrivetrainMap.BACK_RIGHT.readAngle();
-    RobotMap.DrivetrainMap.FRONT_LEFT.readAngle();
-    RobotMap.DrivetrainMap.FRONT_RIGHT.readAngle();
-  }
 }

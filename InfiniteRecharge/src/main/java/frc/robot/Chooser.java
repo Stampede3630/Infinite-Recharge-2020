@@ -51,14 +51,17 @@ public class Chooser {
         } else if (RobotMap.CONTROLLER.getPOV() == 180) {
             Drivetrain.getInstance().driveAtAngle(180, fieldRelative);
         } else if (RobotMap.CONTROLLER.getPOV() == 270) {
-            Drivetrain.getInstance().driveAtAngle(270, fieldRelative);
+            Drivetrain.getInstance().driveAtAngle(-90, fieldRelative);
         } else if (RobotMap.CONTROLLER.getPOV() == 90) {
             Drivetrain.getInstance().driveAtAngle(90, fieldRelative);
-        } else if (RobotMap.CONTROLLER.getPOV() == 45) { // BAD
-            Drivetrain.getInstance().driveAtAngle(11, fieldRelative);
-        } else {
+        }  else {
             Drivetrain.getInstance().driveWithJoystick(fieldRelative);
         }
+
+        /*
+        else if (RobotMap.CONTROLLER.getPOV() == 45) { // BAD
+            Drivetrain.getInstance().driveAtAngle(11, fieldRelative);
+        }*/
     }
 
     public void chooserPeriodic()

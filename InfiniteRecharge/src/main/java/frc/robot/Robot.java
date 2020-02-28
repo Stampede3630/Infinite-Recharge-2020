@@ -86,7 +86,11 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
     //Drivetrain.getInstance().keepAngle(true);
-    Drivetrain.getInstance().driveWithJoystick(true);
+
+      Chooser.getInstance().driveChooser();
+  
+    
+
 
     
     //Drivetrain.getInstance().turnToLongshot();
@@ -100,8 +104,9 @@ public class Robot extends TimedRobot {
     }
 */
     //ServoMotor.getInstance().ServoUp();
-	Climber.getInstance().climberPeriodic(); 
+	//Climber.getInstance().climberPeriodic(); 
     IntakeIndex.getInstance().ToggleSolenoids();
+
 
 
 
