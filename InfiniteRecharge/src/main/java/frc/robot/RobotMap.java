@@ -240,6 +240,52 @@ public class RobotMap {
 	
 	}
 
+	public static class StateChooser
+	{
+		public static double LIMELIGHT_ANGLE;
+		public static double kF;
+		public static double RPM;
+		public static boolean HOOD_ANGLE;
+		public static int PIPELINE;
+		public static double DRIVE_ANGLE;
+	}
+
+	public static class StateConstants
+	{
+		public static double INTAKE_SERVO_POS;
+        public static double INTAKE_ANGLE = Math.PI/2;
+        public static int INTAKE_PIPELINE = 1;
+
+		public static double INITIATION_LINE_SHOT_SERVO_POS;
+        public static double INITIATION_LINE_SHOT_ANGLE = 0;
+        public static int INITIATION_LINE_SHOT_PIPELINE = 3;
+        public static double INITIATION_LINE_SHOT_KF = 0.055;
+		public static int INITIATION_LINE_SHOT_RPM = 3600;
+        public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
+        
+
+        public static double SHORT_TRENCH_SERVO_POS;
+        public static double SHORT_TRENCH_ANGLE = 20 * (Math.PI/180); //ish
+		public static int SHORT_TRENCH_PIPELINE = 3;
+        public static double SHORT_TRENCH_KF = 0.055;
+		public static int SHORT_TRENCH_RPM = 3800;
+        public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
+
+        public static double LONG_SHOT_SERVO_POS;
+		public static double LONG_SHOT_ANGLE = 11 * (Math.PI/180);
+		public static int LONG_SHOT_PIPELINE = 4;
+        public static double LONG_SHOT_KF = 0.06;
+		public static int LONG_SHOT_RPM = 4000;
+		public static boolean LONG_SHOT_HOOD_ANGLE = true;
+		
+		public static double NO_MANS_LAND_SERVO_POS;
+		public static double NO_MANS_LAND_ANGLE;
+		public static int NO_MANS_LAND_PIPELINE = 3;
+        public static double NO_MANS_LAND_KF = 0.055;
+		public static int NO_MANS_LAND_RPM = 3800;
+        public static boolean NO_MANS_LAND_HOOD_ANGLE = true;
+
+	}
 	public static final XboxController CONTROLLER = new XboxController(0);
 
 	static {
