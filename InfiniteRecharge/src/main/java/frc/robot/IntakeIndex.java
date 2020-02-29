@@ -83,7 +83,7 @@ public class IntakeIndex {
 	public void manualControl() {
 		if (RobotMap.CONTROLLER.getAButton()) {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);//.75
-			RobotMap.IntakeMap.PINWHEEL.set(.4); //was .2 - Andy
+			RobotMap.IntakeMap.PINWHEEL.set(.7); //was .2 - Andy
 		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
@@ -120,7 +120,7 @@ public class IntakeIndex {
 		}
 		
 		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 // if shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= /*RobotMap.ShooterMap.RPM*/SmartDashboard.getNumber("RPMEdit", 4000) //* 0.90
+		&& Math.abs(Shooter.getRPM()) >= /*RobotMap.ShooterMap.RPM*/SmartDashboard.getNumber("RPMEdit", 4000)*.97 //* 0.90
 		
 		) //.9 for short shot
 		{
@@ -146,7 +146,7 @@ public class IntakeIndex {
 
 		if (!bottom && RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
 		{
-			RobotMap.IntakeMap.PINWHEEL.set(.375); //was .375
+			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375
 		}
 		else if (!bottom && breakBeam.getVeryBottom())
 		{
