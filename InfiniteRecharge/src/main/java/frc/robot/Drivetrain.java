@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Limelight.LedMode;
 import frc.robot.RobotMap.SensorMap;
 
 public class Drivetrain {
@@ -25,7 +26,7 @@ public class Drivetrain {
 
   private Drivetrain() {
     SensorMap.GYRO.reset();
-    robotAnglePID.enableContinuousInput(-180, 180);
+    robotAnglePID.enableContinuousInput(-Math.PI, Math.PI);
   }
 
  
@@ -201,6 +202,61 @@ public class Drivetrain {
     SmartDashboard.putNumber("turnSpeed", turnSpeed);
     SmartDashboard.putNumber("current angle", getAngle().getDegrees());
     drive(xSpeed, ySpeed, turnSpeed, fieldRelative);
+  }
+
+  public void teleopDrive(boolean fieldRelative)
+  {
+    double xSpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
+    if (Math.abs(xSpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
+      xSpeed = 0;
+    }
+    // Get the y speed or sideways/strafe speed. We are inverting this because
+    // we want a positive value when we pull to the left. Xbox controllers
+    // return positive values when you pull to the right by default.
+    double ySpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
+    if (Math.abs(ySpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
+      ySpeed = 0;
+    }
+   
+    double rot = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
+    * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight)) * RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+    if (Math.abs(rot) < (0.2 * RobotMap.DriveMap.MAX_ANGULAR_SPEED)) {
+      rot = 0;
+    }
+    
+    if(RobotMap.CONTROLLER.getBButton())
+    {
+      Limelight.setLED(LedMode.Current);
+      rot = TargetAlignDrive.getInstance().align();
+     
+    }
+    else if(rot == 0 && RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL)
+    {
+      Limelight.setLED(LedMode.Current);
+      if(RobotMap.StateChooser.DRIVE_ANGLE == 999)
+      {
+        rot = TargetAlignDrive.getInstance().align();
+      }
+      else if (Math.abs(robotAnglePID.getPositionError()) < 3 * (Math.PI/180))
+      {
+        rot = TargetAlignDrive.getInstance().align();
+      }
+      else
+      {
+      rot = -robotAnglePID.calculate(getAngle().getRadians(), RobotMap.StateChooser.DRIVE_ANGLE) *RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+      }
+    }
+    else
+    {
+      Limelight.setLED(LedMode.ForceOff);
+    }
+    // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
+    // System.out.println("rot-c: " + rot);
+    // System.out.println(xSpeed + "," + ySpeed);
+    drive(xSpeed, ySpeed, rot, fieldRelative);
+
   }
 
 

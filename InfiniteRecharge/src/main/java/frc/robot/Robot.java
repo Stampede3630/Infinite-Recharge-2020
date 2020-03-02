@@ -49,6 +49,11 @@ public class Robot extends TimedRobot {
 		Shooter.getInstance().smartDashboardOutput();
 		Drivetrain.getInstance().postToSmartDashboard();
 		BreakBeam.getInstance().toSmartDashBoard();
+		Chooser.getInstance().chooserPeriodic();
+		ServoMotor.getInstance().servoPeriodic();
+		Limelight.limelightPeriodic();
+
+		RobotMap.StateChooser.RPM = SmartDashboard.getNumber("RPMEdit", 3600);
 
 		RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
 
@@ -58,6 +63,7 @@ public class Robot extends TimedRobot {
 		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
 			imperialRumble.reset();
 		}
+		
 	}
 
 	@Override
@@ -70,6 +76,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
+		IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
 		System.out.println("Total Time Seconds"
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
@@ -85,35 +92,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-    //Drivetrain.getInstance().keepAngle(true);
 
-      Chooser.getInstance().driveChooser();
-  
-    
+		Drivetrain.getInstance().teleopDrive(RobotMap.StateChooser.FIELD_RELATIVE);
+		IntakeIndex.getInstance().index();
 
 
-    
-    //Drivetrain.getInstance().turnToLongshot();
-/*
-    if (RobotMap.CONTROLLER.getBackButton()){
-      //System.out.println(RobotMap.SensorMap.GYRO.getAngle());
-    }
-    else{
-      //Drivetrain.getInstance().driveWithJoystick(true);
-      Drivetrain.getInstance().keepAngle(true);
-    }
-*/
-    //ServoMotor.getInstance().ServoUp();
-	//Climber.getInstance().climberPeriodic(); 
-    IntakeIndex.getInstance().ToggleSolenoids();
-
-
-
-
-	IntakeIndex.getInstance().index();
-	
-
-	Shooter.getInstance().control();   
 	}
 
 	@Override

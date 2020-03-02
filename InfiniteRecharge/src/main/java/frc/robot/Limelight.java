@@ -16,8 +16,17 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Limelight {
 	private static NetworkTable table;
 
+
 	static {
 		table = NetworkTableInstance.getDefault().getTable("limelight");
+	}
+
+	public static void limelightPeriodic()
+	{
+		if(Limelight.getPipeline() != RobotMap.StateChooser.PIPELINE)
+		{
+			Limelight.setPipeline(RobotMap.StateChooser.PIPELINE);
+		}
 	}
 
 	public enum LedMode {

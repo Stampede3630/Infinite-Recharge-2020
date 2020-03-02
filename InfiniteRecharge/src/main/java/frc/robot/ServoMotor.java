@@ -8,13 +8,14 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
 public class ServoMotor {
     private static ServoMotor instance;
-
+    private static double servoState = RobotMap.StateChooser.LIMELIGHT_ANGLE;
 	static {
 		instance = new ServoMotor();
 	}
@@ -23,37 +24,36 @@ public class ServoMotor {
 		return instance;
     }
 
-    private Servo servo1;
-    private double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    private double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+    private Servo servo;
 
     public ServoMotor() {
 
-        servo1 = new Servo(0);
-
-        if (tv == 0) {
-            ty -= 0.5;
-
-            if (ty < -1) {
-                ty += 0.5;
-            }
-
-            if (ty > 1) {
-                ty -= 0.5;
-            }
-        }
+        servo = new Servo(0);
+        SmartDashboard.putNumber("servo Value", 40);
     }
 
     public void ServoUp() {
-        servo1.set(1);
+        servo.set(1);
     }
 
-    public void ServoForward() {
-        servo1.set(0.5);
-        servo1.get();
+    public void setServo(double angle)
+    {
+        servo.setAngle(angle);
     }
 
-    public void ServoBackwards() {
-        servo1.set(0);
+    public void setServoSmartDashboard()
+    {
+        setServo(SmartDashboard.getNumber("servo Value", 40));
     }
+
+    public void servoPeriodic()
+    {
+        if(servoState != RobotMap.StateChooser.LIMELIGHT_ANGLE)
+        {
+            setServo(RobotMap.StateChooser.LIMELIGHT_ANGLE);
+            servoState = RobotMap.StateChooser.LIMELIGHT_ANGLE;
+        }
+    }
+
+
 }

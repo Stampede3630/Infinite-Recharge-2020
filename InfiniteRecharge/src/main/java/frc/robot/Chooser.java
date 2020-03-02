@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
@@ -26,31 +27,59 @@ public class Chooser {
     
     private static enum RobotState  {
         
-        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND
+        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB
     }
     private RobotState currentRobotState = RobotState.INTAKE;
-    private SendableChooser<Boolean> climbChooser;
+    private RobotState pastRobotState = currentRobotState;
+    private SendableChooser<RobotState> stateChooser;
     private boolean fieldRelative;
 
-    private Chooser() {
 
-        climbChooser = new SendableChooser<Boolean>();
-        climbChooser.setDefaultOption("angles", true);
-        climbChooser.addOption("climb", false);
-        fieldRelative = true;
+    
+
+    private Chooser() {
+        SmartDashboard.putBoolean("Reset Gyro", false);
+        SmartDashboard.putBoolean("Field Relative", true);
+
+        stateChooser.setDefaultOption("Intake", RobotState.INTAKE);
+        stateChooser.addOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
+        stateChooser.addOption("Short Trench", RobotState.SHORT_TRENCH);
+        stateChooser.addOption("Long Shot", RobotState.LONG_SHOT);
+        stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
+        stateChooser.addOption("Right Climb", RobotState.RIGHT_CLIMB);
+        stateChooser.addOption("Left Climb", RobotState.LEFT_CLIMB);
+       
     }
 
-    public void updateChooser() {
-        if (climbChooser.getSelected()) {
-            // run angle turn, hex line up
-
-        } else {
-            // run climb d-pad, climb angle //climb limelight angle
-            Climber.getInstance().climberPeriodic();
+    public void resetGyro() {
+       
+        if(SmartDashboard.getBoolean("Reset Gyro", false))
+        {
+            RobotMap.SensorMap.GYRO.reset();
+            SmartDashboard.putBoolean("Reset Gyro", false);
         }
     }
 //
-    public void driveChooser() {
+    public void driveChooser() 
+    {
+       
+       if(RobotMap.CONTROLLER.getAButton())
+       {
+            RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false;
+       }
+       if(RobotMap.CONTROLLER.getBButton())
+       {
+        RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
+       }
+       if(currentRobotState != pastRobotState)
+       {
+        RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
+        pastRobotState = currentRobotState;
+       }
+    }
+
+       //Initiation line/no mans land no angle?
+       /*
         if (RobotMap.CONTROLLER.getPOV() == 0) {
             Drivetrain.getInstance().driveAtAngle(0, fieldRelative);
         } else if (RobotMap.CONTROLLER.getPOV() == 180) {
@@ -62,17 +91,18 @@ public class Chooser {
         }  else {
             Drivetrain.getInstance().driveWithJoystick(fieldRelative);
         }
-    
+        */
 
         /*
         else if (RobotMap.CONTROLLER.getPOV() == 45) { // BAD
             Drivetrain.getInstance().driveAtAngle(11, fieldRelative);
         }*/
-    }
+    
 
     public void robotStateChooser()
     {
         //read state and change RPM, kF, Limelight angle, pipeline, drive angle,
+        currentRobotState = stateChooser.getSelected();
         switch(currentRobotState)
         {
 
@@ -83,7 +113,7 @@ public class Chooser {
         break;
 
         case INITIATION_LINE_SHOT:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_SERVO_POS;
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_SERVO_ANGLE;
         RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_ANGLE;
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.INITIATION_LINE_SHOT_PIPELINE;
         RobotMap.StateChooser.kF = RobotMap.StateConstants.INITIATION_LINE_SHOT_KF;
@@ -92,7 +122,7 @@ public class Chooser {
         break;
 
         case SHORT_TRENCH:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_SERVO_POS;
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_SERVO_ANGLE;
         RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_ANGLE;
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.SHORT_TRENCH_PIPELINE;
         RobotMap.StateChooser.kF = RobotMap.StateConstants.SHORT_TRENCH_KF;
@@ -118,47 +148,38 @@ public class Chooser {
         RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_HOOD_ANGLE;
         break;
 
+        case RIGHT_CLIMB:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
+        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.RIGHT_CLIMBER_ANGLE;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
+        break;
 
+        case LEFT_CLIMB:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
+        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
         
+        }
 
+    }
 
-
+    public void fieldRelative()
+    {
+        if(SmartDashboard.getBoolean("Field Relative", true))
+        {
+            RobotMap.StateChooser.FIELD_RELATIVE = true;
+        }
+        else
+        {  
+            RobotMap.StateChooser.FIELD_RELATIVE = false;
         }
     }
 
     public void chooserPeriodic()
     {
-        /*
-        //Hold button lineup chooser 
-        if(button pressed)
-        {
-            hex line-up
-        }
-        else if( button pressed)
-        {
-            ball following
-        }
-        else
-        {
-            stop all automated lineup methods
-        }
-
-        //Limelight Angle Determination Co-driver override
-        if(chooser gets shooter far)
-        {
-            shooter far angle set
-        }
-        else if (chooser gets shooter close)
-        {
-            shooter close angle set
-        }
-        else if(intake gets selected)
-        {
-            inake angle set
-        }
-
-
-    */
+        resetGyro();
+        robotStateChooser();
+        driveChooser();
     }
 
 }

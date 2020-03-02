@@ -29,7 +29,7 @@ public class Shooter {
     }
 
     public void control() {
-        double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(SmartDashboard.getNumber("RPMEdit", 3600))/*RobotMap.ShooterMap.RPM)*/
+        double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(RobotMap.StateChooser.RPM)/*RobotMap.ShooterMap.RPM)*/
                 * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV;
         /* 500 RPM in either direction */
         RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kF(RobotMap.ShooterMap.PID_LOOP_IDX,
@@ -41,7 +41,7 @@ public class Shooter {
         RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.config_kD(RobotMap.ShooterMap.PID_LOOP_IDX,
                 SmartDashboard.getNumber("kD", 0), RobotMap.ShooterMap.TIMEOUT_MS);
 
-        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
+        if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) {
             RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
             // belt.set(-.6);
         } else {
