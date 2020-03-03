@@ -104,7 +104,7 @@ public class IntakeIndex {
 		// System.out.println(pinwheel.get());
 		updateBooleans();
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
-		if (RobotMap.CONTROLLER.getAButton() || RobotMap.AutoBooleans.INTAKE_NOW) {
+		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
 			// System.out.println("tester");
 			timer.reset();
 			timer.start();
@@ -124,19 +124,21 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(-.5);
 		}
-		else if (!bottom && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
+		else if (!weakBottom && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375 // was 0.5
 		}
+		/*
 		else if (!bottom && breakBeam.getVeryBottom())
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(.45);
 		}
+		*/
 		else if (timer.get() > 1 || weakBottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		else {
-			RobotMap.IntakeMap.PINWHEEL.set(.45); //was .375
+			RobotMap.IntakeMap.PINWHEEL.set(.55); //was .375
 		}
 		
 		
@@ -152,6 +154,10 @@ public class IntakeIndex {
 		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft))
 		{
 			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
+		}
+		else if (breakBeam.getVeryTop())
+		{
+			RobotMap.IntakeMap.BELT.set(0);
 		}
 		else if(bottomToMiddle)
 		{

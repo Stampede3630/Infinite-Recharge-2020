@@ -38,6 +38,7 @@ public class Chooser {
     
 
     private Chooser() {
+        stateChooser = new SendableChooser<RobotState>();
         SmartDashboard.putBoolean("Reset Gyro", false);
         SmartDashboard.putBoolean("Field Relative", true);
 

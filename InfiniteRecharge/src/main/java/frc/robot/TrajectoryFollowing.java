@@ -54,14 +54,14 @@ public class TrajectoryFollowing {
 	public void resetAll(){
 		m_timer.reset();
 		Rotation2d angle = Drivetrain.getInstance().getAngle();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0,0, new Rotation2d(angle.getRadians())), angle);
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
 	}
 
 	public void auto() {
 		if(m_timer.get() > trajectory.getTotalTimeSeconds())
 		{
 			Drivetrain.getInstance().drive(0, 0, 0, false);
-			System.out.println("Triggered !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			System.out.println("Triggered !!!!!!: "+ trajectory.getTotalTimeSeconds());
 		}
 		else{
 			updateAutoStates();

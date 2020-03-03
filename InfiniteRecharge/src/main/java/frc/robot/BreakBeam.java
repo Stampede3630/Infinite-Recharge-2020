@@ -86,7 +86,7 @@ public class BreakBeam {
 
 	public boolean detectWeakBottom()
 	{
-		if (/*beam5.get() &&*/ !beam6.get() || !beam7.get()) {
+		if (!beam5.get() || !beam6.get() || !beam7.get()) {
 			return true;
 		} else {
 			return false;
@@ -136,6 +136,11 @@ public class BreakBeam {
 
 		}
 
+	}
+
+	public boolean getVeryTop()
+	{
+		return !beam0.get();
 	}
 	
 	public boolean bottomToMiddle()

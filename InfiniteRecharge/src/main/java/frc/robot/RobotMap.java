@@ -62,9 +62,9 @@ public class RobotMap {
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
 
-		public static final double KPX_CONTROLLER = 1;
-		public static final double KPY_CONTROLLER = 1;
-		public static final double KP_THETA_CONTROLLER = 1;
+		public static final double KPX_CONTROLLER = 1.5;
+		public static final double KPY_CONTROLLER = 1.5;
+		public static final double KP_THETA_CONTROLLER = 1.5;
 
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
@@ -271,17 +271,17 @@ public class RobotMap {
 		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
 		
 		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
-        public static double SHORT_TRENCH_AUTO_ANGLE = 0;//TRIG
+        public static double SHORT_TRENCH_AUTO_ANGLE = 24.61 * (Math.PI/180);//TRIG
         public static int SHORT_TRENCH_AUTOT_PIPELINE = 3;
         public static double SHORT_TRENCH_AUTOT_KF = 0.055;							//DONE except trig
 		public static int SHORT_TRENCH_AUTO_RPM = 3500; //top of range
         public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
 
         public static double SHORT_TRENCH_SERVO_ANGLE = 40;
-        public static double SHORT_TRENCH_ANGLE = 20 * (Math.PI/180); //ish
+        public static double SHORT_TRENCH_ANGLE = 24.61 * (Math.PI/180); //ish
 		public static int SHORT_TRENCH_PIPELINE = 3;
         public static double SHORT_TRENCH_KF = 0.055;
-		public static int SHORT_TRENCH_RPM = 3800;
+		public static int SHORT_TRENCH_RPM = 3800; //3825 for bad balls
         public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
 
         public static double LONG_SHOT_SERVO_POS;

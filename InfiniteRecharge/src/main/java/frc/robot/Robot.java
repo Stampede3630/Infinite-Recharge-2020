@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer;
 
 
 /**
@@ -52,9 +53,11 @@ public class Robot extends TimedRobot {
 		Chooser.getInstance().chooserPeriodic();
 		ServoMotor.getInstance().servoPeriodic();
 		Limelight.limelightPeriodic();
-
+		SmartDashboard.putNumber("Navx REAL", RobotMap.SensorMap.GYRO.getYaw());
+		SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+		SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
 		RobotMap.StateChooser.RPM = SmartDashboard.getNumber("RPMEdit", 3600);
-
+		/*
 		RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
 
 		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
@@ -63,6 +66,7 @@ public class Robot extends TimedRobot {
 		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
 			imperialRumble.reset();
 		}
+		*/
 		
 	}
 
@@ -93,8 +97,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 
-		Drivetrain.getInstance().teleopDrive(RobotMap.StateChooser.FIELD_RELATIVE);
+		Drivetrain.getInstance().teleopDrive(false);
 		IntakeIndex.getInstance().index();
+		Shooter.getInstance().control();
+		Drivetrain.getInstance().updateOdometry();
 
 
 	}
@@ -124,6 +130,7 @@ public class Robot extends TimedRobot {
 	public void disabledInit() {
 		super.disabledInit();
 		RobotMap.setDriveTalonsCoast();
+		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
 
 }
