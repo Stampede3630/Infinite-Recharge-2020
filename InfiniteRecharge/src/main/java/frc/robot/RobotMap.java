@@ -249,7 +249,7 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE;
+		public static boolean FIELD_RELATIVE = true;
 	}
 
 	public static class StateConstants

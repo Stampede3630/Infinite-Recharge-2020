@@ -138,7 +138,7 @@ public class Drivetrain {
   /**
    * Updates the field relative position of the robot.
    */
-
+/*
   public void driveWithJoystick(boolean fieldRelative) {
 
     // Get the x speed. We are inverting this because Xbox controllers return
@@ -172,14 +172,14 @@ public class Drivetrain {
     drive(xSpeed, ySpeed, rot, fieldRelative);
 
   }
-  
+  */
   public void updateModuleAngles() {
     RobotMap.DrivetrainMap.BACK_LEFT.readAngle();
     RobotMap.DrivetrainMap.BACK_RIGHT.readAngle();
     RobotMap.DrivetrainMap.FRONT_LEFT.readAngle();
     RobotMap.DrivetrainMap.FRONT_RIGHT.readAngle();
   }
-
+/*
   public void driveAtAngle(double angle, boolean fieldRelative)
   {
     var xSpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
@@ -203,26 +203,26 @@ public class Drivetrain {
     SmartDashboard.putNumber("current angle", getAngle().getDegrees());
     drive(xSpeed, ySpeed, turnSpeed, fieldRelative);
   }
-
-  public void teleopDrive(boolean fieldRelative)
+*/
+  public void teleopDrive()
   {
     double xSpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
-    if (Math.abs(xSpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
+        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
+    if (Math.abs(xSpeed) < 0.2) {
       xSpeed = 0;
     }
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
     double ySpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
-    if (Math.abs(ySpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
+        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
+    if (Math.abs(ySpeed) < 0.2 ){
       ySpeed = 0;
     }
    
     double rot = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
-    * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight)) * RobotMap.DriveMap.MAX_ANGULAR_SPEED;
-    if (Math.abs(rot) < (0.2 * RobotMap.DriveMap.MAX_ANGULAR_SPEED)) {
+    * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+    if (Math.abs(rot) < 0.2) {
       rot = 0;
     }
     
@@ -245,7 +245,7 @@ public class Drivetrain {
       }
       else
       {
-      rot = -robotAnglePID.calculate(getAngle().getRadians(), RobotMap.StateChooser.DRIVE_ANGLE) *RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+      rot = -robotAnglePID.calculate(getAngle().getRadians(), RobotMap.StateChooser.DRIVE_ANGLE) ;
       }
     }
     else
@@ -255,11 +255,11 @@ public class Drivetrain {
     // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
     // System.out.println("rot-c: " + rot);
     // System.out.println(xSpeed + "," + ySpeed);
-    drive(xSpeed, ySpeed, rot, fieldRelative);
+    drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, ySpeed * RobotMap.DriveMap.MAX_SPEED, rot * RobotMap.DriveMap.MAX_ANGULAR_SPEED, RobotMap.StateChooser.FIELD_RELATIVE);
 
   }
 
-
+/*
  public void turnToLongshot(){
     if(RobotMap.CONTROLLER.getYButtonPressed()){
       driveAtAngle(-.209, true);
@@ -269,5 +269,5 @@ public class Drivetrain {
     }
     
   }
-
+*/
 }
