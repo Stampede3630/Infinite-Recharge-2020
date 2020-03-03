@@ -31,6 +31,7 @@ public class BreakBeam {
 	private DigitalInput beam5;
 	private DigitalInput beam6;
 	private DigitalInput beam7;
+	private DigitalInput beam8; //Hai this was andy
 
 	private BreakBeam() {
 
@@ -42,6 +43,7 @@ public class BreakBeam {
 		beam5 = new DigitalInput(19);
 		beam6 = new DigitalInput(20);
 		beam7 = new DigitalInput(21);
+		beam8 = new DigitalInput(22); //Also Andy
 	}
 
 	public boolean detectBallHigh() {
@@ -186,6 +188,7 @@ public class BreakBeam {
 		SmartDashboard.putBoolean("beam4 MB", beam4.get());
         SmartDashboard.putBoolean("beam5 GAP", beam5.get());
         SmartDashboard.putBoolean("beam6 BT", beam6.get());
-        SmartDashboard.putBoolean("beam7 BB", beam7.get());
+		SmartDashboard.putBoolean("beam7 BB", beam7.get());
+		SmartDashboard.putBoolean("beam8 RAMP", beam8.get());
 	}
 }

@@ -49,7 +49,6 @@ public class Chooser {
         stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
         stateChooser.addOption("Right Climb", RobotState.RIGHT_CLIMB);
         stateChooser.addOption("Left Climb", RobotState.LEFT_CLIMB);
-       
     }
 
     public void resetGyro() {

@@ -39,12 +39,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 
-    
-		// SmartDashboard.putNumber("Current trolleySpark",
-		// RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
-		// SmartDashboard.putNumber("Current Elevator",
-		// RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
-    
     	IntakeIndex.getInstance().toSmartDashboard();
 		IntakeIndex.getInstance().updateBooleans();
 		Shooter.getInstance().smartDashboardOutput();
@@ -96,12 +90,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-
-		Drivetrain.getInstance().teleopDrive(false);
+		Drivetrain.getInstance().teleopDrive();
 		IntakeIndex.getInstance().index();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
-
 
 	}
 
