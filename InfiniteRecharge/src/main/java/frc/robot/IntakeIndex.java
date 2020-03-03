@@ -124,17 +124,21 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(-.5);
 		}
+		else if (BreakBeam.getInstance().detectSpikyBottomBall()){
+			RobotMap.IntakeMap.PINWHEEL.set(0);
+		}
 		else if (!weakBottom && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375 // was 0.5
 		}
+		
 		/*
 		else if (!bottom && breakBeam.getVeryBottom())
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(.45);
 		}
 		*/
-		else if (timer.get() > 1 || weakBottom || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
+		else if (BreakBeam.getInstance().beam8.get() || BreakBeam.getInstance().detectSpikyBottomBall()) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		else {
@@ -159,15 +163,15 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 		}
+		else if (middleTopRefine)
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
 		else if(bottomToMiddle)
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 		}
 		else if(bottomMiddleToTop)
-		{
-			RobotMap.IntakeMap.BELT.set(beltForwardOne);
-		}
-		else if (middleTopRefine)
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 		}

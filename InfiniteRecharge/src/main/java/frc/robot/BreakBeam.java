@@ -31,9 +31,9 @@ public class BreakBeam {
 	private DigitalInput beam5;
 	private DigitalInput beam6;
 	private DigitalInput beam7;
-	private DigitalInput beam8; //Hai this was andy
+	public DigitalInput beam8; //Hai this was andy
 
-	private BreakBeam() {
+	public BreakBeam() {
 
 		beam0 = new DigitalInput(10);
 		beam1 = new DigitalInput(11);
@@ -69,7 +69,8 @@ public class BreakBeam {
 			return false;
 		}
     }
-    public boolean noBalls(){
+	
+	public boolean noBalls(){
         if(beam0.get() && beam1.get() && beam3.get() && beam4.get() && beam6.get() && beam7.get()){
             return true;
         }
@@ -77,6 +78,7 @@ public class BreakBeam {
             return false;
         }
 	}
+	
 	public boolean detectLimbo(){
 		if(beam1.get() && beam3.get() && beam4.get() && beam6.get()){
 			return true;
@@ -88,7 +90,7 @@ public class BreakBeam {
 
 	public boolean detectWeakBottom()
 	{
-		if (!beam5.get() || !beam6.get() || !beam7.get()) {
+		if (!beam5.get() || (!beam6.get() && !beam7.get())) {
 			return true;
 		} else {
 			return false;
@@ -180,6 +182,39 @@ public class BreakBeam {
 			return false;
 		}
 	}
+
+	public boolean bottomStop()
+		{
+			if (!beam6.get() && !beam7.get()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+	public boolean hasTwoBalls(){
+		if ((!beam0.get() || !beam1.get() || !beam2.get()) 
+			&& (!beam3.get() || !beam4.get() || !beam5.get())
+			&& (!beam6.get())){
+				return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public boolean detectSpikyBottomBall(){
+		if ( !beam7.get() || !beam6.get()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+
 	public void toSmartDashBoard() {
 		SmartDashboard.putBoolean("beam0 TT", beam0.get());
 		SmartDashboard.putBoolean("beam1 TB", beam1.get());

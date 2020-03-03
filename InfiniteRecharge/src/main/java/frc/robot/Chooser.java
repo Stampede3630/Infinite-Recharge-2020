@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import java.util.Map;
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,22 +22,26 @@ public class Chooser {
 
     private static Chooser instance;
 
-	static {
-		instance = new Chooser();
-	}
-
-	public static Chooser getInstance() {
-		return instance;
+    static {
+        instance = new Chooser();
     }
-    
-    private static enum RobotState  {
-        
+
+    public static Chooser getInstance() {
+        return instance;
+    }
+
+    private static enum RobotState {
+
         INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB
     }
+
     private RobotState currentRobotState = RobotState.INTAKE;
     private RobotState pastRobotState = currentRobotState;
     private SendableChooser<RobotState> stateChooser;
     private boolean fieldRelative;
+    private BooleanSupplier resetGyro;
+    private boolean resetGyroBoolean;
+    //private ShuffleboardTab gameDay;
 
 
     
@@ -49,14 +58,25 @@ public class Chooser {
         stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
         stateChooser.addOption("Right Climb", RobotState.RIGHT_CLIMB);
         stateChooser.addOption("Left Climb", RobotState.LEFT_CLIMB);
+        Shuffleboard.getTab("gameDay").add("Robot State", stateChooser);
+        Shuffleboard.getTab("gameDay").addBoolean("Reset Gyro", resetGyro).withWidget("Boolean Box")
+        .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"));
+
+        resetGyro = new BooleanSupplier(){
+            @Override
+            public boolean getAsBoolean() {
+                // TODO Auto-generated method stub
+                return resetGyroBoolean;
+            }
+        };
     }
 
     public void resetGyro() {
        
-        if(SmartDashboard.getBoolean("Reset Gyro", false))
+        if(resetGyro.getAsBoolean())
         {
             RobotMap.SensorMap.GYRO.reset();
-            SmartDashboard.putBoolean("Reset Gyro", false);
+            resetGyroBoolean = false;
         }
     }
 //
