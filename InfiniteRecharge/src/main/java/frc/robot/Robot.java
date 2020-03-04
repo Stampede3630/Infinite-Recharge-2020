@@ -8,7 +8,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer;
 
@@ -21,8 +24,24 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer;
  * project.
  */
 public class Robot extends TimedRobot {
+Timer timmy;
+PIDController piddy;
+public static final int PID_LOOP_IDX = 0;// this is the only pid loop i could find
 
-	private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
+private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
+ 
+	
+ 
+
+ public void Testing(){
+timmy = new Timer();
+piddy = new PIDController(.1, 0, 0);
+
+
+
+
+
+ }
 	// private Compressor comp = new Compressor(0);
 
 	@Override
@@ -69,6 +88,7 @@ public class Robot extends TimedRobot {
 		RobotMap.setDriveTalonsBrake();
 		RobotMap.resetEncoders();
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+		timmy.start();
 	}
 
 	@Override
@@ -80,6 +100,14 @@ public class Robot extends TimedRobot {
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
 		System.out.println(
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
+
+if(timmy.hasPeriodPassed(10)){
+ RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false;
+}
+if (RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false){
+}
+
+
 	}
 
 	@Override
