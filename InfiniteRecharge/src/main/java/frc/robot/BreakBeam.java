@@ -205,7 +205,7 @@ public class BreakBeam {
 	}
 	
 	public boolean detectSpikyBottomBall(){
-		if ( !beam7.get() || !beam6.get()){
+		if (!beam6.get()){
 			return true;
 		}
 		else{

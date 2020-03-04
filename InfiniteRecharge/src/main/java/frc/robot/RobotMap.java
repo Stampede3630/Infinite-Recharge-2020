@@ -203,6 +203,7 @@ public class RobotMap {
 	 */
 	public static class SensorMap {
 		public static final AHRS GYRO = new AHRS(SPI.Port.kMXP);
+
 	}
 
 	/**
@@ -249,7 +250,7 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE = false;
+		public static boolean FIELD_RELATIVE = true; //andy was here
 	}
 
 	public static class StateConstants

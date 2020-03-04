@@ -127,7 +127,7 @@ public class IntakeIndex {
 		else if (BreakBeam.getInstance().detectSpikyBottomBall()){
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		else if (!weakBottom && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
+		else if (!BreakBeam.getInstance().detectSpikyBottomBall() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(.5); //was .375 // was 0.5
 		}
@@ -138,7 +138,7 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.PINWHEEL.set(.45);
 		}
 		*/
-		else if (BreakBeam.getInstance().beam8.get() || BreakBeam.getInstance().detectSpikyBottomBall()) { // if its been 1.5 sec or there's something in the bottom
+		else if (timer.get() > 1 || BreakBeam.getInstance().detectSpikyBottomBall() || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		else {

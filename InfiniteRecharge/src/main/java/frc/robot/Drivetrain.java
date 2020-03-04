@@ -15,7 +15,7 @@ import frc.robot.RobotMap.SensorMap;
 public class Drivetrain {
 
   private static Drivetrain instance;
-  private PIDController robotAnglePID = new PIDController(0.008, 0, 0);
+  private PIDController robotAnglePID = new PIDController(0.5, 0, 0);
   static {
     instance = new Drivetrain();
   }
@@ -133,6 +133,9 @@ public class Drivetrain {
     SmartDashboard.putNumber("FL drive output", RobotMap.DrivetrainMap.FRONT_LEFT.getDriveOutput());
     SmartDashboard.putNumber("BL drive output", RobotMap.DrivetrainMap.BACK_LEFT.getDriveOutput());
 
+    SmartDashboard.putNumber("FR state", RobotMap.DrivetrainMap.FRONT_RIGHT.getWheelState());
+    SmartDashboard.putNumber("FL state", RobotMap.DrivetrainMap.FRONT_LEFT.getWheelState());
+
   }
 
   /**
@@ -230,22 +233,27 @@ public class Drivetrain {
     {
       Limelight.setLED(LedMode.Current);
       rot = TargetAlignDrive.getInstance().align();
+      System.out.println("here3");
      
     }
     else if(rot == 0 && RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL)
     {
+      robotAnglePID.setSetpoint(RobotMap.StateChooser.DRIVE_ANGLE);
       Limelight.setLED(LedMode.Current);
       if(RobotMap.StateChooser.DRIVE_ANGLE == 999)
       {
         rot = TargetAlignDrive.getInstance().align();
+        System.out.println("here1");
       }
-      else if (Math.abs(robotAnglePID.getPositionError()) < 3 * (Math.PI/180))
+      else if (Math.abs(RobotMap.StateChooser.DRIVE_ANGLE - getAngle().getRadians()) < 3 * (Math.PI/180))
       {
         rot = TargetAlignDrive.getInstance().align();
+        System.out.println("here2: " + robotAnglePID.getPositionError());
       }
       else
       {
-      rot = -robotAnglePID.calculate(getAngle().getRadians(), RobotMap.StateChooser.DRIVE_ANGLE) ;
+      rot = -robotAnglePID.calculate(getAngle().getRadians());
+      System.out.println("here");
       }
     }
     else

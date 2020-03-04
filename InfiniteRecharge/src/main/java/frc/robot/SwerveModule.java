@@ -26,6 +26,7 @@ public class SwerveModule {
 	private double m_steeringAngle;
 	private int m_driveScalar = 1;
 	private final AnalogInput m_turningEncoder;
+	private double stateDrive = 0;
 
 	double driveOutput;
 
@@ -139,9 +140,10 @@ public class SwerveModule {
 	}
 
 	public double bound(double setpoint) {
-		double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI);
+		double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI); // saM THIS DOES ABSOLUTELY NOTHING. ADDING PI AND THEN REMOVING IT = 0.... - THANKS ANDY
 		double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
-
+		//double angleToReturn;
+		
 		if (Math.abs(Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI)
 				- Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01) {
 			m_driveScalar = 1;
@@ -159,6 +161,10 @@ public class SwerveModule {
 	public double getDriveOutput() {
 		return driveOutput;
 	}
+	public double getWheelState()
+	{
+		return stateDrive;
+	}
 
 	/**
 	 * Sets the desired state for the module.
@@ -171,7 +177,7 @@ public class SwerveModule {
 		double setpoint = bound(state.angle.getRadians());
 		double currentAngle = getAngle();
 		var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
-
+		stateDrive = state.speedMetersPerSecond;
 		driveOutput = state.speedMetersPerSecond / RobotMap.DriveMap.MAX_SPEED * m_driveScalar;
 		// driveOutput = m_drivePIDController.calculate(Math.abs(getTalonFXRate()),
 		// Math.abs(state.speedMetersPerSecond)) *
