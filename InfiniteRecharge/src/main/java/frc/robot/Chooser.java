@@ -50,7 +50,7 @@ public class Chooser {
         stateChooser = new SendableChooser<RobotState>();
         SmartDashboard.putBoolean("Reset Gyro", false);
         SmartDashboard.putBoolean("Field Relative", true);
-
+        SmartDashboard.putData(stateChooser);
         stateChooser.setDefaultOption("Intake", RobotState.INTAKE);
         stateChooser.addOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
         stateChooser.addOption("Short Trench", RobotState.SHORT_TRENCH);
@@ -58,9 +58,9 @@ public class Chooser {
         stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
         stateChooser.addOption("Right Climb", RobotState.RIGHT_CLIMB);
         stateChooser.addOption("Left Climb", RobotState.LEFT_CLIMB);
-        Shuffleboard.getTab("gameDay").add("Robot State", stateChooser);
-        Shuffleboard.getTab("gameDay").addBoolean("Reset Gyro", resetGyro).withWidget("Boolean Box")
-        .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"));
+        //Shuffleboard.getTab("gameDay").add("Robot State", stateChooser);
+      // Shuffleboard.getTab("gameDay").addBoolean("Reset Gyro", resetGyro).withWidget("Boolean Box")
+       // .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"));
 
         resetGyro = new BooleanSupplier(){
             @Override

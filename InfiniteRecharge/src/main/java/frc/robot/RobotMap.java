@@ -139,7 +139,7 @@ public class RobotMap {
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
 		public static final SwerveModule FRONT_RIGHT = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
-				RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
+				RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR,RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
 				RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET);
 		public static final SwerveModule BACK_LEFT = new SwerveModule(RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
 				RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
@@ -153,7 +153,7 @@ public class RobotMap {
 	
 		public static final SwerveDriveOdometry ODOMETRY = new SwerveDriveOdometry(KINEMATICS,
 				Rotation2d.fromDegrees(-SensorMap.GYRO.getAngle()));
-		
+
 	}
 
 	public static class IntakeMap {
@@ -249,7 +249,7 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE = true;
+		public static boolean FIELD_RELATIVE = false;
 	}
 
 	public static class StateConstants
