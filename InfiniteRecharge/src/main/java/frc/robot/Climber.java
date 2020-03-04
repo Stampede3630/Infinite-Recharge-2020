@@ -54,12 +54,7 @@ public class Climber {
     }
 
     public void retract() {
-        if (RobotMap.ClimberMap.MIN_LIMIT_SWITCH.get() == false) {
          RobotMap.ClimberMap.ELEVATOR_SPARK.set(-RobotMap.ClimberMap.ELEVATOR_SPEED); 
-        }
-        else{
-         RobotMap.ClimberMap.ELEVATOR_SPARK.set((0));     
-        }
 
     }
 

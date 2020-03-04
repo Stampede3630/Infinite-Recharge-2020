@@ -51,6 +51,7 @@ public class Chooser {
         SmartDashboard.putBoolean("Reset Gyro", false);
         SmartDashboard.putBoolean("Field Relative", true);
         SmartDashboard.putData(stateChooser);
+        resetGyroBoolean = false;
         stateChooser.setDefaultOption("Intake", RobotState.INTAKE);
         stateChooser.addOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
         stateChooser.addOption("Short Trench", RobotState.SHORT_TRENCH);
@@ -75,12 +76,23 @@ public class Chooser {
        
         if(resetGyro.getAsBoolean())
         {
-            RobotMap.SensorMap.GYRO.reset();
+            RobotMap.SensorMap.GYRO.zeroYaw();
             resetGyroBoolean = false;
+        }
+    }
+
+    public void resetYaw()
+    {
+       
+        if(SmartDashboard.getBoolean("Reset Gyro", false))
+        {
+            RobotMap.SensorMap.GYRO.zeroYaw();
+            SmartDashboard.putBoolean("Reset Gyro", false);
         }
     }
 //
     public void driveChooser() 
+
     {
        
        if(RobotMap.CONTROLLER.getAButton())
@@ -197,7 +209,7 @@ public class Chooser {
 
     public void chooserPeriodic()
     {
-        resetGyro();
+        resetYaw();
         robotStateChooser();
         driveChooser();
     }

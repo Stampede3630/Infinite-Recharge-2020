@@ -122,6 +122,7 @@ if (RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false){
 		IntakeIndex.getInstance().index();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
+		Climber.getInstance().climberPeriodic();
 
 	}
 
