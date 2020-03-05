@@ -144,8 +144,9 @@ public class SwerveModule {
 		double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
 		//double angleToReturn;
 		
-		if (Math.abs(Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI)
-				- Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01) {
+		/*if (Math.abs(Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI)
+				- Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01)*/
+		if(Math.abs(Math.IEEEremainder(trueDTheta + getAngle() - setpoint, 2*Math.PI)) < .001) {
 			m_driveScalar = 1;
 		} else {
 			m_driveScalar = -1;

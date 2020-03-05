@@ -66,6 +66,8 @@ public class RobotMap {
 		public static final double KPY_CONTROLLER = 1.5;
 		public static final double KP_THETA_CONTROLLER = 1.5;
 
+
+
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
 				MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
@@ -255,12 +257,12 @@ public class RobotMap {
 
 	public static class StateConstants
 	{
-		public static final double CLIMBER_SERVO_POS = 0 ;
+		public static final double CLIMBER_SERVO_POS = 90;
 		public static final double LEFT_CLIMBER_ANGLE = 22.5 * (Math.PI/180);
 		public static final double RIGHT_CLIMBER_ANGLE = (22.5 - 180) * (Math.PI/180);
 		public static final int CLIMBER_PIPELINE = 1;
 
-		public static double INTAKE_SERVO_POS;
+		public static double INTAKE_SERVO_POS = 165;
         public static double INTAKE_ANGLE = Math.PI/2;
         public static int INTAKE_PIPELINE = 1;
 
@@ -321,10 +323,10 @@ public class RobotMap {
 
 
 		//Current limiting for motors
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
@@ -411,6 +413,7 @@ public class RobotMap {
 		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Coast);
 	}
 
+	
 	
 	
 	

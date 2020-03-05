@@ -44,6 +44,7 @@ public class ServoMotor {
     public void setServoSmartDashboard()
     {
         setServo(SmartDashboard.getNumber("servo Value", 40));
+        //ervo.setAngle(50);
     }
 
     public void servoPeriodic()

@@ -26,6 +26,14 @@ public class Limelight {
 		if(Limelight.getPipeline() != RobotMap.StateChooser.PIPELINE)
 		{
 			Limelight.setPipeline(RobotMap.StateChooser.PIPELINE);
+			if(RobotMap.StateChooser.PIPELINE == 1)
+			{
+				table.getEntry("camMode").setNumber(1);
+			}
+			else
+			{
+				table.getEntry("camMode").setNumber(0);
+			}
 		}
 	}
 

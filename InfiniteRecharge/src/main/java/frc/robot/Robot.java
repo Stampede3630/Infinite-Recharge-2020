@@ -29,19 +29,9 @@ PIDController piddy;
 public static final int PID_LOOP_IDX = 0;// this is the only pid loop i could find
 
 private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
+private BasicAuto basicAuto = new BasicAuto();
  
-	
- 
 
- public void Testing(){
-timmy = new Timer();
-piddy = new PIDController(.1, 0, 0);
-
-
-
-
-
- }
 	// private Compressor comp = new Compressor(0);
 
 	@Override
@@ -52,6 +42,7 @@ piddy = new PIDController(.1, 0, 0);
 		SmartDashboard.putNumber("kD", 0);
 		double flyWheelRPM = 3600;
 		SmartDashboard.putNumber("RPMEdit", flyWheelRPM);
+		basicAuto.postSmartDashboard();
 		// BallFollowDrive.resetIntakeState();
 	}
 
@@ -64,7 +55,7 @@ piddy = new PIDController(.1, 0, 0);
 		Drivetrain.getInstance().postToSmartDashboard();
 		BreakBeam.getInstance().toSmartDashBoard();
 		Chooser.getInstance().chooserPeriodic();
-		ServoMotor.getInstance().servoPeriodic();
+		ServoMotor.getInstance().setServoSmartDashboard();
 		Limelight.limelightPeriodic();
 		SmartDashboard.putNumber("Navx REAL", RobotMap.SensorMap.GYRO.getYaw());
 		SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
@@ -88,11 +79,13 @@ piddy = new PIDController(.1, 0, 0);
 		RobotMap.setDriveTalonsBrake();
 		RobotMap.resetEncoders();
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
-		timmy.start();
+		basicAuto.resetAutoTime();
+		basicAuto.setDistanceAndRPM();
 	}
 
 	@Override
 	public void autonomousPeriodic() {
+		/*
 		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
 		IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
@@ -100,16 +93,12 @@ piddy = new PIDController(.1, 0, 0);
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
 		System.out.println(
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
-
-if(timmy.hasPeriodPassed(10)){
- RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false;
-}
-if (RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false){
-}
-
+		*/
+		basicAuto.periodic();
+		Shooter.getInstance().control();
+		IntakeIndex.getInstance().index();
 
 	}
-
 	@Override
 	public void teleopInit() {
 		super.teleopInit();
