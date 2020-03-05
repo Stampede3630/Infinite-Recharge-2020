@@ -1,75 +1,48 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SPI;
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.kauailabs.navx.frc.AHRS;
+import frc.robot.Limelight.LedMode;
+import frc.robot.RobotMap.SensorMap;
+
 public class Drivetrain {
 
-  //******************THESE locations must be in Meters ..... SwerveDriveKinematics computes in Meters****************** */
-  //Ensure GYRo reading is not crazy (we may need to do a full long reset)
-  // translation is (x,y) where x is forward and y is side-side
-    private static final Translation2d m_frontLeftLocation = new Translation2d(0.3556, 0.3556);
-    private static final Translation2d m_frontRightLocation = new Translation2d(0.3556, -0.3556);
-    private static final Translation2d m_backLeftLocation = new Translation2d(-0.3556, 0.3556);
-    private static final Translation2d m_backRightLocation = new Translation2d(-0.3556, -0.3556);
-    private static final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-
-    public static final SwerveModule m_frontLeft = new SwerveModule(
-                                                      RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
-                                                      RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, 
-                                                      RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
-                                                      RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
-    public static final SwerveModule m_frontRight = new SwerveModule(
-                                                      RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
-                                                      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, 
-                                                      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
-                                                      RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET);
-    private static final SwerveModule m_backLeft = new SwerveModule(
-                                                      RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
-                                                      RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, 
-                                                      RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
-                                                      RobotMap.DriveMap.BACK_LEFT_ANGLE_OFFSET);
-    private static final SwerveModule m_backRight = new SwerveModule(
-                                                      RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR,
-                                                      RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, 
-                                                      RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
-                                                      RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
-    public static final double kMaxSpeed = 4; // 3 meters per second
-    public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
-  
-    
-  
-    static SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-    );
-
-    static final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
-    static Drivetrain drivetrain;
-
-  public Drivetrain() {
-    m_gyro.reset();
+  private static Drivetrain instance;
+  private PIDController robotAnglePID = new PIDController(0.5, 0, 0);
+  static {
+    instance = new Drivetrain();
   }
 
-  public static Drivetrain getInstance(){
-      if(drivetrain == null){
-          drivetrain = new Drivetrain();
-      }
-      return drivetrain;
+  public static Drivetrain getInstance() {
+    return instance;
   }
+
+  private Drivetrain() {
+    SensorMap.GYRO.reset();
+    robotAnglePID.enableContinuousInput(-Math.PI, Math.PI);
+  }
+
+ 
+  
+  /**
+   * 
+   * Returns the angle of the robot as a Rotation2d.
+   *
+   * @return The angle of the robot.
+   */
+  public Rotation2d getAngle() {
+    // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES
+    // CHANGE
+    return Rotation2d.fromDegrees(-SensorMap.GYRO.getYaw());
+  }
+
   /**
    * Method to drive the robot using joystick info.
    *
@@ -80,8 +53,8 @@ public class Drivetrain {
    *                      field.
    */
   @SuppressWarnings("ParameterName")
-  public static void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    var swerveModuleStates = m_kinematics
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    SwerveModuleState[] swerveModuleStates = RobotMap.DrivetrainMap.KINEMATICS
         .toSwerveModuleStates(fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getAngle())
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     /*
@@ -90,84 +63,128 @@ public class Drivetrain {
      * violently when you have ultrawide robots 0 1 Ybl 1 0 Xbr 0 1 YBr
      */
     setModuleStates(swerveModuleStates);
+    
   }
 
-  public static void setModuleStates(SwerveModuleState[] swerveModuleStates) {
+  public void setModuleStates(SwerveModuleState[] swerveModuleStates) {
     SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.DriveMap.MAX_SPEED);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_backLeft.setDesiredState(swerveModuleStates[2]);
-    m_backRight.setDesiredState(swerveModuleStates[3]);
+    RobotMap.DrivetrainMap.FRONT_LEFT.setDesiredState(swerveModuleStates[0]);
+    RobotMap.DrivetrainMap.FRONT_RIGHT.setDesiredState(swerveModuleStates[1]);
+    RobotMap.DrivetrainMap.BACK_LEFT.setDesiredState(swerveModuleStates[2]);
+    RobotMap.DrivetrainMap.BACK_RIGHT.setDesiredState(swerveModuleStates[3]);
   }
 
   /**
    * Stops the robot.
    * <p>
-   * Alias for {@link #drive(double, double, double, boolean) drive(0, 0, 0, false)}.
+   * Alias for {@link #drive(double, double, double, boolean) drive(0, 0, 0,
+   * false)}.
    */
-  public static void stop() {
+  public void stop() {
     drive(0, 0, 0, false);
   }
-  public static Rotation2d getAngle() {
-    // Negating the angle because WPILib gyros are CW positive. CHECK WHEN FRAMES
-    // CHANGE
-    return Rotation2d.fromDegrees(-m_gyro.getAngle());
-  }
+ 
   /**
    * Updates the field relative position of the robot.
    */
 
-  public static void updateOdometry() {
-    m_odometry.update(getAngle(), m_frontLeft.getState(), m_frontRight.getState(), m_backLeft.getState(),
-        m_backRight.getState());
-    // System.out.println(m_frontLeft.getState());
-    // System.out.println(m_frontRight.getState());
-    // System.out.println(m_backLeft.getState());
-    // System.out.println(m_backRight.getState());
+  public void updateOdometry() {
+    RobotMap.DrivetrainMap.ODOMETRY.update(getAngle(), RobotMap.DrivetrainMap.FRONT_LEFT.getState(),
+        RobotMap.DrivetrainMap.FRONT_RIGHT.getState(), RobotMap.DrivetrainMap.BACK_LEFT.getState(),
+        RobotMap.DrivetrainMap.BACK_RIGHT.getState());
+    // System.out.println(RobotMap.DrivetrainMap.FRONT_LEFT.getState());
+    // System.out.println(RobotMap.DrivetrainMap.FRONT_RIGHT.getState());
+    // System.out.println(RobotMap.DrivetrainMap.BACK_LEFT.getState());
+    // System.out.println(RobotMap.DrivetrainMap.BACK_RIGHT.getState());
   }
 
-  public static double getRightSidePos() {
-    return m_frontRight.getTalonFXPos();
+  public double getRightSidePos() {
+    return RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXPos();
   }
 
-  public static double getLeftSidePos() {
-    return m_frontLeft.getTalonFXPos();
+  public double getLeftSidePos() {
+    return RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXPos();
   }
 
-  public static double getRightSideRate() {
-    return m_frontRight.getTalonFXRate();
+  public double getRightSideRate() {
+    return RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate();
   }
 
-  public static double getLeftSideRate() {
-    return m_frontLeft.getTalonFXRate();
+  public double getLeftSideRate() {
+    return RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate();
   }
 
-  public static void postToSmartDashboard() {
-    SmartDashboard.putNumber("front-right angle - (2,3)", m_frontRight.getAngle());
-    SmartDashboard.putNumber("front-left angle - (0,1)", m_frontLeft.getAngle());
-    SmartDashboard.putNumber("back-right angle - (6,7)", m_backRight.getAngle());
-    SmartDashboard.putNumber("back-left angle - (4,5)", m_backLeft.getAngle());
+  public void postToSmartDashboard() {
+    SmartDashboard.putNumber("front-right angle - (2,3)", RobotMap.DrivetrainMap.FRONT_RIGHT.getAngle());
+    SmartDashboard.putNumber("front-left angle - (0,1)", RobotMap.DrivetrainMap.FRONT_LEFT.getAngle());
+    SmartDashboard.putNumber("back-right angle - (6,7)", RobotMap.DrivetrainMap.BACK_RIGHT.getAngle());
+    SmartDashboard.putNumber("back-left angle - (4,5)", RobotMap.DrivetrainMap.BACK_LEFT.getAngle());
     SmartDashboard.putNumber("Navx value", getAngle().getDegrees());
     SmartDashboard.putNumber("Joysticks y", RobotMap.CONTROLLER.getY(Hand.kLeft));
-    m_backRight.toSmartDashboard();
-    m_backLeft.toSmartDashboard();
+    RobotMap.DrivetrainMap.BACK_RIGHT.toSmartDashboard();
+    RobotMap.DrivetrainMap.BACK_LEFT.toSmartDashboard();
 
-    SmartDashboard.putNumber("meters dist X", m_odometry.getPoseMeters().getTranslation().getX());
-    SmartDashboard.putNumber("meters dist Y", m_odometry.getPoseMeters().getTranslation().getY());
-    SmartDashboard.putNumber("FR encoder rate", m_frontRight.getTalonFXRate());
-    SmartDashboard.putNumber("FL encoder rate", m_frontLeft.getTalonFXRate());
+    SmartDashboard.putNumber("meters dist X", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+    SmartDashboard.putNumber("meters dist Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+    SmartDashboard.putNumber("FR encoder rate", RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate());
+    SmartDashboard.putNumber("FL encoder rate", RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate());
 
-    SmartDashboard.putNumber("FR drive output", m_frontRight.getDriveOutput());
-    SmartDashboard.putNumber("FL drive output", m_frontLeft.getDriveOutput());
-    SmartDashboard.putNumber("BL drive output", m_backLeft.getDriveOutput());
+    SmartDashboard.putNumber("FR drive output", RobotMap.DrivetrainMap.FRONT_RIGHT.getDriveOutput());
+    SmartDashboard.putNumber("FL drive output", RobotMap.DrivetrainMap.FRONT_LEFT.getDriveOutput());
+    SmartDashboard.putNumber("BL drive output", RobotMap.DrivetrainMap.BACK_LEFT.getDriveOutput());
 
+    SmartDashboard.putNumber("FR state", RobotMap.DrivetrainMap.FRONT_RIGHT.getWheelState());
+    SmartDashboard.putNumber("FL state", RobotMap.DrivetrainMap.FRONT_LEFT.getWheelState());
 
   }
 
-  public static void driveWithJoystick(boolean fieldRelative) {
+  /**
+   * Updates the field relative position of the robot.
+   */
+/*
+  public void driveWithJoystick(boolean fieldRelative) {
 
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
+    double xSpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
+    if (Math.abs(xSpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
+      xSpeed = 0;
+    }
+    // Get the y speed or sideways/strafe speed. We are inverting this because
+    // we want a positive value when we pull to the left. Xbox controllers
+    // return positive values when you pull to the right by default.
+    double ySpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
+    if (Math.abs(ySpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
+      ySpeed = 0;
+    }
+    // Get the rate of angular rotatpion. We are inverting this because we want a
+    // positive value when we pull to the left (remember, CCW is positive in
+    // mathematics). Xbox controllers return positive values when you pull to
+    // the right by default.
+    double rot = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight)) * RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+
+    if (Math.abs(rot) < (0.2 * RobotMap.DriveMap.MAX_ANGULAR_SPEED)) {
+      rot = 0;
+    }
+    // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
+    // System.out.println("rot-c: " + rot);
+    // System.out.println(xSpeed + "," + ySpeed);
+    drive(xSpeed, ySpeed, rot, fieldRelative);
+
+  }
+  */
+  public void updateModuleAngles() {
+    RobotMap.DrivetrainMap.BACK_LEFT.readAngle();
+    RobotMap.DrivetrainMap.BACK_RIGHT.readAngle();
+    RobotMap.DrivetrainMap.FRONT_LEFT.readAngle();
+    RobotMap.DrivetrainMap.FRONT_RIGHT.readAngle();
+  }
+/*
+  public void driveAtAngle(double angle, boolean fieldRelative)
+  {
     var xSpeed = -Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft)) * RobotMap.DriveMap.MAX_SPEED;
     if (Math.abs(xSpeed) < (0.2 * RobotMap.DriveMap.MAX_SPEED)) {
       xSpeed = 0;
@@ -184,24 +201,88 @@ public class Drivetrain {
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    var rot = -Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight)) * RobotMap.DriveMap.MAX_ANGULAR_SPEED;
-    if (Math.abs(rot) < (0.2 * RobotMap.DriveMap.MAX_ANGULAR_SPEED)) {
+    double turnSpeed = -robotAnglePID.calculate(getAngle().getDegrees(), angle) *RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+    SmartDashboard.putNumber("turnSpeed", turnSpeed);
+    SmartDashboard.putNumber("current angle", getAngle().getDegrees());
+    drive(xSpeed, ySpeed, turnSpeed, fieldRelative);
+  }
+*/
+  public void teleopDrive()
+  {
+    double xSpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
+    if (Math.abs(xSpeed) < 0.2) {
+      xSpeed = 0;
+    } else { //this is the right way to type else
+      xSpeed = (Math.abs(xSpeed)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
+    }
+    // Get the y speed or sideways/strafe speed. We are inverting this because
+    // we want a positive value when we pull to the left. Xbox controllers
+    // return positive values when you pull to the right by default.
+    double ySpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
+        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
+    if (Math.abs(ySpeed) < 0.2 ){
+      ySpeed = 0;
+    } else {
+      ySpeed = (Math.abs(ySpeed)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
+    }
+   
+    double rot = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
+    * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+    if (Math.abs(rot) < 0.2) {
       rot = 0;
+    } else {
+      rot = (Math.abs(rot)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+    }
+  
+    if(RobotMap.CONTROLLER.getBButton())
+    {
+      Limelight.setLED(LedMode.Current);
+      rot = TargetAlignDrive.getInstance().align();
+      System.out.println("here3");
+     
+    }
+    else if(rot == 0 && RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL)
+    {
+      robotAnglePID.setSetpoint(RobotMap.StateChooser.DRIVE_ANGLE);
+      Limelight.setLED(LedMode.Current);
+      if(RobotMap.StateChooser.DRIVE_ANGLE == 999)
+      {
+        rot = TargetAlignDrive.getInstance().align();
+        System.out.println("here1");
+      }
+      else if (Math.abs(RobotMap.StateChooser.DRIVE_ANGLE - getAngle().getRadians()) < 3 * (Math.PI/180))
+      {
+        rot = TargetAlignDrive.getInstance().align();
+        System.out.println("here2: " + robotAnglePID.getPositionError());
+      }
+      else
+      {
+      rot = -robotAnglePID.calculate(getAngle().getRadians());
+      System.out.println("here");
+      }
+    }
+    else
+    {
+      Limelight.setLED(LedMode.ForceOff);
     }
     // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
     // System.out.println("rot-c: " + rot);
-    //System.out.println(xSpeed + "," + ySpeed);
-    drive(xSpeed, ySpeed, rot, fieldRelative);
+    // System.out.println(xSpeed + "," + ySpeed);
+    
+    drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, ySpeed * RobotMap.DriveMap.MAX_SPEED, rot * RobotMap.DriveMap.MAX_ANGULAR_SPEED, RobotMap.StateChooser.FIELD_RELATIVE);
+
   }
 
-  public void updateModuleAngles()
-
-  {
-    m_backLeft.readAngle();
-    m_backRight.readAngle();
-    m_frontLeft.readAngle();
-    m_frontRight.readAngle();
+/*
+ public void turnToLongshot(){
+    if(RobotMap.CONTROLLER.getYButtonPressed()){
+      driveAtAngle(-.209, true);
+    }
+    else{
+      //keepAngle();
+    }
+    
   }
-
- 
-  }
+*/
+}

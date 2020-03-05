@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,11 +7,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer;
 
 
 /**
@@ -22,45 +24,123 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Compressor comp = new Compressor(0);
+Timer timmy;
+PIDController piddy;
+public static final int PID_LOOP_IDX = 0;// this is the only pid loop i could find
 
-  private Drivetrain m_swerve; 
+//private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
+private BasicAuto basicAuto = new BasicAuto();
+ 
 
-  
+	// private Compressor comp = new Compressor(0);
 
-  @Override
-  public void robotInit() {
-    m_swerve = Drivetrain.getInstance();
-    m_swerve = new Drivetrain();
-   
-  }
+	@Override
+	public void robotInit() {
+		SmartDashboard.putNumber("kP", 1);
+		SmartDashboard.putNumber("kF", 0.055);
+		SmartDashboard.putNumber("kI", 0);
+		SmartDashboard.putNumber("kD", 0);
+		double flyWheelRPM = 3600;
+		SmartDashboard.putNumber("RPMEdit", flyWheelRPM);
+		basicAuto.postSmartDashboard();
+		// BallFollowDrive.resetIntakeState();
+	}
 
-  @Override
-  public void robotPeriodic() {
+	@Override
+	public void robotPeriodic() {
 
-  }
+    	IntakeIndex.getInstance().toSmartDashboard();
+		IntakeIndex.getInstance().updateBooleans();
+		Shooter.getInstance().smartDashboardOutput();
+		Drivetrain.getInstance().postToSmartDashboard();
+		BreakBeam.getInstance().toSmartDashBoard();
+		Chooser.getInstance().chooserPeriodic();
+		ServoMotor.getInstance().setServoSmartDashboard();
+		Limelight.limelightPeriodic();
+		SmartDashboard.putNumber("Navx REAL", RobotMap.SensorMap.GYRO.getYaw());
+		SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+		SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+		RobotMap.StateChooser.RPM = SmartDashboard.getNumber("RPMEdit", 3600);
+		/*
+		RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
 
-  @Override
-  public void autonomousInit() {
-    RobotMap.resetEncoders();
+		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
+			imperialRumble.trigger();
+		}
+		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
+			imperialRumble.reset();
+		}
+		*/
+		
+	}
 
-  }
+	@Override
+	public void autonomousInit() {
+		RobotMap.setDriveTalonsBrake();
+		RobotMap.resetEncoders();
+		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+		basicAuto.resetAutoTime();
+		basicAuto.setDistanceAndRPM();
+	}
 
-  @Override
-  public void autonomousPeriodic() {
+	@Override
+	public void autonomousPeriodic() {
+		/*
+		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
+		IntakeIndex.getInstance().index();
+		Drivetrain.getInstance().updateOdometry();
+		System.out.println("Total Time Seconds"
+				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
+		System.out.println(
+				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
+		*/
+		basicAuto.periodic();
+		Shooter.getInstance().control();
+		IntakeIndex.getInstance().index();
 
-  }
+	}
+	@Override
+	public void teleopInit() {
+		super.teleopInit();
+		RobotMap.setDriveTalonsBrake();
+	}
+	@Override
+	public void teleopPeriodic() {
 
-  @Override
-  public void teleopPeriodic() {
-    m_swerve.driveWithJoystick(true);
+		Drivetrain.getInstance().teleopDrive();
+		IntakeIndex.getInstance().index();
+		Shooter.getInstance().control();
+		Drivetrain.getInstance().updateOdometry();
+		Climber.getInstance().climberPeriodic();
 
-  }
+	}
 
-  @Override
-  public void testPeriodic() {
+	@Override
+	public void testInit() {
+		// Sets up the limelight pipeline
+		// BallFollowDrive.initLimelight();
+	}
 
-  }
+	@Override
+	public void testPeriodic() {
+		/*
+		 * // Button A on the XBOX makes the robot start searching again (if it marked
+		 * // intake as done) if (RobotMap.CONTROLLER.getAButton()) {
+		 * BallFollowDrive.resetIntakeState(); }
+		 * 
+		 * // Intake code runs only while the right bumber is held (otherwise it stops)
+		 * if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) { BallFollowDrive.drive(); }
+		 * else { BallFollowDrive.stop(); }
+		 */
+		// Drivetrain.postToSmartDashboard();
 
-  
+	}
+
+	@Override
+	public void disabledInit() {
+		super.disabledInit();
+		RobotMap.setDriveTalonsCoast();
+		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+	}
+
 }
