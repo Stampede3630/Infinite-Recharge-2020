@@ -161,7 +161,7 @@ public class BreakBeam {
 
 	public boolean bottomMiddleToTop()
 	{
-		if( (!beam7.get() || !beam6.get()) && (!beam4.get() || !beam3.get() || !beam2.get() || !beam1.get()) && beam0.get())
+		if( (!beam6.get() || !beam5.get()) && (!beam4.get() || !beam3.get() || !beam2.get() || !beam1.get()) && beam0.get())
 		{
 			return true;
 		}
@@ -205,12 +205,31 @@ public class BreakBeam {
 	}
 	
 	public boolean detectSpikyBottomBall(){
-		if (!beam6.get()){ //make beam 5 part of this
+		if((!beam7.get() && !beam6.get() ) || !beam5.get())
+		{
 			return true;
 		}
-		else{
+		else
+		{
 			return false;
 		}
+	}
+
+	public boolean somethingInBottom()
+	{
+		if((!beam7.get() && !beam6.get() ) || !beam5.get())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean getRampBeam()
+	{
+		return !beam8.get();
 	}
 	
 	

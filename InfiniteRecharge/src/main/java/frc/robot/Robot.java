@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer;
+import frc.robot.RobotMap.DrivetrainMap;
 
 
 /**
@@ -30,57 +31,49 @@ public static final int PID_LOOP_IDX = 0;// this is the only pid loop i could fi
 
 //private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
 private BasicAuto basicAuto = new BasicAuto();
+private boolean debugging = false;
  
 
 	// private Compressor comp = new Compressor(0);
 
 	@Override
 	public void robotInit() {
-		SmartDashboard.putNumber("kP", 1);
-		SmartDashboard.putNumber("kF", 0.055);
-		SmartDashboard.putNumber("kI", 0);
-		SmartDashboard.putNumber("kD", 0);
-		double flyWheelRPM = 3600;
-		SmartDashboard.putNumber("RPMEdit", flyWheelRPM);
+
+		SmartDashboard.putNumber("RPMEdit", 0);
+		SmartDashboard.putBoolean("debugging", false);
 		basicAuto.postSmartDashboard();
 		// BallFollowDrive.resetIntakeState();
 	}
 
 	@Override
 	public void robotPeriodic() {
-
-    	IntakeIndex.getInstance().toSmartDashboard();
+		if(SmartDashboard.getBoolean("debugging", false))
+		{
+			Shooter.getInstance().smartDashboardOutput();
+			Drivetrain.getInstance().postToSmartDashboard();
+			BreakBeam.getInstance().toSmartDashBoard();
+			ServoMotor.getInstance().setServoSmartDashboard();
+			SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+			SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+		}
+		
 		IntakeIndex.getInstance().updateBooleans();
-		Shooter.getInstance().smartDashboardOutput();
-		Drivetrain.getInstance().postToSmartDashboard();
-		BreakBeam.getInstance().toSmartDashBoard();
+		ServoMotor.getInstance().servoPeriodic();
 		Chooser.getInstance().chooserPeriodic();
-		ServoMotor.getInstance().setServoSmartDashboard();
 		Limelight.limelightPeriodic();
 		SmartDashboard.putNumber("Navx REAL", RobotMap.SensorMap.GYRO.getYaw());
-		SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
-		SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
-		RobotMap.StateChooser.RPM = SmartDashboard.getNumber("RPMEdit", 3600);
-		/*
-		RumbleSystem.update(); // Handles rumbling - DON'T remove this, otherwise rumble feedback stops working
-
-		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kRight)) { // TODO: Remove this if not needed
-			imperialRumble.trigger();
-		}
-		if (RobotMap.CONTROLLER.getBumperPressed(Hand.kLeft)) {
-			imperialRumble.reset();
-		}
-		*/
+		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
 		
 	}
 
 	@Override
 	public void autonomousInit() {
+
 		RobotMap.setDriveTalonsBrake();
 		RobotMap.resetEncoders();
 		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 		basicAuto.resetAutoTime();
-		basicAuto.setDistanceAndRPM();
+		RobotMap.AutoBooleans.SHOOT_NOW = true;
 	}
 
 	@Override
@@ -97,12 +90,14 @@ private BasicAuto basicAuto = new BasicAuto();
 		basicAuto.periodic();
 		Shooter.getInstance().control();
 		IntakeIndex.getInstance().index();
+		Drivetrain.getInstance().updateOdometry();
 
 	}
 	@Override
 	public void teleopInit() {
 		super.teleopInit();
 		RobotMap.setDriveTalonsBrake();
+		RobotMap.AutoBooleans.SHOOT_NOW = false;
 	}
 	@Override
 	public void teleopPeriodic() {
@@ -119,6 +114,8 @@ private BasicAuto basicAuto = new BasicAuto();
 	public void testInit() {
 		// Sets up the limelight pipeline
 		// BallFollowDrive.initLimelight();
+
+
 	}
 
 	@Override
@@ -134,6 +131,14 @@ private BasicAuto basicAuto = new BasicAuto();
 		 */
 		// Drivetrain.postToSmartDashboard();
 
+		RobotMap.StateChooser.RPM = 1100;
+		//RobotMap.StateChooser.FIELD_RELATIVE = false;
+		Shooter.getInstance().control();
+		//Drivetrain.getInstance().teleopDrive();
+		IntakeIndex.getInstance().index();
+		Climber.getInstance().climberPeriodic();
+
+		
 	}
 
 	@Override

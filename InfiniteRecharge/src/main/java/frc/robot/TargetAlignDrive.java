@@ -39,11 +39,11 @@ public class TargetAlignDrive {
 	}
 
 	public double align() {
-		if (!Limelight.Target.isValid())
+		Limelight.Target.trackTarget(TargetType.UpperTarget);
+		if (!Limelight.isTargetValid())
 			return 0; // Failsafe
 
-		double angleVel = RobotMap.TrackingPIDMap.TURN.calculate(-Limelight.Target.getAngle(), 0)
-				* RobotMap.DriveMap.MAX_ANGULAR_SPEED;
+		double angleVel = RobotMap.TrackingPIDMap.TURN.calculate(-Limelight.getTX(), 0);
 		SmartDashboard.putNumber("angleVel", angleVel);
 
 		//Drivetrain.getInstance().drive(0, 0, angleVel, true); // TODO: Clamp the angle velocity?

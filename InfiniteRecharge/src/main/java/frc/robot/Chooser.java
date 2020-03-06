@@ -63,19 +63,13 @@ public class Chooser {
       // Shuffleboard.getTab("gameDay").addBoolean("Reset Gyro", resetGyro).withWidget("Boolean Box")
        // .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"));
 
-        resetGyro = new BooleanSupplier(){
-            @Override
-            public boolean getAsBoolean() {
-                // TODO Auto-generated method stub
-                return resetGyroBoolean;
-            }
-        };
     }
 
     public void resetGyro() {
        
         if(resetGyro.getAsBoolean())
         {
+            RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false;
             RobotMap.SensorMap.GYRO.zeroYaw();
             resetGyroBoolean = false;
         }
@@ -207,11 +201,14 @@ public class Chooser {
         }
     }
 
+    
+
     public void chooserPeriodic()
     {
         resetYaw();
         robotStateChooser();
         driveChooser();
+        fieldRelative();
     }
 
 }

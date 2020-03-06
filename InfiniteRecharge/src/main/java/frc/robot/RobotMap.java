@@ -191,7 +191,7 @@ public class RobotMap {
 	 * PIDs used by target tracking classes
 	 */
 	public static class TrackingPIDMap {
-		public static final ProfiledPIDController TURN = new ProfiledPIDController(0.01, 0, 0,
+		public static final ProfiledPIDController TURN = new ProfiledPIDController(0.02, 0, 0.002,
 				new TrapezoidProfile.Constraints(RobotMap.DriveMap.MAX_ANGULAR_SPEED, Math.PI * 6)); // TODO?
 		public static final PIDController X = new PIDController(0.03, 0, 0);
 		public static final PIDController Y = new PIDController(0.03, 0, 0);
@@ -246,7 +246,8 @@ public class RobotMap {
 	public static class StateChooser
 	{
 		public static double LIMELIGHT_ANGLE;
-		public static double kF;
+		public static double kF = 0.055;
+		public static double kP = 1;
 		public static double RPM;
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
@@ -257,47 +258,47 @@ public class RobotMap {
 	public static class StateConstants
 	{
 		public static final double CLIMBER_SERVO_POS = 90;
-		public static final double LEFT_CLIMBER_ANGLE = 22.5 * (Math.PI/180);
-		public static final double RIGHT_CLIMBER_ANGLE = (22.5 - 180) * (Math.PI/180);
-		public static final int CLIMBER_PIPELINE = 1;
+		public static final double LEFT_CLIMBER_ANGLE = 28 * (Math.PI/180);
+		public static final double RIGHT_CLIMBER_ANGLE = (28 - 180) * (Math.PI/180);
+		public static final int CLIMBER_PIPELINE = 5;
 
 		public static double INTAKE_SERVO_POS = 165;
-        public static double INTAKE_ANGLE = Math.PI/2;
+        public static double INTAKE_ANGLE = 0;
         public static int INTAKE_PIPELINE = 1;
 
-		public static double INITIATION_LINE_SHOT_SERVO_ANGLE = 45;//real angle:30
-        public static double INITIATION_LINE_SHOT_ANGLE = 999;//trig
+		public static double INITIATION_LINE_SHOT_SERVO_ANGLE = 44; //real angle:30
+        public static double INITIATION_LINE_SHOT_ANGLE = 999; //trig
         public static int INITIATION_LINE_SHOT_PIPELINE = 3;						//DONE
         public static double INITIATION_LINE_SHOT_KF = 0.055;
-		public static int INITIATION_LINE_SHOT_RPM = 3050; //top of range
+		public static int INITIATION_LINE_SHOT_RPM = 3350 -175;//3050; //top of range
 		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
 		
 		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
         public static double SHORT_TRENCH_AUTO_ANGLE = 24.61 * (Math.PI/180);//TRIG
-        public static int SHORT_TRENCH_AUTOT_PIPELINE = 3;
+        public static int SHORT_TRENCH_AUTOT_PIPELINE = 4;
         public static double SHORT_TRENCH_AUTOT_KF = 0.055;							//DONE except trig
-		public static int SHORT_TRENCH_AUTO_RPM = 3500; //top of range
+		public static int SHORT_TRENCH_AUTO_RPM = 3800;//3500; //top of range
         public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
 
         public static double SHORT_TRENCH_SERVO_ANGLE = 40;
         public static double SHORT_TRENCH_ANGLE = 24.61 * (Math.PI/180); //ish
-		public static int SHORT_TRENCH_PIPELINE = 3;
+		public static int SHORT_TRENCH_PIPELINE = 4;
         public static double SHORT_TRENCH_KF = 0.055;
-		public static int SHORT_TRENCH_RPM = 3800; //3825 for bad balls
+		public static int SHORT_TRENCH_RPM = 4100;//3800; //3825 for bad balls
         public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
 
-        public static double LONG_SHOT_SERVO_POS;
+        public static double LONG_SHOT_SERVO_POS = 40;
 		public static double LONG_SHOT_ANGLE = 11 * (Math.PI/180);
 		public static int LONG_SHOT_PIPELINE = 4;
         public static double LONG_SHOT_KF = 0.06;
-		public static int LONG_SHOT_RPM = 4000;
+		public static int LONG_SHOT_RPM = 5100; //4000, 4800
 		public static boolean LONG_SHOT_HOOD_ANGLE = true;
 		
-		public static double NO_MANS_LAND_SERVO_POS;
+		public static double NO_MANS_LAND_SERVO_POS = 40;
 		public static double NO_MANS_LAND_ANGLE = 999;
 		public static int NO_MANS_LAND_PIPELINE = 3;
         public static double NO_MANS_LAND_KF = 0.055;
-		public static int NO_MANS_LAND_RPM = 3800;
+		public static int NO_MANS_LAND_RPM = 4100; //3800
 		public static boolean NO_MANS_LAND_HOOD_ANGLE = true;
 		
 		public static boolean ALLOW_AUTOMATED_CONTROL = true;

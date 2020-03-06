@@ -18,7 +18,8 @@ import frc.robot.RobotMap.DriveMap;
 public class BasicAuto {
     private Timer autoTime = new Timer();
     private double timeThreshold = 10;
-    private PIDController autoDistancePID = new PIDController(0.1, 0, 0);
+    private double shooterWait = 0;
+    private PIDController autoDistancePID = new PIDController(1, 0, 0);
     private double meterSetpoint = 1;
     
   
@@ -29,27 +30,19 @@ public class BasicAuto {
     }
     public void periodic()
     {
-        if(RobotMap.AutoBooleans.SHOOT_NOW && autoTime.get() < timeThreshold)
+        if(RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold))
         {
             RobotMap.AutoBooleans.SHOOT_NOW = false;
         }
+        else if(RobotMap.AutoBooleans.SHOOT_NOW)
+        {
+            Drivetrain.getInstance().drive(0, 0, TargetAlignDrive.getInstance().align()*RobotMap.DriveMap.MAX_SPEED, true);
+        } 
         else
         {
+            //System.out.println("Trying to move");
             double xSpeed = autoDistancePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX(), meterSetpoint);
-            Drivetrain.getInstance().drive(xSpeed, 0, 0, true);
+            Drivetrain.getInstance().drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, 0, 0, true);
         }
-    }
-
-    public void postSmartDashboard()
-    {
-        SmartDashboard.putNumber("AutoDistance", 1);
-        SmartDashboard.putNumber("Auto RPM", 3600);
-    }
-
-    public void setDistanceAndRPM()
-    {
-        meterSetpoint = SmartDashboard.getNumber("AutoDistance", 1);
-        RobotMap.StateChooser.RPM = SmartDashboard.getNumber("Auto RPM", 3600);
-
     }
 }

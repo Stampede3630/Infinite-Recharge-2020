@@ -29,7 +29,7 @@ public class ServoMotor {
     public ServoMotor() {
 
         servo = new Servo(0);
-        SmartDashboard.putNumber("servo Value", 40);
+       
     }
 
     public void ServoUp() {
