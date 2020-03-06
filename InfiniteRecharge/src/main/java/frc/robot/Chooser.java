@@ -10,6 +10,7 @@ package frc.robot;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -52,8 +53,8 @@ public class Chooser {
         SmartDashboard.putBoolean("Field Relative", true);
         SmartDashboard.putData(stateChooser);
         resetGyroBoolean = false;
-        stateChooser.setDefaultOption("Intake", RobotState.INTAKE);
-        stateChooser.addOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
+        stateChooser.setDefaultOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
+        stateChooser.addOption("Intake", RobotState.INTAKE);
         stateChooser.addOption("Short Trench", RobotState.SHORT_TRENCH);
         stateChooser.addOption("Long Shot", RobotState.LONG_SHOT);
         stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
@@ -186,6 +187,8 @@ public class Chooser {
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
         
         }
+
+       
 
     }
 

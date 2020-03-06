@@ -41,7 +41,6 @@ private boolean debugging = false;
 
 		SmartDashboard.putNumber("RPMEdit", 0);
 		SmartDashboard.putBoolean("debugging", false);
-		basicAuto.postSmartDashboard();
 		// BallFollowDrive.resetIntakeState();
 	}
 
@@ -61,8 +60,9 @@ private boolean debugging = false;
 		ServoMotor.getInstance().servoPeriodic();
 		Chooser.getInstance().chooserPeriodic();
 		Limelight.limelightPeriodic();
-		SmartDashboard.putNumber("Navx REAL", RobotMap.SensorMap.GYRO.getYaw());
+		SmartDashboard.putNumber("Navx REAL", -RobotMap.SensorMap.GYRO.getYaw());
 		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
+		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
 		
 	}
 
@@ -87,7 +87,7 @@ private boolean debugging = false;
 		System.out.println(
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		*/
-		basicAuto.periodic();
+		basicAuto.newPeriodic();
 		Shooter.getInstance().control();
 		IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
