@@ -148,7 +148,7 @@ public class Drivetrain {
 
   public void teleopDrive()
   {
-    double xSpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
+    double xSpeed = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
         * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
     if (Math.abs(xSpeed) < 0.2) {
       xSpeed = 0;
@@ -158,7 +158,7 @@ public class Drivetrain {
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    double ySpeed = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
+    double ySpeed = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
         * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
     if (Math.abs(ySpeed) < 0.2 ){
       ySpeed = 0;
@@ -166,7 +166,7 @@ public class Drivetrain {
       ySpeed = (Math.abs(ySpeed)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
     }
    
-    double rot = 1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
+    double rot = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
     * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
     if (Math.abs(rot) < 0.2) {
       rot = 0;

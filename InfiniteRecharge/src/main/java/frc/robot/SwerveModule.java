@@ -79,7 +79,8 @@ public class SwerveModule {
 		angleOffset = zeroedAngle;
 
 		// Set the distance per pulse for the drive encoder. We can simply use the
-		// distance traveled for one rotation of the wheel divided by the encoder
+		// distance traveled for one rotation 
+		//of the wheel divided by the encoder
 		// loolution.
 
 		// Set the distance (in this case, angle) per pulse for the turning encoder.
@@ -97,14 +98,14 @@ public class SwerveModule {
 		double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0) * 10;
 		double revsPerSec = ticksPerSec / (RobotMap.SwerveModuleMap.ENCODER_RESOLUTION * 8.307692307692308);
 		double metersPerSec = revsPerSec * 2 * Math.PI * RobotMap.SwerveModuleMap.WHEEL_RADIUS;
-		return -metersPerSec;
+		return metersPerSec;
 	}
 
 	public double getTalonFXPos() {
 		double ticks = m_driveMotor.getSelectedSensorPosition(0);
 		double revs = ticks / (RobotMap.SwerveModuleMap.ENCODER_RESOLUTION * 8.307692307692308);
 		double meters = revs * 2 * Math.PI * RobotMap.SwerveModuleMap.WHEEL_RADIUS;
-		return -meters;
+		return meters;
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class SwerveModule {
 	
 		//SmartDashboard.putNumber("turnOutput", turnOutput);
 		m_turningMotor.set(-turnOutput);
-		m_driveMotor.set(-driveOutput);
+		m_driveMotor.set(driveOutput);
 
 		// System.out.println("measurement:" + currentAngle + ", setpoint: " +setpoint +
 		// ", = (turn output) " + turnOutput);

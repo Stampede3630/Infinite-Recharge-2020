@@ -8,7 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -87,7 +86,7 @@ private boolean debugging = false;
 		System.out.println(
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		*/
-		basicAuto.newPeriodic();
+		basicAuto.trajectoryPeriodic();
 		Shooter.getInstance().control();
 		IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
@@ -144,7 +143,7 @@ private boolean debugging = false;
 	@Override
 	public void disabledInit() {
 		super.disabledInit();
-		RobotMap.setDriveTalonsCoast();
+		//RobotMap.setDriveTalonsCoast();
 		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
 

@@ -309,16 +309,17 @@ public class RobotMap {
 	{
 		public static boolean INTAKE_NOW = false;
 		public static boolean SHOOT_NOW = false;
+		public static boolean TRAJECTORY_DONE = false;
 	}
 
 	public static final XboxController CONTROLLER = new XboxController(0);
 
 	static {
 		// DriveMap
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(true);//f
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);//f
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);//t
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);//t
 
 
 
