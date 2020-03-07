@@ -10,6 +10,7 @@ package frc.robot;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -31,9 +32,9 @@ public class Chooser {
         return instance;
     }
 
-    private static enum RobotState {
+    public static enum RobotState {
 
-        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB
+        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB, SHORT_TRENCH_AUTO
     }
 
     private RobotState currentRobotState = RobotState.INTAKE;
@@ -124,12 +125,23 @@ public class Chooser {
         else if (RobotMap.CONTROLLER.getPOV() == 45) { // BAD
             Drivetrain.getInstance().driveAtAngle(11, fieldRelative);
         }*/
-    
+    public void autoOrTeleop()
+    {
+        if(!DriverStation.getInstance().isAutonomous())
+        {
+            currentRobotState = stateChooser.getSelected();
+        }
+    }
+
+    public void setCurrentState(RobotState newState)
+    {
+        currentRobotState = newState;
+    }
 
     public void robotStateChooser()
     {
         //read state and change RPM, kF, Limelight angle, pipeline, drive angle,
-        currentRobotState = stateChooser.getSelected();
+        //currentRobotState = stateChooser.getSelected();
         switch(currentRobotState)
         {
 
@@ -155,6 +167,15 @@ public class Chooser {
         RobotMap.StateChooser.kF = RobotMap.StateConstants.SHORT_TRENCH_KF;
         RobotMap.StateChooser.RPM = RobotMap.StateConstants.SHORT_TRENCH_RPM;
         RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_HOOD_ANGLE;
+        break;
+
+        case SHORT_TRENCH_AUTO:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_AUTO_SERVO_ANGLE;
+        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_AUTO_ANGLE;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.SHORT_TRENCH_AUTO_PIPELINE;
+        RobotMap.StateChooser.kF = RobotMap.StateConstants.SHORT_TRENCH_AUTO_KF;
+        RobotMap.StateChooser.RPM = RobotMap.StateConstants.SHORT_TRENCH_AUTO_RPM;
+        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_AUTO_HOOD_ANGLE;
         break;
 
         case LONG_SHOT:
@@ -224,6 +245,7 @@ public class Chooser {
     {
         resetYaw();
         robotStateChooser();
+        autoOrTeleop();
         driveChooser();
         fieldRelative();
     }

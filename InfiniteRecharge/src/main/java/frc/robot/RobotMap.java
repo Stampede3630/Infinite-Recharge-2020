@@ -275,10 +275,10 @@ public class RobotMap {
 		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
 		
 		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
-        public static double SHORT_TRENCH_AUTO_ANGLE = 24.61 * (Math.PI/180);//TRIG
-        public static int SHORT_TRENCH_AUTOT_PIPELINE = 3;
-        public static double SHORT_TRENCH_AUTOT_KF = 0.055;							//DONE except trig
-		public static int SHORT_TRENCH_AUTO_RPM = 3800;//3500; //top of range
+        public static double SHORT_TRENCH_AUTO_ANGLE = 15*Math.PI/180;//TRIG
+        public static int SHORT_TRENCH_AUTO_PIPELINE = 3;
+        public static double SHORT_TRENCH_AUTO_KF = 0.055;							//DONE except trig
+		public static int SHORT_TRENCH_AUTO_RPM = 4000;//3500; //top of range
         public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
 
         public static double SHORT_TRENCH_SERVO_ANGLE = 40;
