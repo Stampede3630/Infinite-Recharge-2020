@@ -205,7 +205,17 @@ public class Chooser {
     }
 
     
-
+    public void intakeChooser()
+    {
+        if(SmartDashboard.getBoolean("Intake Baby?", true))
+        {
+            IntakeIndex.getInstance().intakeBaby();
+        }
+        else
+        {
+            IntakeIndex.getInstance().index();
+        }
+    }
     public void chooserPeriodic()
     {
         resetYaw();

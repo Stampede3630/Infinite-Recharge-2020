@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,7 +42,8 @@ private boolean debugging = false;
 
 		SmartDashboard.putNumber("RPMEdit", 0);
 		SmartDashboard.putBoolean("debugging", false);
-		// BallFollowDrive.resetIntakeState();
+		SmartDashboard.putBoolean("Intake Baby?", true);
+		//BallFollowDrive.resetIntakeState();
 	}
 
 	@Override
@@ -50,7 +52,7 @@ private boolean debugging = false;
 		{
 			Shooter.getInstance().smartDashboardOutput();
 			Drivetrain.getInstance().postToSmartDashboard();
-			BreakBeam.getInstance().toSmartDashBoard();
+			
 			ServoMotor.getInstance().setServoSmartDashboard();
 			SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
 			SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
@@ -63,6 +65,8 @@ private boolean debugging = false;
 		SmartDashboard.putNumber("Navx REAL", -RobotMap.SensorMap.GYRO.getYaw());
 		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
+		BreakBeam.getInstance().toSmartDashBoard();
+		//ServoMotor.getInstance().setServoSmartDashboard();
 		
 	}
 
@@ -103,7 +107,8 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().index();
+		//IntakeIndex.getInstance().index();
+		Chooser.getInstance().intakeChooser();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
