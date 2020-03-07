@@ -93,7 +93,7 @@ private boolean debugging = false;
 		*/
 		basicAuto.newPeriodic();
 		Shooter.getInstance().control();
-		IntakeIndex.getInstance().index();
+		Chooser.getInstance().intakeChooser();
 		Drivetrain.getInstance().updateOdometry();
 
 	}
