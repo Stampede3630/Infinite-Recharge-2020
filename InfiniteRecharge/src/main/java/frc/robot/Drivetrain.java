@@ -16,8 +16,8 @@ public class Drivetrain {
   private double forwardSetpoint;
   private double sidewaysSetpoint;
   private double angleSetpoint;
-  private PIDController forwardPID = new PIDController(1, 0, 0);
-  private PIDController sidewaysPID = new PIDController(1, 0, 0);
+  private PIDController forwardPID = new PIDController(0.5, 0, 0);
+  private PIDController sidewaysPID = new PIDController(0.5, 0, 0);
   private static Drivetrain instance;
   private PIDController robotAnglePID = new PIDController(0.5, 0, 0);
   static {
@@ -224,7 +224,7 @@ public class Drivetrain {
   double ySpeed = sidewaysPID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY(), sidewaysSetpoint);
   double rotationSpeed = robotAnglePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians(), angleSetpoint);
 
-  drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, ySpeed * RobotMap.DriveMap.MAX_SPEED, rotationSpeed * RobotMap.DriveMap.MAX_ANGULAR_SPEED, RobotMap.StateChooser.FIELD_RELATIVE);
+  drive(xSpeed * RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND, ySpeed * RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND, rotationSpeed * RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND, RobotMap.StateChooser.FIELD_RELATIVE);
   this.forwardSetpoint = forwardSetpoint;
   this.sidewaysSetpoint = sidewaysSetpoint;
   this.angleSetpoint = angleSetpoint;
@@ -232,9 +232,15 @@ public class Drivetrain {
 
   public boolean canMoveOn()
   {
-  return(Math.abs(-RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX()- forwardSetpoint)<0.0762) 
+    SmartDashboard.putNumber("forward error", Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX()- forwardSetpoint));
+    SmartDashboard.putNumber("side/side error", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY()- sidewaysSetpoint);
+    SmartDashboard.putNumber("rotation error", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians()- angleSetpoint);
+  
+    return(Math.abs(-RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX()- forwardSetpoint)<0.0762) 
     && (Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY()- sidewaysSetpoint)<0.0762) 
     && (Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians()- angleSetpoint)<3*(Math.PI/180));
+    
+
 
   }
  

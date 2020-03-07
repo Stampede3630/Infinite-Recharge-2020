@@ -57,7 +57,7 @@ public class RobotMap {
 	 * TODO: What is this for?
 	 */
 	public static class AutoConstants { // Is this even being used?
-		public static final double MAX_SPEED_METERS_PER_SECOND = 3;
+		public static final double MAX_SPEED_METERS_PER_SECOND = 1.5;
 		public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;

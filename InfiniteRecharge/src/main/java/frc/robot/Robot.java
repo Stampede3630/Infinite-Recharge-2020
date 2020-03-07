@@ -157,7 +157,7 @@ RightTrench rightTrench;
 	@Override
 	public void disabledInit() {
 		super.disabledInit();
-		RobotMap.setDriveTalonsCoast();
+		//RobotMap.setDriveTalonsCoast();
 		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
 

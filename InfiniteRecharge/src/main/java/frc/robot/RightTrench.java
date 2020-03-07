@@ -60,7 +60,7 @@ public class RightTrench {
             autoTime.reset();
             autoTime.start();
             Chooser.getInstance().setCurrentState(Chooser.RobotState.INITIATION_LINE_SHOT);
-            RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-2.4, new Rotation2d(Drivetrain.getInstance().getAngle().getRadians())), new Rotation2d(Drivetrain.getInstance().getAngle().getRadians()));
+            RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-2.4, new Rotation2d(Drivetrain.getInstance().getAngle().getRadians())), new Rotation2d(Drivetrain.getInstance().getAngle().getRadians()));
             RobotMap.AutoBooleans.SHOOT_NOW = true;
             step++;
             break;
@@ -78,7 +78,7 @@ public class RightTrench {
             break;
 
             case 2: //move to balls
-            Drivetrain.getInstance().spoteGo(-6.166, -.704, 0);
+            Drivetrain.getInstance().spoteGo(6.166, -.704, 0);
 
             if(Drivetrain.getInstance().canMoveOn())
             {
@@ -92,7 +92,7 @@ public class RightTrench {
 
             case 3: //pick up balls
             //double rotationSpeed = autoDistancePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getDegrees(), 0);
-            Drivetrain.getInstance().spoteGo(-7.99, -.704, 13*(Math.PI/180));
+            Drivetrain.getInstance().spoteGo(7.99, -.704, 13*(Math.PI/180));
             if(Drivetrain.getInstance().canMoveOn())
             {
                 RobotMap.AutoBooleans.INTAKE_NOW = false;
