@@ -13,13 +13,17 @@ import frc.robot.Limelight.LedMode;
 import frc.robot.RobotMap.SensorMap;
 
 public class Drivetrain {
-
+  private double forwardSetpoint;
+  private double sidewaysSetpoint;
+  private double angleSetpoint;
+  private PIDController forwardPID = new PIDController(1, 0, 0);
+  private PIDController sidewaysPID = new PIDController(1, 0, 0);
   private static Drivetrain instance;
   private PIDController robotAnglePID = new PIDController(0.5, 0, 0);
   static {
     instance = new Drivetrain();
   }
-
+  
   public static Drivetrain getInstance() {
     return instance;
   }
@@ -214,6 +218,28 @@ public class Drivetrain {
 
   }
 
+ public void spoteGo(double forwardSetpoint, double sidewaysSetpoint, double angleSetpoint)
+ {
+  double xSpeed = forwardPID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX(), forwardSetpoint);
+  double ySpeed = sidewaysPID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY(), sidewaysSetpoint);
+  double rotationSpeed = robotAnglePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians(), angleSetpoint);
+
+  drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, ySpeed * RobotMap.DriveMap.MAX_SPEED, rotationSpeed * RobotMap.DriveMap.MAX_ANGULAR_SPEED, RobotMap.StateChooser.FIELD_RELATIVE);
+  this.forwardSetpoint = forwardSetpoint;
+  this.sidewaysSetpoint = sidewaysSetpoint;
+  this.angleSetpoint = angleSetpoint;
+ }
+
+  public boolean canMoveOn()
+  {
+  return(Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX()- forwardSetpoint)<0.0762) && (Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY()- sidewaysSetpoint)<0.0762) && (Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians()- angleSetpoint)<3*(Math.PI/180));
+
+  }
+ 
+
+
+
+ 
 /*
  public void turnToLongshot(){
     if(RobotMap.CONTROLLER.getYButtonPressed()){

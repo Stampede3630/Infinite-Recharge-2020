@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -247,7 +248,7 @@ public class RobotMap {
 	{
 		public static double LIMELIGHT_ANGLE;
 		public static double kF = 0.055;
-		public static double kP = 1;
+		public static double kP = 1.5;
 		public static double RPM;
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
@@ -281,17 +282,17 @@ public class RobotMap {
         public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
 
         public static double SHORT_TRENCH_SERVO_ANGLE = 40;
-        public static double SHORT_TRENCH_ANGLE = 24.61 * (Math.PI/180); //ish
+        public static double SHORT_TRENCH_ANGLE =999;// 24.61 * (Math.PI/180); //ish
 		public static int SHORT_TRENCH_PIPELINE = 3;
         public static double SHORT_TRENCH_KF = 0.055;
-		public static int SHORT_TRENCH_RPM = 4100;//3800; //3825 for bad balls
+		public static int SHORT_TRENCH_RPM = 3700; //4100;//3800; //3825 for bad balls
         public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
 
         public static double LONG_SHOT_SERVO_POS = 40;
 		public static double LONG_SHOT_ANGLE = 11 * (Math.PI/180);
 		public static int LONG_SHOT_PIPELINE = 4;
         public static double LONG_SHOT_KF = 0.06;
-		public static int LONG_SHOT_RPM = 5100; //4000, 4800
+		public static int LONG_SHOT_RPM = 4800; //5100; //4000, 4800 //47, 45
 		public static boolean LONG_SHOT_HOOD_ANGLE = true;
 		
 		public static double NO_MANS_LAND_SERVO_POS = 40;
@@ -323,10 +324,10 @@ public class RobotMap {
 
 
 		//Current limiting for motors
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.25));
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
@@ -371,6 +372,12 @@ public class RobotMap {
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kP(kPIDLoopIdx, 0.4, kTimeoutMs);
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
+
+
+
+		//Climber
+
+		ClimberMap.TROLLEY_SPARK.setIdleMode(IdleMode.kBrake);
 
 		// Intake
 

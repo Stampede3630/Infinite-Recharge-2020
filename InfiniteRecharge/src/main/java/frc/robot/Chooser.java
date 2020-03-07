@@ -196,11 +196,25 @@ public class Chooser {
     {
         if(SmartDashboard.getBoolean("Field Relative", true))
         {
+   
             RobotMap.StateChooser.FIELD_RELATIVE = true;
         }
         else
         {  
             RobotMap.StateChooser.FIELD_RELATIVE = false;
+        }
+    }
+
+
+    public void indexChooser()
+    {
+        if(SmartDashboard.getBoolean("Intake Baby?", false))
+        {
+            //System.out.println("Should be doing the thing");
+            IntakeIndex.getInstance().babyIntake();
+        }
+        else{
+            IntakeIndex.getInstance().index();
         }
     }
 
@@ -212,6 +226,10 @@ public class Chooser {
         robotStateChooser();
         driveChooser();
         fieldRelative();
+    }
+
+    public void rpmSmartDashboard(){
+        SmartDashboard.putNumber("RPM Edited", RobotMap.StateChooser.RPM + SmartDashboard.getNumber("RPMEdit", 0));
     }
 
 }

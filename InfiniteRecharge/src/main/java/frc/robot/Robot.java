@@ -41,6 +41,7 @@ private boolean debugging = false;
 
 		SmartDashboard.putNumber("RPMEdit", 0);
 		SmartDashboard.putBoolean("debugging", false);
+		SmartDashboard.putBoolean("Intake Baby?", false);
 		// BallFollowDrive.resetIntakeState();
 	}
 
@@ -60,10 +61,13 @@ private boolean debugging = false;
 		ServoMotor.getInstance().servoPeriodic();
 		Chooser.getInstance().chooserPeriodic();
 		Limelight.limelightPeriodic();
-		SmartDashboard.putNumber("Navx REAL", -RobotMap.SensorMap.GYRO.getYaw());
+		SmartDashboard.putNumber(" ", -RobotMap.SensorMap.GYRO.getYaw());
 		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
-		
+		Chooser.getInstance().rpmSmartDashboard();
+
+		SmartDashboard.putNumber("Shooter voltage L", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.get());
+		SmartDashboard.putNumber("Shooter voltage R", RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.get());
 	}
 
 	@Override
@@ -103,7 +107,8 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().index();
+		//IntakeIndex.getInstance().index();
+		Chooser.getInstance().indexChooser();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
@@ -131,7 +136,7 @@ private boolean debugging = false;
 		 */
 		// Drivetrain.postToSmartDashboard();
 
-		RobotMap.StateChooser.RPM = 1100;
+		//RobotMap.StateChooser.RPM = 4000;
 		//RobotMap.StateChooser.FIELD_RELATIVE = false;
 		Shooter.getInstance().control();
 		//Drivetrain.getInstance().teleopDrive();

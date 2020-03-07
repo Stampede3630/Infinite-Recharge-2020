@@ -97,14 +97,14 @@ public class SwerveModule {
 		double ticksPerSec = m_driveMotor.getSelectedSensorVelocity(0) * 10;
 		double revsPerSec = ticksPerSec / (RobotMap.SwerveModuleMap.ENCODER_RESOLUTION * 8.307692307692308);
 		double metersPerSec = revsPerSec * 2 * Math.PI * RobotMap.SwerveModuleMap.WHEEL_RADIUS;
-		return -metersPerSec;
+		return metersPerSec;
 	}
 
 	public double getTalonFXPos() {
 		double ticks = m_driveMotor.getSelectedSensorPosition(0);
 		double revs = ticks / (RobotMap.SwerveModuleMap.ENCODER_RESOLUTION * 8.307692307692308);
 		double meters = revs * 2 * Math.PI * RobotMap.SwerveModuleMap.WHEEL_RADIUS;
-		return -meters;
+		return meters;
 	}
 
 	/**
