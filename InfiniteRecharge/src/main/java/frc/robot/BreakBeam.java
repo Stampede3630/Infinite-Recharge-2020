@@ -71,7 +71,11 @@ public class BreakBeam {
     }
 	
 	public boolean noBalls(){
+<<<<<<< HEAD
         if(beam0.get() && beam1.get() && beam2.get() && beam3.get() && beam4.get() && beam5.get() && beam6.get() && beam7.get()){
+=======
+        if(beam0.get() && beam1.get()&& beam2.get() && beam3.get() && beam4.get()&& beam5.get() && beam6.get() && beam7.get()){
+>>>>>>> master
             return true;
         }
         else{

@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,8 +42,13 @@ private boolean debugging = false;
 
 		SmartDashboard.putNumber("RPMEdit", 0);
 		SmartDashboard.putBoolean("debugging", false);
+<<<<<<< HEAD
 		SmartDashboard.putBoolean("Intake Baby?", false);
 		// BallFollowDrive.resetIntakeState();
+=======
+		SmartDashboard.putBoolean("Intake Baby?", true);
+		//BallFollowDrive.resetIntakeState();
+>>>>>>> master
 	}
 
 	@Override
@@ -51,7 +57,7 @@ private boolean debugging = false;
 		{
 			Shooter.getInstance().smartDashboardOutput();
 			Drivetrain.getInstance().postToSmartDashboard();
-			BreakBeam.getInstance().toSmartDashBoard();
+			
 			ServoMotor.getInstance().setServoSmartDashboard();
 			SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
 			SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
@@ -64,10 +70,16 @@ private boolean debugging = false;
 		SmartDashboard.putNumber(" ", -RobotMap.SensorMap.GYRO.getYaw());
 		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
+<<<<<<< HEAD
 		Chooser.getInstance().rpmSmartDashboard();
 
 		SmartDashboard.putNumber("Shooter voltage L", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.get());
 		SmartDashboard.putNumber("Shooter voltage R", RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.get());
+=======
+		BreakBeam.getInstance().toSmartDashBoard();
+		//ServoMotor.getInstance().setServoSmartDashboard();
+		
+>>>>>>> master
 	}
 
 	@Override
@@ -108,7 +120,11 @@ private boolean debugging = false;
 
 		Drivetrain.getInstance().teleopDrive();
 		//IntakeIndex.getInstance().index();
+<<<<<<< HEAD
 		Chooser.getInstance().indexChooser();
+=======
+		Chooser.getInstance().intakeChooser();
+>>>>>>> master
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();

@@ -239,8 +239,6 @@ public class Chooser {
         }
     }
 
-    
-
     public void chooserPeriodic()
     {
         resetYaw();
