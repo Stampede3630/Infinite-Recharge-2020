@@ -33,6 +33,7 @@ public static final int PID_LOOP_IDX = 0;// this is the only pid loop i could fi
 //private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
 private BasicAuto basicAuto = new BasicAuto();
 private boolean debugging = false;
+RightTrench rightTrench;
  
 
 	// private Compressor comp = new Compressor(0);
@@ -42,13 +43,9 @@ private boolean debugging = false;
 
 		SmartDashboard.putNumber("RPMEdit", 0);
 		SmartDashboard.putBoolean("debugging", false);
-<<<<<<< HEAD
-		SmartDashboard.putBoolean("Intake Baby?", false);
-		// BallFollowDrive.resetIntakeState();
-=======
 		SmartDashboard.putBoolean("Intake Baby?", true);
 		//BallFollowDrive.resetIntakeState();
->>>>>>> master
+		rightTrench = new RightTrench();
 	}
 
 	@Override
@@ -70,16 +67,13 @@ private boolean debugging = false;
 		SmartDashboard.putNumber(" ", -RobotMap.SensorMap.GYRO.getYaw());
 		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
-<<<<<<< HEAD
 		Chooser.getInstance().rpmSmartDashboard();
 
 		SmartDashboard.putNumber("Shooter voltage L", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.get());
 		SmartDashboard.putNumber("Shooter voltage R", RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.get());
-=======
 		BreakBeam.getInstance().toSmartDashBoard();
 		//ServoMotor.getInstance().setServoSmartDashboard();
 		
->>>>>>> master
 	}
 
 	@Override
@@ -90,6 +84,7 @@ private boolean debugging = false;
 		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 		basicAuto.resetAutoTime();
 		RobotMap.AutoBooleans.SHOOT_NOW = true;
+	
 	}
 
 	@Override
@@ -103,10 +98,11 @@ private boolean debugging = false;
 		System.out.println(
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		*/
-		basicAuto.newPeriodic();
+		//basicAuto.newPeriodic();
+		Chooser.getInstance().indexChooser();
 		Shooter.getInstance().control();
-		IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
+		rightTrench.threeBallPeriodic();
 
 	}
 	@Override
@@ -120,11 +116,7 @@ private boolean debugging = false;
 
 		Drivetrain.getInstance().teleopDrive();
 		//IntakeIndex.getInstance().index();
-<<<<<<< HEAD
 		Chooser.getInstance().indexChooser();
-=======
-		Chooser.getInstance().intakeChooser();
->>>>>>> master
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();

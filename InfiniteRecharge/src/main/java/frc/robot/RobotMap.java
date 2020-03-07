@@ -324,17 +324,10 @@ public class RobotMap {
 
 
 		//Current limiting for motors
-<<<<<<< HEAD
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.25));
-=======
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
->>>>>>> master
 
 		//IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
@@ -381,19 +374,10 @@ public class RobotMap {
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
 
-<<<<<<< HEAD
-
-
-		//Climber
-
-		ClimberMap.TROLLEY_SPARK.setIdleMode(IdleMode.kBrake);
-
-=======
 		//Climber
 		ClimberMap.TROLLEY_SPARK.setIdleMode(IdleMode.kBrake);
 		ClimberMap.ELEVATOR_SPARK.setIdleMode(IdleMode.kBrake);
 		
->>>>>>> master
 		// Intake
 
 		//IntakeMap.ULTRASONIC.setAutomaticMode(true);

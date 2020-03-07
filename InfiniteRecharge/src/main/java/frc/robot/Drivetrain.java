@@ -232,7 +232,7 @@ public class Drivetrain {
 
   public boolean canMoveOn()
   {
-  return(Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX()- forwardSetpoint)<0.0762) 
+  return(Math.abs(-RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX()- forwardSetpoint)<0.0762) 
     && (Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY()- sidewaysSetpoint)<0.0762) 
     && (Math.abs(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians()- angleSetpoint)<3*(Math.PI/180));
 

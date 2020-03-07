@@ -92,7 +92,7 @@ public class RightTrench {
 
             case 3: //pick up balls
             //double rotationSpeed = autoDistancePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getDegrees(), 0);
-            Drivetrain.getInstance().spoteGo(-7.99, -.704, 0);
+            Drivetrain.getInstance().spoteGo(-7.99, -.704, 13*(Math.PI/180));
             if(Drivetrain.getInstance().canMoveOn())
             {
                 RobotMap.AutoBooleans.INTAKE_NOW = false;
