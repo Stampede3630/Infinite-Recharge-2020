@@ -30,17 +30,6 @@ public class SwerveModule {
 
 	double driveOutput;
 
-	// private final PIDController m_drivePIDController = new PIDController(0.25, 0,
-	// 0);
-
-	// private final ProfiledPIDController m_turningPIDController;// = new ProfiledPIDController(1, 0.0, 0.02, new
-																// TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-	// kModuleMaxAngularAcceleration));//0.9 (.05 / Math.PI)
-
-	// new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity,
-	// kModuleMaxAngularAcceleration)
-	// front left -(0,1) - PID: 0.8, 0.05
-	// (4,5) -PID: 0.8, 0.05
 	private final PIDController m_turningPIDController;
 	private final double angleOffset;
 
@@ -60,33 +49,18 @@ public class SwerveModule {
 
 			kPSpecial = .8;
 			kD = 0.02;
-			// kModuleMaxAngularVelocity = Math.PI;
-			// kModuleMaxAngularAcceleration = Math.PI/2;
 		} else {
 			kPSpecial = 4/Math.PI;
 			kD = 0.02;
 			// kD = 0.02;
 		}
 			m_turningPIDController = new PIDController(kPSpecial, 0, kD);
-		// m_turningPIDController = new ProfiledPIDController(kPSpecial, kI, 0.0,
-		// 		new TrapezoidProfile.Constraints(RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_VELOCITY,
-		// 				RobotMap.SwerveModuleMap.MODULE_MAX_ANGULAR_ACCELERATION));
 
 		m_driveMotor = driveMotorObject;
 		m_turningMotor = steerMotorObject;
 		m_turningEncoder = steerEncoderObject;
 
 		angleOffset = zeroedAngle;
-
-		// Set the distance per pulse for the drive encoder. We can simply use the
-		// distance traveled for one rotation 
-		//of the wheel divided by the encoder
-		// loolution.
-
-		// Set the distance (in this case, angle) per pulse for the turning encoder.
-		// This is the the angle through an entire rotation (2 * wpi::math::pi)
-		// divided by the encoder resolution.
-		// m_turningEncoder.setDistancePerPulse(2 * Math.PI / kEncoderResolution);
 
 		// Limit the PID Controller's input range between -pi and pi and set the input
 		// to be continuous.
@@ -117,6 +91,7 @@ public class SwerveModule {
 		return new SwerveModuleState(getTalonFXRate(), new Rotation2d(getAngle()));
 	}
 
+	//This reads the analogencoder voltage from the MK2 SDS module
 	public void readAngle() {
 		double angle = ((1 - (m_turningEncoder.getVoltage() / RobotController.getVoltage5V())) * 2.0 * Math.PI
 				+ angleOffset + 2 * Math.PI);
@@ -125,28 +100,19 @@ public class SwerveModule {
 		m_steeringAngle = angle;
 	}
 
-	public double getAngle() {
+	public double getAngle() 
+	{
 		// readAngle();
 		return m_steeringAngle;
 	}
 
-	public double angleSupp(double angle) {
-		if (angle > Math.PI) {
-			return angle - 2 * Math.PI;
-		} else if (angle < -Math.PI) {
-			return angle + 2 * Math.PI;
-		} else {
-			return angle;
-		}
-	}
 
-	public double bound(double setpoint) {
-		double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI); // saM THIS DOES ABSOLUTELY NOTHING. ADDING PI AND THEN REMOVING IT = 0.... - THANKS ANDY
+	//this method ensures the shortest rotation necessary for the module
+	public double bound(double setpoint) 
+	{
+		double dTheta = setpoint - getAngle(); 
 		double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
-		//double angleToReturn;
-		
-		/*if (Math.abs(Math.IEEEremainder(getAngle() + trueDTheta, 2 * Math.PI)
-				- Math.IEEEremainder(setpoint, 2 * Math.PI)) < .01)*/
+
 		if(Math.abs(Math.IEEEremainder(trueDTheta + getAngle() - setpoint, 2*Math.PI)) < .001) {
 			m_driveScalar = 1;
 		} else {
@@ -160,7 +126,20 @@ public class SwerveModule {
 			return angleSupp(getAngle() + (trueDTheta - Math.PI));
 		}
 	}
-	public double getDriveOutput() {
+	//Ensure Angle is between -pi and pi
+	public double angleSupp(double angle) 
+	{
+		if (angle > Math.PI) {
+			return angle - 2 * Math.PI;
+		} else if (angle < -Math.PI) {
+			return angle + 2 * Math.PI;
+		} else {
+			return angle;
+		}
+	}
+
+	public double getDriveOutput() 
+	{
 		return driveOutput;
 	}
 	public double getWheelState()
@@ -173,7 +152,8 @@ public class SwerveModule {
 	 *
 	 * @param state Desired state with speed and angle.
 	 */
-	public void setDesiredState(SwerveModuleState state) {
+	public void setDesiredState(SwerveModuleState state) 
+	{
 		readAngle();
 		m_driveScalar = 1;
 		double setpoint = bound(state.angle.getRadians());
@@ -181,20 +161,17 @@ public class SwerveModule {
 		var turnOutput = m_turningPIDController.calculate(currentAngle, setpoint);
 		stateDrive = state.speedMetersPerSecond;
 		driveOutput = state.speedMetersPerSecond / RobotMap.DriveMap.MAX_SPEED * m_driveScalar;
-		// driveOutput = m_drivePIDController.calculate(Math.abs(getTalonFXRate()),
-		// Math.abs(state.speedMetersPerSecond)) *
-		// Math.signum(state.speedMetersPerSecond) *m_driveScalar;
+
     
-		if (Math.abs(driveOutput)==0){
+		if (Math.abs(driveOutput)==0)
+		{
 			turnOutput=0;
 		}
 	
-		//SmartDashboard.putNumber("turnOutput", turnOutput);
 		m_turningMotor.set(-turnOutput);
 		m_driveMotor.set(driveOutput);
 
-		// System.out.println("measurement:" + currentAngle + ", setpoint: " +setpoint +
-		// ", = (turn output) " + turnOutput);
+
 		SmartDashboard.putNumber("Setpoint bound angle: " + m_driveMotor.getDeviceID(), Math.toDegrees(setpoint));
 		SmartDashboard.putNumber("setpoint unbound angle: " + m_driveMotor.getDeviceID(), state.angle.getDegrees());
 		SmartDashboard.putNumber("Current unbound angle: " + m_driveMotor.getDeviceID(), Math.toDegrees(getAngle()));
@@ -202,7 +179,8 @@ public class SwerveModule {
 
 	}
 
-	public void toSmartDashboard() {
+	public void toSmartDashboard() 
+	{
 		SmartDashboard.putNumber("voltage" + m_driveMotor.getDeviceID(), m_turningEncoder.getVoltage());
 
 	}
