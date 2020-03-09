@@ -323,7 +323,24 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		*/
-	
+		if (RobotMap.CONTROLLER.getXButtonPressed()) {
+
+			if (RobotMap.StateChooser.HOOD_ANGLE == false) {
+				RobotMap.StateChooser.HOOD_ANGLE = true;
+
+			} else if (RobotMap.StateChooser.HOOD_ANGLE == true) {
+				RobotMap.StateChooser.HOOD_ANGLE = false;
+			}
+
+		}
+		if(RobotMap.StateChooser.HOOD_ANGLE) //MAKE SURE NOT BAD
+		{
+			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kForward);
+		}
+		else
+		{
+			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
+		}
 
 	}
 

@@ -275,15 +275,15 @@ public class RobotMap {
 		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
 		
 		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
-        public static double SHORT_TRENCH_AUTO_ANGLE = 24.61 * (Math.PI/180);//TRIG
-        public static int SHORT_TRENCH_AUTOT_PIPELINE = 3;
+        public static double SHORT_TRENCH_AUTO_ANGLE = 999;//TRIG
+        public static int SHORT_TRENCH_AUTOT_PIPELINE = 6;
         public static double SHORT_TRENCH_AUTOT_KF = 0.055;							//DONE except trig
 		public static int SHORT_TRENCH_AUTO_RPM = 3800;//3500; //top of range
         public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
 
         public static double SHORT_TRENCH_SERVO_ANGLE = 40;
-        public static double SHORT_TRENCH_ANGLE = 24.61 * (Math.PI/180); //ish
-		public static int SHORT_TRENCH_PIPELINE = 3;
+        public static double SHORT_TRENCH_ANGLE =999; //ish
+		public static int SHORT_TRENCH_PIPELINE = 6;
         public static double SHORT_TRENCH_KF = 0.055;
 		public static int SHORT_TRENCH_RPM = 4100;//3800; //3825 for bad balls
         public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
@@ -328,6 +328,9 @@ public class RobotMap {
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
+
+		IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
+		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 
 		//IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
