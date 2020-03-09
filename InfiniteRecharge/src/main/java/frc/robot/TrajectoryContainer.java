@@ -42,34 +42,17 @@ public class TrajectoryContainer {
 	private TrajectoryConfig config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
 			RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 					// Add kinematics to ensure max speed is actually obeyed
-					.setKinematics(RobotMap.DrivetrainMap.KINEMATICS);
+					.setKinematics(RobotMap.DriveMap.KINEMATICS);
 
 	private ProfiledPIDController thetaController = new ProfiledPIDController(RobotMap.AutoConstants.KP_THETA_CONTROLLER, 0, 0,
 	RobotMap.AutoConstants.kThetaControllerConstraints);
-    /*
-    private Trajectory traj = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)),
-			//List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)), config);
-			//List.of(new Translation2d(0.5, 0)), new Pose2d(1, 0, new Rotation2d(0)), config);
-            List.of(new Translation2d(0, 0.5)), new Pose2d(0, 1, new Rotation2d(Math.PI/6)), config);
-            */
+
 	private Trajectory traj2 = TrajectoryGenerator.generateTrajectory(new Pose2d (-3.05, -2.4, new Rotation2d(0)),
 	List.of(
 		new Translation2d(-6.166,-.704),//Trench ball 1
 		new Translation2d(-7.08,-.704)),//Trench ball 2
-		//new Translation2d(7.99, .704)),//Trench ball 3
-        new Pose2d(-7.99, -.704, new Rotation2d(0)), config); //intake logic path 2*/
+	    new Pose2d(-7.99, -.704, new Rotation2d(0)), config); //Trench ball 3
 
-     /*
-
-    private Trajectory traj3 = TrajectoryGenerator.generateTrajectory(new Pose2d ( 8.21,3.05, new Rotation2d(0)),
-	List.of(
-        new Translation2d(6.23, 6.36),//Trench 2 ball 1
-		new Translation2d(7.74, 6.36)),//Trench 2 ball 2
-		//new Translation2d(4.08, 3.05)),//back to line
-        new Pose2d(4.08, 3.05, new Rotation2d(45)), config); //intake logic path 2
-        
-    */
-	
 	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(traj2, xController, yController,
 			thetaController);
 

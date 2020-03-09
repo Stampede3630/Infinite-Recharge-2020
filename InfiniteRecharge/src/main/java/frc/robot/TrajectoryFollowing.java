@@ -38,12 +38,12 @@ public class TrajectoryFollowing {
 		config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,
 		RobotMap.AutoConstants.MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
 						// Add kinematics to ensure max speed is actually obeyed
-						.setKinematics(RobotMap.DrivetrainMap.KINEMATICS);
+						.setKinematics(RobotMap.DriveMap.KINEMATICS);
 		trajectory = traj;
 		m_xController = xController;
 		m_yController = yController;
 		m_thetaController = thetaController;
-		m_outputModuleStates = RobotMap.DrivetrainMap.KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
+		m_outputModuleStates = RobotMap.DriveMap.KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
 		m_finalPose = trajectory.sample(trajectory.getTotalTimeSeconds()).poseMeters;
 		m_timer.reset();
@@ -54,7 +54,7 @@ public class TrajectoryFollowing {
 	public void resetAll(){
 		m_timer.reset();
 		Rotation2d angle = Drivetrain.getInstance().getAngle();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
+		RobotMap.DriveMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
 	}
 
 	public void auto() {
@@ -80,29 +80,29 @@ public class TrajectoryFollowing {
 		var desiredState = trajectory.sample(curTime);
 		var desiredPose = desiredState.poseMeters;
 
-		var poseError = desiredPose.relativeTo(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
+		var poseError = desiredPose.relativeTo(RobotMap.DriveMap.ODOMETRY.getPoseMeters());
 
-		double targetXVel = m_xController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX(),
+		double targetXVel = m_xController.calculate(RobotMap.DriveMap.ODOMETRY.getPoseMeters().getTranslation().getX(),
 				desiredPose.getTranslation().getX());
 
-		double targetYVel = m_yController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY(),
+		double targetYVel = m_yController.calculate(RobotMap.DriveMap.ODOMETRY.getPoseMeters().getTranslation().getY(),
 				desiredPose.getTranslation().getY());
 
 		// The robot will go to the desired rotation of the final pose in the
 		// trajectory,
 		// not following the poses at individual states.
-		double targetAngularVel = m_thetaController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians(),
+		double targetAngularVel = m_thetaController.calculate(RobotMap.DriveMap.ODOMETRY.getPoseMeters().getRotation().getRadians(),
 				m_finalPose.getRotation().getRadians());
 
 		double vRef = desiredState.velocityMetersPerSecond;
 
 		targetXVel += vRef * poseError.getRotation().getCos();
 		targetYVel += vRef * poseError.getRotation().getSin();
-		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+		System.out.println(RobotMap.DriveMap.ODOMETRY.getPoseMeters().getTranslation().getY());
 		//System.out.println("xvel: " + targetXVel + ", yvel: " + targetYVel + ", rot: " + targetAngularVel);
 		var targetChassisSpeeds = new ChassisSpeeds(targetXVel, targetYVel, targetAngularVel);
 
-		m_outputModuleStates = RobotMap.DrivetrainMap.KINEMATICS.toSwerveModuleStates(targetChassisSpeeds);
+		m_outputModuleStates = RobotMap.DriveMap.KINEMATICS.toSwerveModuleStates(targetChassisSpeeds);
 
 	}
 

@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Limelight.LedMode;
 import frc.robot.RobotMap.SensorMap;
 
 public class Drivetrain {
@@ -54,7 +53,7 @@ public class Drivetrain {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    SwerveModuleState[] swerveModuleStates = RobotMap.DrivetrainMap.KINEMATICS
+    SwerveModuleState[] swerveModuleStates = RobotMap.DriveMap.KINEMATICS
         .toSwerveModuleStates(fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getAngle())
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     /*
@@ -68,10 +67,10 @@ public class Drivetrain {
 
   public void setModuleStates(SwerveModuleState[] swerveModuleStates) {
     SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, RobotMap.DriveMap.MAX_SPEED);
-    RobotMap.DrivetrainMap.FRONT_LEFT.setDesiredState(swerveModuleStates[0]);
-    RobotMap.DrivetrainMap.FRONT_RIGHT.setDesiredState(swerveModuleStates[1]);
-    RobotMap.DrivetrainMap.BACK_LEFT.setDesiredState(swerveModuleStates[2]);
-    RobotMap.DrivetrainMap.BACK_RIGHT.setDesiredState(swerveModuleStates[3]);
+    RobotMap.DriveMap.FRONT_LEFT.setDesiredState(swerveModuleStates[0]);
+    RobotMap.DriveMap.FRONT_RIGHT.setDesiredState(swerveModuleStates[1]);
+    RobotMap.DriveMap.BACK_LEFT.setDesiredState(swerveModuleStates[2]);
+    RobotMap.DriveMap.BACK_RIGHT.setDesiredState(swerveModuleStates[3]);
   }
 
   /**
@@ -89,67 +88,55 @@ public class Drivetrain {
    */
 
   public void updateOdometry() {
-    RobotMap.DrivetrainMap.ODOMETRY.update(getAngle(), RobotMap.DrivetrainMap.FRONT_LEFT.getState(),
-        RobotMap.DrivetrainMap.FRONT_RIGHT.getState(), RobotMap.DrivetrainMap.BACK_LEFT.getState(),
-        RobotMap.DrivetrainMap.BACK_RIGHT.getState());
-    // System.out.println(RobotMap.DrivetrainMap.FRONT_LEFT.getState());
-    // System.out.println(RobotMap.DrivetrainMap.FRONT_RIGHT.getState());
-    // System.out.println(RobotMap.DrivetrainMap.BACK_LEFT.getState());
-    // System.out.println(RobotMap.DrivetrainMap.BACK_RIGHT.getState());
+    RobotMap.DriveMap.ODOMETRY.update(getAngle(), RobotMap.DriveMap.FRONT_LEFT.getState(),
+        RobotMap.DriveMap.FRONT_RIGHT.getState(), RobotMap.DriveMap.BACK_LEFT.getState(),
+        RobotMap.DriveMap.BACK_RIGHT.getState());
   }
 
   public double getRightSidePos() {
-    return RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXPos();
+    return RobotMap.DriveMap.FRONT_RIGHT.getTalonFXPos();
   }
 
   public double getLeftSidePos() {
-    return RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXPos();
+    return RobotMap.DriveMap.FRONT_LEFT.getTalonFXPos();
   }
 
   public double getRightSideRate() {
-    return RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate();
+    return RobotMap.DriveMap.FRONT_RIGHT.getTalonFXRate();
   }
 
   public double getLeftSideRate() {
-    return RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate();
+    return RobotMap.DriveMap.FRONT_LEFT.getTalonFXRate();
   }
 
   public void postToSmartDashboard() {
-    SmartDashboard.putNumber("front-right angle - (2,3)", RobotMap.DrivetrainMap.FRONT_RIGHT.getAngle());
-    SmartDashboard.putNumber("front-left angle - (0,1)", RobotMap.DrivetrainMap.FRONT_LEFT.getAngle());
-    SmartDashboard.putNumber("back-right angle - (6,7)", RobotMap.DrivetrainMap.BACK_RIGHT.getAngle());
-    SmartDashboard.putNumber("back-left angle - (4,5)", RobotMap.DrivetrainMap.BACK_LEFT.getAngle());
+    SmartDashboard.putNumber("front-right angle - (2,3)", RobotMap.DriveMap.FRONT_RIGHT.getAngle());
+    SmartDashboard.putNumber("front-left angle - (0,1)", RobotMap.DriveMap.FRONT_LEFT.getAngle());
+    SmartDashboard.putNumber("back-right angle - (6,7)", RobotMap.DriveMap.BACK_RIGHT.getAngle());
+    SmartDashboard.putNumber("back-left angle - (4,5)", RobotMap.DriveMap.BACK_LEFT.getAngle());
     SmartDashboard.putNumber("Navx value", getAngle().getDegrees());
     SmartDashboard.putNumber("Joysticks y", RobotMap.CONTROLLER.getY(Hand.kLeft));
-    RobotMap.DrivetrainMap.BACK_RIGHT.toSmartDashboard();
-    RobotMap.DrivetrainMap.BACK_LEFT.toSmartDashboard();
+    RobotMap.DriveMap.BACK_RIGHT.toSmartDashboard();
+    RobotMap.DriveMap.BACK_LEFT.toSmartDashboard();
 
-    SmartDashboard.putNumber("meters dist X", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
-    SmartDashboard.putNumber("meters dist Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
-    SmartDashboard.putNumber("FR encoder rate", RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate());
-    SmartDashboard.putNumber("FL encoder rate", RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate());
+    SmartDashboard.putNumber("meters dist X", RobotMap.DriveMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+    SmartDashboard.putNumber("meters dist Y", RobotMap.DriveMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+    SmartDashboard.putNumber("FR encoder rate", RobotMap.DriveMap.FRONT_RIGHT.getTalonFXRate());
+    SmartDashboard.putNumber("FL encoder rate", RobotMap.DriveMap.FRONT_LEFT.getTalonFXRate());
 
-    SmartDashboard.putNumber("FR drive output", RobotMap.DrivetrainMap.FRONT_RIGHT.getDriveOutput());
-    SmartDashboard.putNumber("FL drive output", RobotMap.DrivetrainMap.FRONT_LEFT.getDriveOutput());
-    SmartDashboard.putNumber("BL drive output", RobotMap.DrivetrainMap.BACK_LEFT.getDriveOutput());
+    SmartDashboard.putNumber("FR drive output", RobotMap.DriveMap.FRONT_RIGHT.getDriveOutput());
+    SmartDashboard.putNumber("FL drive output", RobotMap.DriveMap.FRONT_LEFT.getDriveOutput());
+    SmartDashboard.putNumber("BL drive output", RobotMap.DriveMap.BACK_LEFT.getDriveOutput());
 
-    SmartDashboard.putNumber("FR state", RobotMap.DrivetrainMap.FRONT_RIGHT.getWheelState());
-    SmartDashboard.putNumber("FL state", RobotMap.DrivetrainMap.FRONT_LEFT.getWheelState());
+    SmartDashboard.putNumber("FR state", RobotMap.DriveMap.FRONT_RIGHT.getWheelState());
+    SmartDashboard.putNumber("FL state", RobotMap.DriveMap.FRONT_LEFT.getWheelState());
 
-  }
-
-
-  public void updateModuleAngles() {
-    RobotMap.DrivetrainMap.BACK_LEFT.readAngle();
-    RobotMap.DrivetrainMap.BACK_RIGHT.readAngle();
-    RobotMap.DrivetrainMap.FRONT_LEFT.readAngle();
-    RobotMap.DrivetrainMap.FRONT_RIGHT.readAngle();
   }
 
   public void teleopDrive()
   {
     double xSpeed = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
+                    * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
     if (Math.abs(xSpeed) < 0.2) {
       xSpeed = 0;
     } else { //this is the right way to type else
@@ -159,7 +146,7 @@ public class Drivetrain {
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
     double ySpeed = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
-        * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
+                    * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
     if (Math.abs(ySpeed) < 0.2 ){
       ySpeed = 0;
     } else {
@@ -167,62 +154,14 @@ public class Drivetrain {
     }
    
     double rot = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
-    * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+                  * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
     if (Math.abs(rot) < 0.2) {
       rot = 0;
     } else {
       rot = (Math.abs(rot)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
     }
-  
-    if(RobotMap.CONTROLLER.getBButton())
-    {
-      Limelight.setLED(LedMode.Current);
-      rot = TargetAlignDrive.getInstance().align();
-      //System.out.println("here3");
-     
-    }
-    else if(rot == 0 && RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL)
-    {
-      robotAnglePID.setSetpoint(RobotMap.StateChooser.DRIVE_ANGLE);
-      Limelight.setLED(LedMode.Current);
-      if(RobotMap.StateChooser.DRIVE_ANGLE == 999)
-      {
-        rot = TargetAlignDrive.getInstance().align();
-        //System.out.println("here1: " + rot);
-      }
-      else if (Math.abs(RobotMap.StateChooser.DRIVE_ANGLE - getAngle().getRadians()) < 3 * (Math.PI/180))
-      {
-        rot = TargetAlignDrive.getInstance().align();
-        //System.out.println("here2: " + robotAnglePID.getPositionError());
-      }
-      else
-      {
-      rot = -robotAnglePID.calculate(getAngle().getRadians());
-      //System.out.println("here");
-      }
-    }
-    else
-    
-    {
-      Limelight.setLED(LedMode.ForceOff);
-    }
-    // System.out.println("rot: " + robotMap.controller.getX(Hand.kRight));
-    // System.out.println("rot-c: " + rot);
-    // System.out.println(xSpeed + "," + ySpeed);
-    
     drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, ySpeed * RobotMap.DriveMap.MAX_SPEED, rot * RobotMap.DriveMap.MAX_ANGULAR_SPEED, RobotMap.StateChooser.FIELD_RELATIVE);
 
   }
 
-/*
- public void turnToLongshot(){
-    if(RobotMap.CONTROLLER.getYButtonPressed()){
-      driveAtAngle(-.209, true);
-    }
-    else{
-      //keepAngle();
-    }
-    
-  }
-*/
 }

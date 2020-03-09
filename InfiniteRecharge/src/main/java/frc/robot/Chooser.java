@@ -71,7 +71,7 @@ public class Chooser {
        
         if(resetGyro.getAsBoolean())
         {
-            RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false;
+        
             RobotMap.SensorMap.GYRO.zeroYaw();
             resetGyroBoolean = false;
         }
@@ -86,25 +86,7 @@ public class Chooser {
             SmartDashboard.putBoolean("Reset Gyro", false);
         }
     }
-//
-    public void driveChooser() 
 
-    {
-       
-       if(RobotMap.CONTROLLER.getAButton())
-       {
-            RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = false;
-       }
-       if(RobotMap.CONTROLLER.getBButton())
-       {
-        RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
-       }
-       if(currentRobotState != pastRobotState)
-       {
-        RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
-        pastRobotState = currentRobotState;
-       }
-    }
 
        //Initiation line/no mans land no angle?
        /*
@@ -127,137 +109,7 @@ public class Chooser {
         }*/
     
 
-    public void robotStateChooser()
-    {
-        //read state and change RPM, kF, Limelight angle, pipeline, drive angle,
-        if(!DriverStation.getInstance().isAutonomous())
-        {
-        currentRobotState = stateChooser.getSelected();
-        switch(currentRobotState)
-        {
-
-        case INTAKE:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.INTAKE_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.INTAKE_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.INTAKE_PIPELINE;
-        break;
-
-        case INITIATION_LINE_SHOT:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_SERVO_ANGLE;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.INITIATION_LINE_SHOT_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.INITIATION_LINE_SHOT_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.INITIATION_LINE_SHOT_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_HOOD_ANGLE;
-        break;
-
-        case SHORT_TRENCH:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_SERVO_ANGLE;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.SHORT_TRENCH_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.SHORT_TRENCH_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.SHORT_TRENCH_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_HOOD_ANGLE;
-        break;
-
-        case LONG_SHOT:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.LONG_SHOT_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LONG_SHOT_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.LONG_SHOT_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.LONG_SHOT_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.LONG_SHOT_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.LONG_SHOT_HOOD_ANGLE;
-        break;
-
-        case NO_MANS_LAND:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.NO_MANS_LAND_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.NO_MANS_LAND_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.NO_MANS_LAND_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_HOOD_ANGLE;
-        break;
-
-        case RIGHT_CLIMB:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.RIGHT_CLIMBER_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
-        break;
-
-        case LEFT_CLIMB:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
-        
-        }
-    }
-
-       
-
-    }
-
-    public void autoChooser(RobotState currentRobotState)
-    {
-        switch(currentRobotState)
-        {
-
-        case INTAKE:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.INTAKE_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.INTAKE_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.INTAKE_PIPELINE;
-        break;
-
-        case INITIATION_LINE_SHOT:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_SERVO_ANGLE;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.INITIATION_LINE_SHOT_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.INITIATION_LINE_SHOT_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.INITIATION_LINE_SHOT_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.INITIATION_LINE_SHOT_HOOD_ANGLE;
-        break;
-
-        case SHORT_TRENCH:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_SERVO_ANGLE;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.SHORT_TRENCH_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.SHORT_TRENCH_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.SHORT_TRENCH_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.SHORT_TRENCH_HOOD_ANGLE;
-        break;
-
-        case LONG_SHOT:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.LONG_SHOT_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LONG_SHOT_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.LONG_SHOT_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.LONG_SHOT_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.LONG_SHOT_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.LONG_SHOT_HOOD_ANGLE;
-        break;
-
-        case NO_MANS_LAND:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.NO_MANS_LAND_PIPELINE;
-        RobotMap.StateChooser.kF = RobotMap.StateConstants.NO_MANS_LAND_KF;
-        RobotMap.StateChooser.RPM = RobotMap.StateConstants.NO_MANS_LAND_RPM;
-        RobotMap.StateChooser.HOOD_ANGLE = RobotMap.StateConstants.NO_MANS_LAND_HOOD_ANGLE;
-        break;
-
-        case RIGHT_CLIMB:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.RIGHT_CLIMBER_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
-        break;
-
-        case LEFT_CLIMB:
-        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
-        RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
-        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
-        
-        }
-
-    }
-
+   
     public void fieldRelative()
     {
         if(SmartDashboard.getBoolean("Field Relative", true))
@@ -275,8 +127,6 @@ public class Chooser {
     public void chooserPeriodic()
     {
         resetYaw();
-        robotStateChooser();
-        driveChooser();
         fieldRelative();
     }
 
