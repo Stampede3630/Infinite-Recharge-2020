@@ -44,6 +44,9 @@ private boolean debugging = false;
 		SmartDashboard.putBoolean("debugging", false);
 		SmartDashboard.putBoolean("Intake Baby?", true);
 		//BallFollowDrive.resetIntakeState();
+
+
+		SmartDashboard.putNumber("servo Value", 0);
 	}
 
 	@Override
@@ -66,7 +69,10 @@ private boolean debugging = false;
 		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
 		BreakBeam.getInstance().toSmartDashBoard();
-		//ServoMotor.getInstance().setServoSmartDashboard();
+		
+		
+		//JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
+		ServoMotor.getInstance().setServoSmartDashboard();
 		
 	}
 
