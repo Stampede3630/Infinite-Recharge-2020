@@ -60,7 +60,7 @@ public class RightTrench {
             autoTime.reset();
             autoTime.start();
             Chooser.getInstance().setCurrentState(Chooser.RobotState.INITIATION_LINE_SHOT);
-            RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-2.4, new Rotation2d(Drivetrain.getInstance().getAngle().getRadians())), new Rotation2d(Drivetrain.getInstance().getAngle().getRadians()));
+            RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-2.4, new Rotation2d(Drivetrain.getInstance().getAngle().getRadians())), new Rotation2d(Drivetrain.getInstance().getAngle().getRadians()));
             RobotMap.AutoBooleans.SHOOT_NOW = true;
             step++;
             break;
@@ -78,7 +78,7 @@ public class RightTrench {
             break;
 
             case 2: //move to balls
-            Drivetrain.getInstance().spoteGo(6.166, -.704, 0);
+            Drivetrain.getInstance().spoteGo(-6.166, -.704, 0);
 
             if(Drivetrain.getInstance().canMoveOn())
             {
@@ -92,7 +92,7 @@ public class RightTrench {
 
             case 3: //pick up balls
             //double rotationSpeed = autoDistancePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getDegrees(), 0);
-            Drivetrain.getInstance().spoteGo(7.99, -.704, 13*(Math.PI/180));
+            Drivetrain.getInstance().spoteGo(-7.99, -.704, 0);
             if(Drivetrain.getInstance().canMoveOn())
             {
                 RobotMap.AutoBooleans.INTAKE_NOW = false;
@@ -126,67 +126,68 @@ public class RightTrench {
 
     
 }
-public void twoBallPeriodic()
-{
-    switch(step)
+
+    public void twoBallPeriodic() 
     {
-        case 0:
-        autoTime.reset();
-        autoTime.start();
-        RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-8.21, new Rotation2d(Drivetrain.getInstance().getAngle().getRadians())), new Rotation2d(Drivetrain.getInstance().getAngle().getRadians()));
-        RobotMap.AutoBooleans.SHOOT_NOW = false;
-        RobotMap.AutoBooleans.INTAKE_NOW = true;
-        step++;
-        break;
-
-        case 1:
-        Drivetrain.getInstance().spoteGo(-6.36, -7.3, 0);
-
-        if(Drivetrain.getInstance().canMoveOn())
+        switch(step)
         {
-            step++;
-        }
-        break;
-
-        case 2:
-        Drivetrain.getInstance().spoteGo(-6.36, -7.74, 0);
-
-        if(Drivetrain.getInstance().canMoveOn())
-        {
-            RobotMap.AutoBooleans.INTAKE_NOW = false;
-            step++;
-        }
-        break;
-
-        case 3:
-        Drivetrain.getInstance().spoteGo(-3.05,-4.11, -.65);
-
-        if(Drivetrain.getInstance().canMoveOn())
-        {
+            case 0:
             autoTime.reset();
             autoTime.start();
-            RobotMap.AutoBooleans.INTAKE_NOW = false;
-            RobotMap.AutoBooleans.SHOOT_NOW = true;
-            step++;
-        }
-        break;
-
-        case 4:
-        Drivetrain.getInstance().drive(0, 0, TargetAlignDrive.getInstance().align()*RobotMap.DriveMap.MAX_SPEED, true);
-        
-        if(RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold))
-        {
-            RobotMap.AutoBooleans.INTAKE_NOW = false;
+            RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-8.21, new Rotation2d(Drivetrain.getInstance().getAngle().getRadians())), new Rotation2d(Drivetrain.getInstance().getAngle().getRadians()));
             RobotMap.AutoBooleans.SHOOT_NOW = false;
+            RobotMap.AutoBooleans.INTAKE_NOW = true;
             step++;
-        }
-        break;
+            break;
 
-        default:
-        Drivetrain.getInstance().drive(0,0,0,RobotMap.StateChooser.FIELD_RELATIVE);
-        break;
-} 
-}
+            case 1:
+            Drivetrain.getInstance().spoteGo(6.36, -7.3, 0);
+
+            if(Drivetrain.getInstance().canMoveOn())
+            {
+                step++;
+            }
+            break;
+
+            case 2:
+            Drivetrain.getInstance().spoteGo(6.36, -7.74, 0);
+
+            if(Drivetrain.getInstance().canMoveOn())
+            {
+                RobotMap.AutoBooleans.INTAKE_NOW = false;
+                step++;
+            }
+            break;
+
+            case 3:
+            Drivetrain.getInstance().spoteGo(3.05,-4.11, -.65);
+
+            if(Drivetrain.getInstance().canMoveOn())
+            {
+                autoTime.reset();
+                autoTime.start();
+                RobotMap.AutoBooleans.INTAKE_NOW = false;
+                RobotMap.AutoBooleans.SHOOT_NOW = true;
+                step++;
+            }
+            break;
+
+            case 4:
+            Drivetrain.getInstance().drive(0, 0, TargetAlignDrive.getInstance().align()*RobotMap.DriveMap.MAX_SPEED, true);
+            
+            if(RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold))
+            {
+                RobotMap.AutoBooleans.INTAKE_NOW = false;
+                RobotMap.AutoBooleans.SHOOT_NOW = false;
+                step++;
+            }
+            break;
+
+            default:
+            Drivetrain.getInstance().drive(0,0,0,RobotMap.StateChooser.FIELD_RELATIVE);
+            break;
+        } 
+    }
 
 
 
