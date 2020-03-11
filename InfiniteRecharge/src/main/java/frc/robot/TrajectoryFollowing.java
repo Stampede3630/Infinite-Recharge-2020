@@ -28,6 +28,7 @@ public class TrajectoryFollowing {
 	public Trajectory trajectory;
 	public final Timer m_timer = new Timer();
 	private Pose2d m_finalPose;
+	private Rotation2d angle;
 	private final PIDController m_xController;
 	private final PIDController m_yController;
 	private final ProfiledPIDController m_thetaController;
@@ -53,8 +54,8 @@ public class TrajectoryFollowing {
 
 	public void resetAll(){
 		m_timer.reset();
-		Rotation2d angle = Drivetrain.getInstance().getAngle();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
+		angle = Drivetrain.getInstance().getAngle();
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-.704, new Rotation2d(angle.getRadians())), angle);
 	}
 
 	public void auto() {

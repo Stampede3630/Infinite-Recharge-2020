@@ -210,8 +210,6 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
 		}
-		
-
 	}
 
 	public void ToggleSolenoids() {

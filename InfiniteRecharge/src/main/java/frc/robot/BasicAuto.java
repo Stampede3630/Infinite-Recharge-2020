@@ -91,8 +91,9 @@ public class BasicAuto {
 		    RobotMap.resetEncoders();
 		    TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 		    resetAutoTime();
-            RobotMap.AutoBooleans.SHOOT_NOW = true;
-            RobotMap.AutoBooleans.TRAJECTORY_DONE = false;
+            RobotMap.AutoBooleans.SHOOT_NOW = false;//true;
+            RobotMap.AutoBooleans.TRAJECTORY_DONE = false;//false;
+            RobotMap.AutoBooleans.INTAKE_NOW = false;
             Chooser.getInstance().autoChooser(Chooser.RobotState.INITIATION_LINE_SHOT);
             trajStep = 2;//++;
             break;

@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -141,6 +142,8 @@ public class SwerveModule {
 	}
 
 	public double bound(double setpoint) {
+		if(!DriverStation.getInstance().isAutonomous())
+		{
 		double dTheta = (setpoint + Math.PI) - (getAngle() + Math.PI); // saM THIS DOES ABSOLUTELY NOTHING. ADDING PI AND THEN REMOVING IT = 0.... - THANKS ANDY
 		double trueDTheta = Math.IEEEremainder(dTheta, Math.PI);
 		//double angleToReturn;
@@ -159,6 +162,11 @@ public class SwerveModule {
 		} else {
 			return angleSupp(getAngle() + (trueDTheta - Math.PI));
 		}
+	}
+	else
+	{
+		return setpoint;
+	}
 	}
 	public double getDriveOutput() {
 		return driveOutput;
@@ -190,7 +198,7 @@ public class SwerveModule {
 		}
 	
 		//SmartDashboard.putNumber("turnOutput", turnOutput);
-		m_turningMotor.set(-turnOutput);
+		m_turningMotor.set(turnOutput);
 		m_driveMotor.set(driveOutput);
 
 		// System.out.println("measurement:" + currentAngle + ", setpoint: " +setpoint +

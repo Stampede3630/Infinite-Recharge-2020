@@ -136,6 +136,9 @@ public class Drivetrain {
     SmartDashboard.putNumber("FR state", RobotMap.DrivetrainMap.FRONT_RIGHT.getWheelState());
     SmartDashboard.putNumber("FL state", RobotMap.DrivetrainMap.FRONT_LEFT.getWheelState());
 
+    SmartDashboard.putNumber("FL odometry", RobotMap.DrivetrainMap.FRONT_RIGHT.getState().speedMetersPerSecond);
+
+
   }
 
 
