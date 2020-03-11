@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -23,6 +22,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class IntakeIndex {
 
 	private static IntakeIndex instance;
+	private DigitalInput topButton = new DigitalInput(9);
+	private DigitalInput middleButton = new DigitalInput(8);
+	private DigitalInput bottomButton = new DigitalInput(7);
 
 	static {
 		instance = new IntakeIndex();
@@ -49,6 +51,8 @@ public class IntakeIndex {
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
 	private int timeout = 999999999;
+
+	private boolean twoBalls = false;
 
 	private IntakeIndex() {
 		timer = new Timer();
@@ -210,6 +214,77 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
 		}
+	}
+
+	public void buttonIndex()
+	{
+		
+		if(!topButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+		else if(!bottomButton.get() && !middleButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else if(!bottomButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else if(!middleButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+		
+
+		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
+		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
+			// System.out.println("tester");
+			timer.reset();
+			timer.start();
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.6); //was .375
+			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
+			beltBackwardTriggered = 0;
+			beltForwardTriggered = 0;
+		}
+		else {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
+			// System.out.print(timer.get());
+			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
+
+		}
+
+		if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
+		{
+			RobotMap.IntakeMap.PINWHEEL.set(-.6);
+		}
+		else if (timer.get() > 1 || timer.get() == 0 || !bottomButton.get()) { // if its been 1.5 sec or there's something in the bottom
+			RobotMap.IntakeMap.PINWHEEL.set(0);
+		}
+		else {
+			RobotMap.IntakeMap.PINWHEEL.set(.55); 
+		}//was .375
+		
+		
+		if (RobotMap.CONTROLLER.getXButtonPressed()) {
+
+			if (RobotMap.StateChooser.HOOD_ANGLE == false) {
+				RobotMap.StateChooser.HOOD_ANGLE = true;
+
+			} else if (RobotMap.StateChooser.HOOD_ANGLE == true) {
+				RobotMap.StateChooser.HOOD_ANGLE = false;
+			}
+
+		}
+		if(RobotMap.StateChooser.HOOD_ANGLE) //MAKE SURE NOT BAD
+		{
+			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kForward);
+		}
+		else
+		{
+			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
+		}
+
 	}
 
 	public void ToggleSolenoids() {
