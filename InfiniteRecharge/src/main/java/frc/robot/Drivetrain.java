@@ -126,6 +126,7 @@ public class Drivetrain {
 
     SmartDashboard.putNumber("meters dist X", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
     SmartDashboard.putNumber("meters dist Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
+    SmartDashboard.putNumber("rotation", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("FR encoder rate", RobotMap.DrivetrainMap.FRONT_RIGHT.getTalonFXRate());
     SmartDashboard.putNumber("FL encoder rate", RobotMap.DrivetrainMap.FRONT_LEFT.getTalonFXRate());
 

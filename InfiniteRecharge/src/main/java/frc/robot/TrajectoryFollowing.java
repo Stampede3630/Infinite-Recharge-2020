@@ -55,7 +55,7 @@ public class TrajectoryFollowing {
 	public void resetAll(){
 		m_timer.reset();
 		angle = Drivetrain.getInstance().getAngle();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(-3.05,-.704, new Rotation2d(angle.getRadians())), angle);
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
 	}
 
 	public void auto() {
@@ -92,7 +92,7 @@ public class TrajectoryFollowing {
 		// The robot will go to the desired rotation of the final pose in the
 		// trajectory,
 		// not following the poses at individual states.
-		double targetAngularVel = m_thetaController.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians(),
+		double targetAngularVel = m_thetaController.calculate(-RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getRotation().getRadians(),
 				m_finalPose.getRotation().getRadians());
 
 		double vRef = desiredState.velocityMetersPerSecond;

@@ -134,17 +134,17 @@ public class IntakeIndex {
 		else if (BreakBeam.getInstance().detectSpikyBottomBall()){
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		else if (!BreakBeam.getInstance().detectSpikyBottomBall() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
+		else if (bottomButton.get() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) //Andy was here
 		{
-			RobotMap.IntakeMap.PINWHEEL.set(.6); //was .375 // was 0.5
+			RobotMap.IntakeMap.PINWHEEL.set(.1); //was .375 // was 0.5 and it was .6 - Andy
 		}
-		else if (BreakBeam.getInstance().getRampBeam())
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.55);
-			timer.reset();
-			timer.start();
-		}
-		else if (timer.get() > .5) {
+		// else if (BreakBeam.getInstance().getRampBeam()) 
+		// {
+		// 	RobotMap.IntakeMap.PINWHEEL.set(.4);
+		// 	timer.reset();
+		// 	timer.start();
+		// }
+		else /*if (timer.get() > .5)*/ {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		/*
@@ -218,20 +218,22 @@ public class IntakeIndex {
 
 	public void buttonIndex()
 	{
-		
+		//Andy was kind of all over here :/ twoBalls
 		if(!topButton.get())
 		{
 			RobotMap.IntakeMap.BELT.set(0);
+			twoBalls = false;
 		}
 		else if(!bottomButton.get() && !middleButton.get())
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+			twoBalls = true;
 		}
 		else if(!bottomButton.get())
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 		}
-		else if(!middleButton.get())
+		else if(!middleButton.get() && !twoBalls)
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 		}
@@ -262,7 +264,7 @@ public class IntakeIndex {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		else {
-			RobotMap.IntakeMap.PINWHEEL.set(.55); 
+			RobotMap.IntakeMap.PINWHEEL.set(.5); 
 		}//was .375
 		
 		
