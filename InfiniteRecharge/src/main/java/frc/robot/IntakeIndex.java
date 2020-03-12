@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import javax.lang.model.util.ElementScanner6;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -24,6 +22,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class IntakeIndex {
 
 	private static IntakeIndex instance;
+	private DigitalInput topButton = new DigitalInput(9);
+	private DigitalInput middleButton = new DigitalInput(8);
+	private DigitalInput bottomButton = new DigitalInput(7);
+	private DigitalInput spikeyButton = new DigitalInput(6);
 
 	static {
 		instance = new IntakeIndex();
@@ -50,6 +52,8 @@ public class IntakeIndex {
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
 	private int timeout = 999999999;
+
+	private boolean twoBalls = false;
 
 	private IntakeIndex() {
 		timer = new Timer();
@@ -131,17 +135,17 @@ public class IntakeIndex {
 		else if (BreakBeam.getInstance().detectSpikyBottomBall()){
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		else if (!BreakBeam.getInstance().detectSpikyBottomBall() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
+		else if (bottomButton.get() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) //Andy was here
 		{
-			RobotMap.IntakeMap.PINWHEEL.set(.6); //was .375 // was 0.5
+			RobotMap.IntakeMap.PINWHEEL.set(.1); //was .375 // was 0.5 and it was .6 - Andy
 		}
-		else if (BreakBeam.getInstance().getRampBeam())
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.55);
-			timer.reset();
-			timer.start();
-		}
-		else if (timer.get() > .5) {
+		// else if (BreakBeam.getInstance().getRampBeam()) 
+		// {
+		// 	RobotMap.IntakeMap.PINWHEEL.set(.4);
+		// 	timer.reset();
+		// 	timer.start();
+		// }
+		else /*if (timer.get() > .5)*/ {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		/*
@@ -211,31 +215,94 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
 		}
+	}
 
+	public void buttonIndex()
+	{
+		//Andy was kind of all over here :/ twoBalls
+		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if shooter up to speed 
+		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
+		
+		) //.9 for short shot
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+		}
+		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft))
+		{
+			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
+		}
+		else if(!topButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+			twoBalls = false;
+		}
+		else if(!bottomButton.get() && !middleButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+			twoBalls = true;
+		}
+		else if(!bottomButton.get())
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+		}
+		else if(!middleButton.get() && !twoBalls)
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+		}
+		
+
+		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
+		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
+			// System.out.println("tester");
+			timer.reset();
+			timer.start();
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.6); //was .375
+			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
+			beltBackwardTriggered = 0;
+			beltForwardTriggered = 0;
+		}
+		else {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
+			// System.out.print(timer.get());
+			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
+
+		}
+
+		
 		if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(-.6);
 		}
-		else if (BreakBeam.getInstance().detectSpikyBottomBall())
+		else if (bottomButton.get() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) //Andy was here
 		{
+			RobotMap.IntakeMap.PINWHEEL.set(.1); //was .375 // was 0.5 and it was .6 - Andy
+		}
+		else if ((timer.get() > 1 || timer.get() == 0 ) &&(!spikeyButton.get() && !topButton.get()) && !bottomButton.get()) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		else if (!BreakBeam.getInstance().detectSpikyBottomBall() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.6); //was .375 // was 0.5
-		}
-		/*
-		else if (BreakBeam.getInstance().getRampBeam())
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.55);
-			timer.reset();
-			timer.start();
-		}
-		*/
-		else if (timer.get() > .5) {
-			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
+		else {
+			RobotMap.IntakeMap.PINWHEEL.set(.5); 
+		}//was .375
 		
+		
+		if (RobotMap.CONTROLLER.getXButtonPressed()) {
+
+			if (RobotMap.StateChooser.HOOD_ANGLE == false) {
+				RobotMap.StateChooser.HOOD_ANGLE = true;
+
+			} else if (RobotMap.StateChooser.HOOD_ANGLE == true) {
+				RobotMap.StateChooser.HOOD_ANGLE = false;
+			}
+
+		}
+		if(RobotMap.StateChooser.HOOD_ANGLE) //MAKE SURE NOT BAD
+		{
+			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kForward);
+		}
+		else
+		{
+			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
+		}
 
 	}
 

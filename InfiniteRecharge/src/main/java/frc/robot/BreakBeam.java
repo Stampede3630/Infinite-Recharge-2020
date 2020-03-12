@@ -231,6 +231,12 @@ public class BreakBeam {
 	{
 		return !beam8.get();
 	}
+
+	public boolean getAutoNone()
+	{
+		return beam0.get() && beam1.get() && beam2.get() && beam3.get() && beam4.get() && beam5.get() && beam6.get() && beam7.get() && beam8.get();
+	}
+
 	
 	
 

@@ -62,8 +62,8 @@ public class RobotMap {
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
 
-		public static final double KPX_CONTROLLER = 1.5;
-		public static final double KPY_CONTROLLER = 1.5;
+		public static final double KPX_CONTROLLER = 1;
+		public static final double KPY_CONTROLLER = 1;
 		public static final double KP_THETA_CONTROLLER = 1.5;
 
 
@@ -110,7 +110,7 @@ public class RobotMap {
 		public static final WPI_VictorSPX FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
 		public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
 		public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-		public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.572186-0.05111283669824829;
+		public static final double FRONT_RIGHT_ANGLE_OFFSET =  2.572186-0.05111283669824829 - Math.PI;
 
 		public static final WPI_VictorSPX BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
 		public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
@@ -120,7 +120,7 @@ public class RobotMap {
 		public static final WPI_VictorSPX BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
 		public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
 		public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-		public static final double BACK_RIGHT_ANGLE_OFFSET = -0.420229 - 0.8095408897871463-2.1448951380578576;
+		public static final double BACK_RIGHT_ANGLE_OFFSET = -0.420229 - 0.8095408897871463-2.1448951380578576- Math.PI;
 
 		public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
 		public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
@@ -310,16 +310,17 @@ public class RobotMap {
 	{
 		public static boolean INTAKE_NOW = false;
 		public static boolean SHOOT_NOW = false;
+		public static boolean TRAJECTORY_DONE = false;
 	}
 
 	public static final XboxController CONTROLLER = new XboxController(0);
 
 	static {
 		// DriveMap
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(true);
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(true);
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);//f
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);//f
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);//t
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);//t
 
 
 
@@ -332,11 +333,10 @@ public class RobotMap {
 		IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 
-		//IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
-		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(true);
-		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(true);
-		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(true);
-		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(true);
+		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(false);
+		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(false);
+		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(false);
+		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(false);
 
 
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,

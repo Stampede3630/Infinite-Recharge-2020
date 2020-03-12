@@ -8,7 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,7 +32,7 @@ public static final int PID_LOOP_IDX = 0;// this is the only pid loop i could fi
 //private RumbleSequence imperialRumble = new RumbleSequence(RumbleSequence.Sequences.IMPERIAL_RUMBLE);
 private BasicAuto basicAuto = new BasicAuto();
 private boolean debugging = false;
- 
+
 
 	// private Compressor comp = new Compressor(0);
 
@@ -41,9 +40,10 @@ private boolean debugging = false;
 	public void robotInit() {
 
 		SmartDashboard.putNumber("RPMEdit", 0);
-		SmartDashboard.putBoolean("debugging", false);
-		SmartDashboard.putBoolean("Intake Baby?", true);
-		//BallFollowDrive.resetIntakeState();
+		SmartDashboard.putBoolean("debugging", true);
+		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+		RobotMap.resetEncoders();
+		// BallFollowDrive.resetIntakeState();
 	}
 
 	@Override
@@ -54,7 +54,7 @@ private boolean debugging = false;
 			Drivetrain.getInstance().postToSmartDashboard();
 			
 			ServoMotor.getInstance().setServoSmartDashboard();
-			SmartDashboard.putNumber("Odometry X", -RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
+			SmartDashboard.putNumber("Odometry X", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
 			SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
 		}
 		
@@ -63,10 +63,9 @@ private boolean debugging = false;
 		Chooser.getInstance().chooserPeriodic();
 		Limelight.limelightPeriodic();
 		SmartDashboard.putNumber("Navx REAL", -RobotMap.SensorMap.GYRO.getYaw());
-		RobotMap.StateChooser.RPM += SmartDashboard.getNumber("RPMEdit", 0);
+		RobotMap.StateChooser.RPM  = RobotMap.StateChooser.RPM + SmartDashboard.getNumber("RPMEdit", 0);
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
-		BreakBeam.getInstance().toSmartDashBoard();
-		//ServoMotor.getInstance().setServoSmartDashboard();
+		Drivetrain.getInstance().updateOdometry();
 		
 	}
 
@@ -78,6 +77,7 @@ private boolean debugging = false;
 		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 		basicAuto.resetAutoTime();
 		RobotMap.AutoBooleans.SHOOT_NOW = true;
+		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
 
 	@Override
@@ -91,10 +91,10 @@ private boolean debugging = false;
 		System.out.println(
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		*/
-		basicAuto.newPeriodic();
+		basicAuto.trajectoryPeriodic();
 		Shooter.getInstance().control();
-		Chooser.getInstance().intakeChooser();
-		Drivetrain.getInstance().updateOdometry();
+		IntakeIndex.getInstance().index();
+	
 
 	}
 	@Override
@@ -107,8 +107,7 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		//IntakeIndex.getInstance().index();
-		Chooser.getInstance().intakeChooser();
+		IntakeIndex.getInstance().buttonIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
@@ -149,7 +148,7 @@ private boolean debugging = false;
 	@Override
 	public void disabledInit() {
 		super.disabledInit();
-		RobotMap.setDriveTalonsCoast();
+		//RobotMap.setDriveTalonsCoast();
 		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 	}
 
