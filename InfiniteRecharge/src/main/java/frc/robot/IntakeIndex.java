@@ -25,6 +25,7 @@ public class IntakeIndex {
 	private DigitalInput topButton = new DigitalInput(9);
 	private DigitalInput middleButton = new DigitalInput(8);
 	private DigitalInput bottomButton = new DigitalInput(7);
+	private DigitalInput spikeyButton = new DigitalInput(6);
 
 	static {
 		instance = new IntakeIndex();
@@ -219,7 +220,18 @@ public class IntakeIndex {
 	public void buttonIndex()
 	{
 		//Andy was kind of all over here :/ twoBalls
-		if(!topButton.get())
+		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if shooter up to speed 
+		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
+		
+		) //.9 for short shot
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+		}
+		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft))
+		{
+			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
+		}
+		else if(!topButton.get())
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 			twoBalls = false;
@@ -256,11 +268,16 @@ public class IntakeIndex {
 
 		}
 
+		
 		if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(-.6);
 		}
-		else if (timer.get() > 1 || timer.get() == 0 || !bottomButton.get()) { // if its been 1.5 sec or there's something in the bottom
+		else if (bottomButton.get() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) //Andy was here
+		{
+			RobotMap.IntakeMap.PINWHEEL.set(.1); //was .375 // was 0.5 and it was .6 - Andy
+		}
+		else if ((timer.get() > 1 || timer.get() == 0 ) &&(!spikeyButton.get() && !topButton.get()) && !bottomButton.get()) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		else {
