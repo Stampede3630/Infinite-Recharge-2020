@@ -107,7 +107,7 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().buttonIndex();
+	//	IntakeIndex.getInstance().buttonIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
