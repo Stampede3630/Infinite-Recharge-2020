@@ -34,6 +34,7 @@ public class TrajectoryFollowing {
 	private final ProfiledPIDController m_thetaController;
 	private SwerveModuleState[] m_outputModuleStates;
 
+
 	public TrajectoryFollowing(Trajectory traj, PIDController xController, PIDController yController,
 			ProfiledPIDController thetaController) {
 		config = new TrajectoryConfig(RobotMap.AutoConstants.MAX_SPEED_METERS_PER_SECOND,

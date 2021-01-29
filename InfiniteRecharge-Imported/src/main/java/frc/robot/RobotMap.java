@@ -282,7 +282,7 @@ public class RobotMap {
         public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
 
         public static double SHORT_TRENCH_SERVO_ANGLE = 40;
-        public static double SHORT_TRENCH_ANGLE =999; //ish
+        public static double SHORT_TRENCH_ANGLE = 999; //ish
 		public static int SHORT_TRENCH_PIPELINE = 6;
         public static double SHORT_TRENCH_KF = 0.055;
 		public static int SHORT_TRENCH_RPM = 4100;//3800; //3825 for bad balls
@@ -296,13 +296,13 @@ public class RobotMap {
 		public static boolean LONG_SHOT_HOOD_ANGLE = true;
 		
 		public static double NO_MANS_LAND_SERVO_POS = 40;
-		public static double NO_MANS_LAND_ANGLE = 999;
+		public static double NO_MANS_LAND_ANGLE = 999; 
 		public static int NO_MANS_LAND_PIPELINE = 3;
         public static double NO_MANS_LAND_KF = 0.055;
 		public static int NO_MANS_LAND_RPM = 4100; //3800
 		public static boolean NO_MANS_LAND_HOOD_ANGLE = true;
-		
-		public static boolean ALLOW_AUTOMATED_CONTROL = true;
+
+		public static boolean ALLOW_AUTOMATED_CONTROL = true; //true
 
 	}
 

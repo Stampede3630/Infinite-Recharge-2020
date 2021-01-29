@@ -104,7 +104,7 @@ public class IntakeIndex {
 
 	}
 
-	public void index() { // most recent intake machine
+	public void index() { // most recent intake machine - used in auto
 		// System.out.println(pinwheel.get());
 		updateBooleans();
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
@@ -164,7 +164,7 @@ public class IntakeIndex {
 		*/
 		
 		
-		
+		//RUNS ON BREAKBEAMS - DEPRECATED
 		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if shooter up to speed 
 		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
 		

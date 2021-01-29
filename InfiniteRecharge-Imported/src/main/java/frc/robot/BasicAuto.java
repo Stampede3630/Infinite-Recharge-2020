@@ -24,28 +24,27 @@ public class BasicAuto {
     private int step = 0;
     private int trajStep = 0;
   
-    public void resetAutoTime()
-    {
+    public void resetAutoTime() {
         autoTime.reset();
         autoTime.start();
     }
-    public void periodicOld()
-    {
-        if(RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold))
-        {
-            RobotMap.AutoBooleans.SHOOT_NOW = false;
-        }
-        else if(RobotMap.AutoBooleans.SHOOT_NOW)
-        {
-            Drivetrain.getInstance().drive(0, 0, TargetAlignDrive.getInstance().align()*RobotMap.DriveMap.MAX_SPEED, true);
-        } 
-        else
-        {
-            //System.out.println("Trying to move");
-            double xSpeed = autoDistancePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX(), meterSetpoint);
-            Drivetrain.getInstance().drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, 0, 0, true);
-        }
-    }
+    // public void periodicOld()
+    // {
+    //     if(RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold))
+    //     {
+    //         RobotMap.AutoBooleans.SHOOT_NOW = false;
+    //     }
+    //     else if(RobotMap.AutoBooleans.SHOOT_NOW)
+    //     {
+    //         Drivetrain.getInstance().drive(0, 0, TargetAlignDrive.getInstance().align()*RobotMap.DriveMap.MAX_SPEED, true);
+    //     } 
+    //     else
+    //     {
+    //         //System.out.println("Trying to move");
+    //         double xSpeed = autoDistancePID.calculate(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX(), meterSetpoint);
+    //         Drivetrain.getInstance().drive(xSpeed * RobotMap.DriveMap.MAX_SPEED, 0, 0, true);
+    //     }
+    // }
 
     public void newPeriodic()
     {
@@ -61,12 +60,9 @@ public class BasicAuto {
             case 1:
             Drivetrain.getInstance().drive(0, 0, TargetAlignDrive.getInstance().align()*RobotMap.DriveMap.MAX_SPEED, true);
             
-            if(RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold))
-            {
+            if (RobotMap.AutoBooleans.SHOOT_NOW && (autoTime.get() > timeThreshold)) {
                 RobotMap.AutoBooleans.SHOOT_NOW = false;
                 step++;
-                
-
             }
             break;
 
@@ -130,10 +126,7 @@ public class BasicAuto {
                 RobotMap.AutoBooleans.INTAKE_NOW = true;
             }
             break; 
-
-
         }
-
     }
     public void secondTrenchPeriodic()
     {

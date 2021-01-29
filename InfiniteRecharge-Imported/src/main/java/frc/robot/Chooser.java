@@ -87,9 +87,7 @@ public class Chooser {
         }
     }
 //
-    public void driveChooser() 
-
-    {
+    public void driveChooser() {
        
        if(RobotMap.CONTROLLER.getAButton())
        {

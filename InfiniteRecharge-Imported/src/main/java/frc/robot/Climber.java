@@ -6,6 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
+
 
 public class Climber {
 
@@ -28,21 +32,52 @@ public class Climber {
     public void climberPeriodic() {
         if (RobotMap.CONTROLLER.getPOV() == 0) {
             extend();
+            SmartDashboard.putBoolean("Climber up", true);
         }
         else if (RobotMap.CONTROLLER.getPOV()==180) {
             retract();
+            SmartDashboard.putBoolean("Climber down", true);
         }
         else if (RobotMap.CONTROLLER.getPOV()==270) {
             strafeLeft();
+            SmartDashboard.putBoolean("Climber left", true);
         }
         else if (RobotMap.CONTROLLER.getPOV()==90) {
             strafeRight();
+            SmartDashboard.putBoolean("Climber right", true);
         }
         else {
             RobotMap.ClimberMap.ELEVATOR_SPARK.set(0);
             RobotMap.ClimberMap.TROLLEY_SPARK.set(0);
+            SmartDashboard.putBoolean("Climber up", false);
+            SmartDashboard.putBoolean("Climber down", false);
+            SmartDashboard.putBoolean("Climber left", false);
+            SmartDashboard.putBoolean("Climber right", false);
         }
     }
+
+    public void climberDebug() { //1/28/2021, delete later
+        SmartDashboard.putNumber("Climber POV", RobotMap.CONTROLLER.getPOV());
+        if (RobotMap.CONTROLLER.getPOV() == 0) {
+            SmartDashboard.putBoolean("Climber up", true);
+        }
+        else if (RobotMap.CONTROLLER.getPOV()==180) {
+            SmartDashboard.putBoolean("Climber down", true);
+        }
+        else if (RobotMap.CONTROLLER.getPOV()==270) {
+            SmartDashboard.putBoolean("Climber left", true);
+        }
+        else if (RobotMap.CONTROLLER.getPOV()==90) {
+            SmartDashboard.putBoolean("Climber right", true);
+        }
+        else {
+            SmartDashboard.putBoolean("Climber up", false);
+            SmartDashboard.putBoolean("Climber down", false);
+            SmartDashboard.putBoolean("Climber left", false);
+            SmartDashboard.putBoolean("Climber right", false);
+        }
+    }
+    
 
     public void extend() {
         if (RobotMap.ClimberMap.MAX_LIMIT_SWITCH.get() == false) {

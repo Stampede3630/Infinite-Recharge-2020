@@ -70,7 +70,11 @@ private boolean debugging = false;
 		Drivetrain.getInstance().updateOdometry();
 
 		//INDEX DEBUGGING 1/20/2021
-		IntakeIndex.getInstance().showButtons();		
+		IntakeIndex.getInstance().showButtons();
+		//Climber.getInstance().climberDebug();	
+		SmartDashboard.putNumber("travectory time", TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
+
+		SmartDashboard.putNumber("Y value",RobotMap.CONTROLLER.getY(Hand.kLeft));
 	}
 
 	@Override
@@ -116,7 +120,7 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		//IntakeIndex.getInstance().buttonIndex();
+		IntakeIndex.getInstance().buttonIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
@@ -144,12 +148,13 @@ private boolean debugging = false;
 		 */
 		// Drivetrain.postToSmartDashboard();
 
-		RobotMap.StateChooser.RPM = 1100;
+		// RobotMap.StateChooser.RPM = 1100;
 		//RobotMap.StateChooser.FIELD_RELATIVE = false;
-		Shooter.getInstance().control();
-		//Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().index();
-		Climber.getInstance().climberPeriodic();
+		// Shooter.getInstance().control();
+		Drivetrain.getInstance().teleopDrive();
+		// IntakeIndex.getInstance().index();
+		// Climber.getInstance().climberPeriodic();
+
 		
 
 		
