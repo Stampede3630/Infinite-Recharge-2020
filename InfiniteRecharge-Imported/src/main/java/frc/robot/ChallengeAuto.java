@@ -11,6 +11,16 @@ import frc.robot.RobotMap.DriveMap;
 
 /** Add your docs here. */
 public class ChallengeAuto {
+    private Timer autoTime = new Timer();
+    private int trajStep = 0;
+    private double timeThreshold = 8;
+
+
+
+    public void resetAutoTime() {
+        autoTime.reset();
+        autoTime.start();
+    }
 
     public void trajectoryPeriodic()
     {
@@ -60,6 +70,30 @@ public class ChallengeAuto {
                 RobotMap.AutoBooleans.INTAKE_NOW = true;
             }
             break; 
+        }
+    }
+
+    public void slalomPeriodic()
+    {
+        switch(trajStep)
+        {
+            case 0:
+            RobotMap.setDriveTalonsBrake();
+		    RobotMap.resetEncoders();
+		    TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+		    resetAutoTime();
+            RobotMap.AutoBooleans.SHOOT_NOW = false;//true;
+            RobotMap.AutoBooleans.TRAJECTORY_DONE = false;//false;
+            RobotMap.AutoBooleans.INTAKE_NOW = false;
+            Chooser.getInstance().autoChooser(Chooser.RobotState.INITIATION_LINE_SHOT);
+            trajStep = 1;//++;
+            break;
+
+            case 1:
+
+            break;
+
+
         }
     }
 

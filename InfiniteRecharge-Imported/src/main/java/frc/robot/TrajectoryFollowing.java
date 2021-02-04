@@ -65,6 +65,7 @@ public class TrajectoryFollowing {
             Drivetrain.getInstance().drive(0, 0, 0, false);
             RobotMap.AutoBooleans.TRAJECTORY_DONE = true;
 			System.out.println("Triggered !!!!!!: "+ trajectory.getTotalTimeSeconds());
+			System.out.println("i should be stopped!!!!!!!!!!!!");
 		}
 		else{
 			updateAutoStates();
@@ -72,6 +73,10 @@ public class TrajectoryFollowing {
 			Drivetrain.getInstance().setModuleStates(m_outputModuleStates);
 		}
 
+	}
+
+	public void challengeAuto(){
+		
 	}
 
 	@SuppressWarnings("LocalVariableName")

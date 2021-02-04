@@ -62,7 +62,7 @@ public class TrajectoryContainer {
 	private Trajectory traj4 =  TrajectoryGenerator.generateTrajectory(
 	List.of(
 		new Pose2d (3.05, -2.4, new Rotation2d(0)),
-		new Pose2d( 6.166,-.704, new Rotation2d(0) ),
+		new Pose2d( 6.166,-.704, new Rotation2d(0)),
 		//new Pose2d( 7.08, -.704, new Rotation2d(0) ),
 		new Pose2d( 7.99, -.704, new Rotation2d(0))), config);
      /*
@@ -74,9 +74,27 @@ public class TrajectoryContainer {
 		//new Translation2d(4.08, 3.05)),//back to line
         new Pose2d(4.08, 3.05, new Rotation2d(45)), config); //intake logic path 2
         
-    */
+	*/
+	// x does not like negatives, 
+	private Trajectory slalomTraj1 = TrajectoryGenerator.generateTrajectory(
+		List.of(
+			new Pose2d(.3, .3, new Rotation2d(0)),
+			new Pose2d(.9, 0, new Rotation2d(0)),
+			new Pose2d(.9, .6, new Rotation2d(0)),
+			new Pose2d(1.8, 1.05, new Rotation2d(0))
+			), config);
 	
-	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(traj4, xController, yController,
+	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0, 0, new Rotation2d(0)),
+
+		List.of(
+			new Translation2d(.03, 0)
+		),
+
+		new Pose2d(.3, 0, new Rotation2d(0)),
+		config
+	);
+	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(slalomTraj, xController, yController,
 			thetaController);
 
 }

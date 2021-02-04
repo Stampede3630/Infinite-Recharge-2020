@@ -86,14 +86,17 @@ private boolean debugging = false;
 		basicAuto.resetAutoTime();
 		RobotMap.AutoBooleans.SHOOT_NOW = true;
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+
+		RobotMap.SensorMap.GYRO.zeroYaw();
 		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
+		RobotMap.StateChooser.FIELD_RELATIVE = false;
 		
 		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
-		IntakeIndex.getInstance().index();
+		//IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
 		System.out.println("Total Time Seconds"
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
@@ -101,9 +104,11 @@ private boolean debugging = false;
 				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		
 		
-		basicAuto.trajectoryPeriodic();
-		Shooter.getInstance().control();
-		IntakeIndex.getInstance().index();
+		//basicAuto.trajectoryPeriodic();
+		//Shooter.getInstance().control();
+		//IntakeIndex.getInstance().index();
+
+		//MESSED WITH 2/1/2021
 		
 
 
@@ -120,7 +125,7 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().buttonIndex();
+		//IntakeIndex.getInstance().buttonIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
