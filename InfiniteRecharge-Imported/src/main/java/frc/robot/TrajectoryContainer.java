@@ -87,12 +87,19 @@ public class TrajectoryContainer {
 	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(0, 0, new Rotation2d(0)),
 
+		// x is long, y is short
 		List.of(
-			new Translation2d(.1,.3),
-			new Translation2d(-.7, .5)//,
-			//new Translation2d(-.2, .3)
+			new Translation2d(.1,.4), //cross
+			new Translation2d(.3, .5),
+			new Translation2d(.7, 1.4),
+			new Translation2d(2.3, 2.5),// cross 2
+			new Translation2d(3, 3.8),
+			new Translation2d(1.5, 4),
+			new Translation2d(2.3, 2.5),
+			new Translation2d(3, 2.2),
+			new Translation2d(2.5, -.3)
 		),
-		new Pose2d(-2, -.1, new Rotation2d(0)),
+		new Pose2d(-1, -2.5, new Rotation2d(0)),
 		config
 	);
 	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(slalomTraj, xController, yController,
