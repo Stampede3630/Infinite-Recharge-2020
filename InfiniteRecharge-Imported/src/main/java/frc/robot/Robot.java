@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryParameterizer;
 import frc.robot.RobotMap.DrivetrainMap;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 
 /**
@@ -88,12 +90,15 @@ private boolean debugging = false;
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 
 		RobotMap.SensorMap.GYRO.zeroYaw();
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(.762,.762,new Rotation2d(0)), new Rotation2d(0));
 		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
 		RobotMap.StateChooser.FIELD_RELATIVE = false;
+
+		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 		
 		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
 		//IntakeIndex.getInstance().index();

@@ -84,24 +84,82 @@ public class TrajectoryContainer {
 			new Pose2d(1.8, 1.05, new Rotation2d(0))
 			), config);
 	
-	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
+	private Trajectory slalomTraj2 = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(0, 0, new Rotation2d(0)),
-
 		// x is long, y is short
 		List.of(
 			new Translation2d(.1,.4), //cross
 			new Translation2d(.3, .5),
 			new Translation2d(.7, 1.4),
-			new Translation2d(2.3, 2.5),// cross 2
+			new Translation2d(2.3, 2),// cross 2
 			new Translation2d(3, 3.8),
 			new Translation2d(1.5, 4),
 			new Translation2d(2.3, 2.5),
 			new Translation2d(3, 2.2),
 			new Translation2d(2.5, -.3)
+			
 		),
-		new Pose2d(-1, -2.5, new Rotation2d(0)),
+		new Pose2d(0,0 , new Rotation2d(0)),
+		//new Pose2d(-1, -2.5, new Rotation2d(0)),
 		config
 	);
+
+	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0.6858, 0.762, new Rotation2d(0)),
+		List.of(
+			new Translation2d(2.06, 1.02),
+			new Translation2d(2.4, 2.03),
+			new Translation2d(6.29, 2.03),
+			new Translation2d(6.17, 0.76),
+			new Translation2d(7.43, 0.64),
+			new Translation2d(7.54, 2.29),
+			new Translation2d(6.17, 2.29),
+			new Translation2d(6.17, 1.02),
+			new Translation2d(4.11, 0.51),
+			new Translation2d(1.83, 0.76),
+			new Translation2d(1.60, 2.03)
+		),
+		new Pose2d(0.3429, 2.286, new Rotation2d(0)),
+
+		// new Pose2d(6.858, 1.524, new Rotation2d(0)),
+		config
+	);
+
+	private Trajectory bounceTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0, 0, new Rotation2d(0)),
+
+		List.of(
+			new Translation2d(0, .3),
+			new Translation2d(0, .4)
+		),
+		new Pose2d(0, .5, new Rotation2d(0)),
+		config
+	);
+
+	private Trajectory testTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0, 0, new Rotation2d(0)),
+
+		List.of(
+			new Translation2d(0, .2),/*
+			new Translation2d(0, .3),
+			new Translation2d(0, .4),
+			new Translation2d(0, .5),
+			new Translation2d(0, .6),
+			new Translation2d(0, .7),
+			new Translation2d(0, .8),
+			new Translation2d(0, .9),
+			new Translation2d(0, 1.0),
+			new Translation2d(0, 1.1),
+			new Translation2d(0, 1.2),
+			new Translation2d(0, 1.3),
+			new Translation2d(0, 1.4),*/
+			new Translation2d(0, 1.5)
+		),
+		new Pose2d(0, 2.0, new Rotation2d(0)),
+		config
+	);
+
+	//CHANGE STARTING CRDS !!!!!!!!!!!!!!!!
 	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(slalomTraj, xController, yController,
 			thetaController);
 
