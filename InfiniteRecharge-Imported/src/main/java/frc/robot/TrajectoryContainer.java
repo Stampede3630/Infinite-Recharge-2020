@@ -105,21 +105,21 @@ public class TrajectoryContainer {
 	);
 
 	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
-		new Pose2d(0.6858, 0.762, new Rotation2d(0)),
+		new Pose2d(0.69342, 0.762, new Rotation2d(0)),
 		List.of(
-			new Translation2d(2.06, 1.02),
-			new Translation2d(2.4, 2.03),
-			new Translation2d(6.29, 2.03),
-			new Translation2d(6.17, 0.76),
-			new Translation2d(7.43, 0.64),
-			new Translation2d(7.54, 2.29),
-			new Translation2d(6.17, 2.29),
-			new Translation2d(6.17, 1.02),
-			new Translation2d(4.11, 0.51),
-			new Translation2d(1.83, 0.76),
-			new Translation2d(1.60, 2.03)
+			new Translation2d(2.08, 1.02),
+			new Translation2d(2.54, 2.03),
+			new Translation2d(6.36, 2.03),
+			new Translation2d(6.24, 0.76),
+			new Translation2d(7.51, 0.64),
+			new Translation2d(7.63, 2.29),
+			new Translation2d(6.24, 2.29),
+			new Translation2d(6.36, 1.02),
+			new Translation2d(4.16, 0.51),
+			new Translation2d(1.85, 0.76),
+			new Translation2d(1.62, 2.03)
 		),
-		new Pose2d(0.3429, 2.286, new Rotation2d(0)),
+		new Pose2d(0.34671, 2.286, new Rotation2d(0)),
 
 		// new Pose2d(6.858, 1.524, new Rotation2d(0)),
 		config
