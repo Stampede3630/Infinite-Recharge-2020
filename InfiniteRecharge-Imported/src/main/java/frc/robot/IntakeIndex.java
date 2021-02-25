@@ -22,9 +22,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class IntakeIndex {
 
 	private static IntakeIndex instance;
-	private DigitalInput topButton = new DigitalInput(9);
-	private DigitalInput middleButton = new DigitalInput(8);
-	private DigitalInput bottomButton = new DigitalInput(7);
+	private DigitalInput topButton = new DigitalInput(9); // port 1
+	private DigitalInput middleButton = new DigitalInput(8); // port 2 BOTTOM BUTTTON FOR WHATEVER REASON
+	private DigitalInput bottomButton = new DigitalInput(7); 
 	private DigitalInput spikeyButton = new DigitalInput(6);
 
 	static {
@@ -51,6 +51,7 @@ public class IntakeIndex {
 	private double beltBackwardsTwo = .4; //TalonSRX speed = .5;
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
+	private double pinwheelForward = .25;
 	private int timeout = 999999999;
 
 	private boolean twoBalls = false;
@@ -88,7 +89,7 @@ public class IntakeIndex {
 	public void manualControl() {
 		if (RobotMap.CONTROLLER.getAButton()) {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);//.75
-			RobotMap.IntakeMap.PINWHEEL.set(.7); //was .2 - Andy
+			RobotMap.IntakeMap.PINWHEEL.set(.2); //was .2 - Andy
 		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
@@ -104,7 +105,7 @@ public class IntakeIndex {
 
 	}
 
-	public void index() { // most recent intake machine - used in auto
+	public void index() { // used in 2020 auto?
 		// System.out.println(pinwheel.get());
 		updateBooleans();
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
@@ -231,25 +232,32 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
 		}
-		else if(!topButton.get())
+		else if(!topButton.get()) //if ball at top, stop
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 			twoBalls = false;
 		}
-		else if(!bottomButton.get() && !middleButton.get())
+		else if(!bottomButton.get() && !middleButton.get()) //if balls middle and bottom, go
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 			twoBalls = true;
 		}
-		else if(!bottomButton.get())
+		else if(!topButton.get() && !middleButton.get()) //if ball at bottom, go
 		{
-			RobotMap.IntakeMap.BELT.set(beltForwardOne);
+			RobotMap.IntakeMap.BELT.set(0);
+			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		else if(!middleButton.get() && !twoBalls)
+		else if(!middleButton.get() && !twoBalls) //if ball at middle, stop
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 		}
+		/* else if(!topButton.get() && !middleButton.get())
+		{
+
+			RobotMap.IntakeMap.BELT.set(0);
 		
+		}
+			*/
 
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
 		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
@@ -426,6 +434,57 @@ public class IntakeIndex {
 		}
 	}
 
+	public void twoBeltIndex(){ //THE 2021 INTAKE
+
+		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if left trigger is pressed and shooter up to speed 
+		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
+		){
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+			twoBalls = false;
+		}
+		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) //if left bumper, forwards belt
+		{
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+		}
+		else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)){
+			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
+		}
+		else if(!topButton.get() && !middleButton.get() && (twoBalls == true)){
+			RobotMap.IntakeMap.BELT.set(0);
+			RobotMap.IntakeMap.PINWHEEL.set(0);
+		}
+		else if(!middleButton.get() && !topButton.get()){ //if ball is at the bottom, stop
+			twoBalls = true;
+		}
+		else if(!topButton.get()) //if ball is at the top, don't do strong belt
+		{
+			RobotMap.IntakeMap.BELT.set(0);
+			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
+		}
+		else{
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
+		}
+		// else {
+		// 	RobotMap.IntakeMap.BELT.set(0);
+		// 	RobotMap.IntakeMap.PINWHEEL.set(0);
+		// }
+
+		//INTAKE 
+		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.6); //was .375
+			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
+			beltBackwardTriggered = 0;
+			beltForwardTriggered = 0;
+		}
+		else {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
+			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
+		}
+		
+
+	}
+
 
 	//DEBUGGING 1/20/2021
 	public void showButtons(){
@@ -433,6 +492,7 @@ public class IntakeIndex {
 		SmartDashboard.putBoolean("Middle Button", middleButton.get());
 		SmartDashboard.putBoolean("Bottom Button", bottomButton.get());
 		SmartDashboard.putBoolean("Spikey Button", spikeyButton.get());
+		SmartDashboard.putBoolean("twoballs", twoBalls);
 
 	}
 }
