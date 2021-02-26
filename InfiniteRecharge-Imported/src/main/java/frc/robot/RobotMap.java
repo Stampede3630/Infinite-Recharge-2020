@@ -127,7 +127,7 @@ public class RobotMap {
 		public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
 		public static final double FRONT_LEFT_ANGLE_OFFSET = -2.21-0.006645810835413712; // radians
 
-		public static final double MAX_SPEED = 3.627; // 3.627 2/2/2021 1.627
+		public static final double MAX_SPEED = 4.1; // 3.627 2/2/2021 1.627
 		public static final double MAX_ANGULAR_SPEED = 4 * Math.PI;
 	}
 
@@ -253,7 +253,7 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE = true; //andy was here
+		public static boolean FIELD_RELATIVE = false; //andy was here
 	}
 
 	public static class StateConstants

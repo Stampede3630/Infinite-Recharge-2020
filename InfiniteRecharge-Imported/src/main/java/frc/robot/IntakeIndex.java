@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 /**
  * Add your docs here.
  */
-
+// Use twoBeltIndex for anything with buttons and belts
 public class IntakeIndex {
 
 	private static IntakeIndex instance;

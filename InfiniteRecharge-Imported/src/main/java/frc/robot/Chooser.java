@@ -258,14 +258,9 @@ public class Chooser {
 
     public void fieldRelative()
     {
-        if(SmartDashboard.getBoolean("Field Relative", true))
-        {
-            RobotMap.StateChooser.FIELD_RELATIVE = true;
-        }
-        else
-        {  
-            RobotMap.StateChooser.FIELD_RELATIVE = false;
-        }
+        // RobotMap.StateChooser.FIELD_RELATIVE = SmartDashboard.getBoolean("Field Relative", true);
+      
+        RobotMap.StateChooser.FIELD_RELATIVE = true;
     }
 
     

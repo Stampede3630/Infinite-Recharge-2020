@@ -175,7 +175,8 @@ public class Drivetrain {
     if (Math.abs(rot) < 0.2) {
       rot = 0;
     } else {
-      rot = (Math.abs(rot)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+      rot = (Math.abs(rot)-.2) * (1/1.9) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+      // rot = (Math.abs(rot)-.2) * (1/.8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
     }
   
     if(RobotMap.CONTROLLER.getBButton())

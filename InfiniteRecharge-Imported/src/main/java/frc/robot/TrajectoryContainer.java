@@ -75,6 +75,8 @@ public class TrajectoryContainer {
         new Pose2d(4.08, 3.05, new Rotation2d(45)), config); //intake logic path 2
         
 	*/
+
+	/* OLD TRIES AT SLALOM
 	// x does not like negatives, 
 	private Trajectory slalomTraj1 = TrajectoryGenerator.generateTrajectory(
 		List.of(
@@ -102,65 +104,77 @@ public class TrajectoryContainer {
 		new Pose2d(0,0 , new Rotation2d(0)),
 		//new Pose2d(-1, -2.5, new Rotation2d(0)),
 		config
-	);
+	); */
 
 	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
-		new Pose2d(0.70, 0.75, new Rotation2d(0)),
+		new Pose2d(0.72-.27, 0.75, new Rotation2d(0)),
 		List.of(
-			new Translation2d(2.08, 0.97),
-			new Translation2d(2.56, 1.98),
-			new Translation2d(6.21, 1.90),
-			new Translation2d(6.42, 0.63),
-			new Translation2d(7.67, 0.60),
-			new Translation2d(7.70, 2.13),
-			new Translation2d(6.45, 2.15),
-			new Translation2d(6.19, 0.63),
-			new Translation2d(4.12, 0.42),
-			new Translation2d(1.84, 0.72),
-			new Translation2d(1.64, 2.00)
+			new Translation2d(2.12, 1.20),//0.97 CROSS ONE
+			new Translation2d(2.61-.27, 1.98),
+			new Translation2d(6.35-.27-.3, 1.90), //cross two - beginning of loop
+			new Translation2d(6.56-.27-.2, 0.63),
+			new Translation2d(7.84-.27-.2, 0.60),
+			new Translation2d(7.87-.27-.3, 2.12),
+			new Translation2d(6.59-.27-.3, 2.15),//cross three
+			new Translation2d(6.21-.27-.3, 0.50),
+			new Translation2d(4.22-.27-.3, 0.42),
+			new Translation2d(1.88-.27-.4, 0.72), //cross four
+			new Translation2d(1.68-.27-.3, 2.00)
 		),
-		new Pose2d(0.39, 2.28, new Rotation2d(0)),
+		new Pose2d(0.40-.27, 2.00, new Rotation2d(0)), //2.28
 
 		// new Pose2d(6.858, 1.524, new Rotation2d(0)),
 		config
 	);
 
 	private Trajectory bounceTraj = TrajectoryGenerator.generateTrajectory(
-		new Pose2d(0, 0, new Rotation2d(0)),
-
+		new Pose2d(0.74, 2.29, new Rotation2d(0)),
 		List.of(
-			new Translation2d(0, .3),
-			new Translation2d(0, .4)
+			new Translation2d(1.72, 2.29),
+			new Translation2d(2.34, 2.41),
+			new Translation2d(2.22, 3.81),
+			new Translation2d(2.34, 2.41),
+			new Translation2d(2.71, 2.29),
+			new Translation2d(3.08, 0.89),
+			new Translation2d(4.43, 0.89),
+			new Translation2d(4.56, 2.03),
+			new Translation2d(4.68, 3.81),
+			new Translation2d(4.56, 2.03),
+			new Translation2d(4.43, 1.27),
+			new Translation2d(5.42, 1.02),
+			new Translation2d(6.65, 1.27),
+			new Translation2d(6.78, 2.79),
+			new Translation2d(6.78, 4.06),
+			new Translation2d(6.78, 2.79)
 		),
-		new Pose2d(0, .5, new Rotation2d(0)),
+		new Pose2d(8.38, 2.79, new Rotation2d(0)),
 		config
 	);
 
-	private Trajectory testTraj = TrajectoryGenerator.generateTrajectory(
-		new Pose2d(0, 0, new Rotation2d(0)),
-
+	private Trajectory barrelRollTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0.76, 2.03, new Rotation2d(0)),
 		List.of(
-			new Translation2d(0, .2),/*
-			new Translation2d(0, .3),
-			new Translation2d(0, .4),
-			new Translation2d(0, .5),
-			new Translation2d(0, .6),
-			new Translation2d(0, .7),
-			new Translation2d(0, .8),
-			new Translation2d(0, .9),
-			new Translation2d(0, 1.0),
-			new Translation2d(0, 1.1),
-			new Translation2d(0, 1.2),
-			new Translation2d(0, 1.3),
-			new Translation2d(0, 1.4),*/
-			new Translation2d(0, 1.5)
+			new Translation2d(2.36, 2.20),
+			new Translation2d(3.73, 1.93),
+			new Translation2d(4.39, 1.22),
+			new Translation2d(3.44, 0.34),
+			new Translation2d(2.33, 1.29),
+			new Translation2d(3.74, 2.16),
+			new Translation2d(6.24, 1.84),
+			new Translation2d(6.52, 3.20),
+			new Translation2d(4.46, 3.27),
+			new Translation2d(5.52, 0.95),
+			new Translation2d(7.56, 0.42),
+			new Translation2d(7.86, 2.24),
+			new Translation2d(6.71, 2.28),
+			new Translation2d(3.74, 2.39)
 		),
-		new Pose2d(0, 2.0, new Rotation2d(0)),
+		new Pose2d(0.77, 2.49, new Rotation2d(0)),
 		config
 	);
 
 	//CHANGE STARTING CRDS !!!!!!!!!!!!!!!!
-	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(slalomTraj, xController, yController,
+	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(bounceTraj, xController, yController,
 			thetaController);
 
 }
