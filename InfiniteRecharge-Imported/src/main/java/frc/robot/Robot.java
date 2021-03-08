@@ -90,7 +90,7 @@ private boolean debugging = false;
 		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 
 		RobotMap.SensorMap.GYRO.zeroYaw();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0.76, 2.03,new Rotation2d(0)), new Rotation2d(0));
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0.72, 0.75,new Rotation2d(0)), new Rotation2d(0));
 		
 	}
 
@@ -101,7 +101,7 @@ private boolean debugging = false;
 		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 		
 		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
-		IntakeIndex.getInstance().index();
+		//IntakeIndex.getInstance().index();
 		Drivetrain.getInstance().updateOdometry();
 		System.out.println("Total Time Seconds"
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
@@ -130,7 +130,7 @@ private boolean debugging = false;
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().twoBeltIndex();
+		//IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
