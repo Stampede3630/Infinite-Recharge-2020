@@ -186,12 +186,31 @@ public class TrajectoryContainer {
 		config
 	);
 
-	private Trajectory gsABlueTraj = TrajectoryGenerator.generateTrajectory(
+	private Trajectory gsARedTrajCubic = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0.25, 2.29, new Rotation2d(0) ),
 		List.of(
-			new Pose2d(90,10, new Rotation2d(0)),
-			new Pose2d(0,0, new Rotation2d(0)),
-			new Pose2d(0,0, new Rotation2d(0))
-		), 
+			new Translation2d(2.72, 2.08 ),
+			new Translation2d(3.23, 1.50 ),
+			new Translation2d(4.44, 1.60 ),
+			new Translation2d(3.96, 3.66 ),
+			new Translation2d(8.00, 3.00 )
+		),
+		new Pose2d(8.76, 2.84, new Rotation2d(0)),
+		config
+	);
+
+	private Trajectory gsABlueTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0.25, 2.29, new Rotation2d(0)),
+		List.of(
+			new Translation2d(1.88, 1.91),
+			new Translation2d(2.90, 1.07),
+			new Translation2d(4.04, 0.81),
+			new Translation2d(4.78, 0.76),
+			new Translation2d(4.29, 3.00),
+			new Translation2d(5.77, 2.82),
+			new Translation2d(6.38, 2.41)
+		),
+		new Pose2d(8.71, 2.51, new Rotation2d(0)),
 		config
 	);
 	private Trajectory gsBRedTraj = TrajectoryGenerator.generateTrajectory(
@@ -213,7 +232,7 @@ public class TrajectoryContainer {
 	);
 
 	//CHANGE STARTING CRDS !!!!!!!!!!!!!!!!
-	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(slalomTraj, xController, yController,
+	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(gsARedTrajCubic, xController, yController,
 			thetaController);
 
 }

@@ -546,6 +546,31 @@ public class IntakeIndex {
 		
 	}
 
+	public void autoIntake(){ //the one where it "bops up" when shooter is pressed
+
+	if(!topButton.get() && !bottomButton.get()){ //if top and bottom, stop completely 
+		RobotMap.IntakeMap.BELT.set(0);
+		RobotMap.IntakeMap.PINWHEEL.set(0);
+	}
+	else if (!topButton.get() && !middleButton.get()){ 
+		RobotMap.IntakeMap.BELT.set(0);
+		RobotMap.IntakeMap.PINWHEEL.set(0); //maybe have it stop or be slower ??????
+	}
+	else if(!topButton.get()) 
+	{
+		RobotMap.IntakeMap.BELT.set(0);
+		RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
+	}
+	else{
+		RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+		RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
+	}
+	
+		RobotMap.IntakeMap.INTAKE_WHEELS.set(.6); //was .375
+		RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
+
+	
+}
 	//DEBUGGING 1/20/2021
 	public void showButtons(){
 		SmartDashboard.putBoolean("Top Button", topButton.get());

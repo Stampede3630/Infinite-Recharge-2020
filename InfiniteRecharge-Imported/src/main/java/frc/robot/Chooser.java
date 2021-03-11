@@ -51,7 +51,7 @@ public class Chooser {
     private Chooser() {
         stateChooser = new SendableChooser<RobotState>();
         SmartDashboard.putBoolean("Reset Gyro", false);
-        SmartDashboard.putBoolean("Field Relative", true);
+        SmartDashboard.putBoolean("Field Relative", false);
         SmartDashboard.putData(stateChooser);
         resetGyroBoolean = false;
         stateChooser.setDefaultOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
