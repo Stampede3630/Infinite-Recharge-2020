@@ -253,7 +253,7 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE = false; //andy was here
+		public static boolean FIELD_RELATIVE = true; //andy was here
 	}
 
 	public static class StateConstants
@@ -271,7 +271,7 @@ public class RobotMap {
         public static double INITIATION_LINE_SHOT_ANGLE = 999; //trig
         public static int INITIATION_LINE_SHOT_PIPELINE = 3;						//DONE
         public static double INITIATION_LINE_SHOT_KF = 0.055;
-		public static int INITIATION_LINE_SHOT_RPM = 3350 -175;//3050; //top of range
+		public static int INITIATION_LINE_SHOT_RPM = 3050;//(3350 -175);//3050; //top of range
 		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
 		
 		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
@@ -303,6 +303,9 @@ public class RobotMap {
 		public static boolean NO_MANS_LAND_HOOD_ANGLE = true;
 
 		public static boolean ALLOW_AUTOMATED_CONTROL = true; //true
+
+		public static int GALACTIC_SEARCH_PIPELINE = 7;
+		public static double GALACTIC_SEARCH_SERVO_POS = 160;
 
 	}
 

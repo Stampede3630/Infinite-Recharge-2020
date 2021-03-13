@@ -127,7 +127,6 @@ public class TrajectoryContainer {
 		config
 	);
 
-	
 
 	private Trajectory bounceTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(0.74, 2.29, new Rotation2d(0)),
@@ -175,7 +174,7 @@ public class TrajectoryContainer {
 	);
 
 	// GALACTIC SEARCH TRAJECTORIES
-	private Trajectory gsARedTraj = TrajectoryGenerator.generateTrajectory( //map A, red path
+	private Trajectory gsARedTrajQuintic = TrajectoryGenerator.generateTrajectory( //map A, red path
 		List.of(
 			new Pose2d(0.25, 2.54, new Rotation2d(0.00)),
 			new Pose2d(2.29, 2.29, new Rotation2d(30.00)),
@@ -186,7 +185,7 @@ public class TrajectoryContainer {
 		config
 	);
 
-	private Trajectory gsARedTrajCubic = TrajectoryGenerator.generateTrajectory(
+	private Trajectory gsARedTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(0.25, 2.29, new Rotation2d(0) ),
 		List.of(
 			new Translation2d(2.72, 2.08 ),
@@ -199,40 +198,67 @@ public class TrajectoryContainer {
 		config
 	);
 
-	private Trajectory gsABlueTraj = TrajectoryGenerator.generateTrajectory(
+
+	private Trajectory gsABlueTraj = TrajectoryGenerator.generateTrajectory( //SUBTRACT 30 IN OFF OF THESE !!!!!!1
 		new Pose2d(0.25, 2.29, new Rotation2d(0)),
-		List.of(
+		List.of( 
 			new Translation2d(1.88, 1.91),
-			new Translation2d(2.90, 1.07),
-			new Translation2d(4.04, 0.81),
-			new Translation2d(4.78, 0.76),
-			new Translation2d(4.29, 3.00),
-			new Translation2d(5.77, 2.82),
-			new Translation2d(6.38, 2.41)
+			new Translation2d(2.90, 0.51),
+			new Translation2d(4.04, 0.51), // ball one
+			new Translation2d(4.78, 0.51),
+			new Translation2d(3.94, 2.29), //ball two
+			new Translation2d(5.33, 2.29),
+			new Translation2d(6.35, 1.70)
 		),
-		new Pose2d(8.71, 2.51, new Rotation2d(0)),
+		new Pose2d(8.71, 1.78, new Rotation2d(0)),
 		config
 	);
+
+
 	private Trajectory gsBRedTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0.36, 2.26, new Rotation2d(0)),
 		List.of(
-			new Pose2d(90,10, new Rotation2d(0)),
-			new Pose2d(0,0, new Rotation2d(0)),
-			new Pose2d(0,0, new Rotation2d(0))
-		), 
+			new Translation2d(1.73, 3.00),
+			new Translation2d(2.64, 2.97),
+			new Translation2d(3.38, 1.57),
+			new Translation2d(4.34, 1.70),
+			new Translation2d(4.90, 2.95),
+			new Translation2d(5.71, 3.00)
+		),
+		new Pose2d(8.89, 2.92, new Rotation2d(0)),
 		config
 	);
 
 	private Trajectory gsBBlueTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0.36, 2.26, new Rotation2d(0)),
 		List.of(
-			new Pose2d(90,10, new Rotation2d(0)),
-			new Pose2d(0,0, new Rotation2d(0)),
-			new Pose2d(0,0, new Rotation2d(0))
-		), 
+			new Translation2d(2.69, 2.24),
+			new Translation2d(4.06, 1.57),
+			new Translation2d(5.00, 1.63),
+			new Translation2d(5.69, 2.90),
+			new Translation2d(6.55, 2.95),
+			new Translation2d(7.14, 1.63),
+			new Translation2d(8.13, 1.52)
+		),
+		new Pose2d(8.76, 1.50, new Rotation2d(0)),
 		config
 	);
 
 	//CHANGE STARTING CRDS !!!!!!!!!!!!!!!!
-	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(gsARedTrajCubic, xController, yController,
+	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(gsABlueTraj, xController, yController,
 			thetaController);
+	public TrajectoryFollowing trajectoryFollowingGSARed = new TrajectoryFollowing(gsARedTraj, xController, yController,
+			thetaController);
+	public TrajectoryFollowing trajectoryFollowingGSABlue = new TrajectoryFollowing(gsABlueTraj, xController, yController,
+			thetaController);		
+	public TrajectoryFollowing trajectoryFollowingGSBRed = new TrajectoryFollowing(gsBRedTraj, xController, yController,
+			thetaController);		
+	public TrajectoryFollowing trajectoryFollowingGSBBlue = new TrajectoryFollowing(gsBBlueTraj, xController, yController,
+			thetaController);
+
+	public void resetTimer(){
+		TrajectoryFollowing.m_timer.reset();
+	}
+
 
 }

@@ -43,7 +43,7 @@ private boolean debugging = false;
 
 		SmartDashboard.putNumber("RPMEdit", 0);
 		SmartDashboard.putBoolean("debugging", true);
-		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+		TrajectoryContainer.getInstance().resetTimer();
 		RobotMap.resetEncoders();
 		// BallFollowDrive.resetIntakeState();
 
@@ -51,7 +51,7 @@ private boolean debugging = false;
 
 	@Override
 	public void robotPeriodic() {
-		
+		/*
 		if(SmartDashboard.getBoolean("debugging", false))
 		{
 			Shooter.getInstance().smartDashboardOutput();
@@ -60,7 +60,7 @@ private boolean debugging = false;
 			ServoMotor.getInstance().setServoSmartDashboard();
 			SmartDashboard.putNumber("Odometry X", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getX());
 			SmartDashboard.putNumber("Odometry Y", RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters().getTranslation().getY());
-		}
+		}*/
 		
 		IntakeIndex.getInstance().updateBooleans();
 		ServoMotor.getInstance().servoPeriodic();
@@ -73,10 +73,11 @@ private boolean debugging = false;
 
 		//INDEX DEBUGGING 1/20/2021
 		IntakeIndex.getInstance().showButtons();
-		//Climber.getInstance().climberDebug();	
-		SmartDashboard.putNumber("travectory time", TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
+		SmartDashboard.putNumber("trajectory time", TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
 
-		SmartDashboard.putNumber("Y value",RobotMap.CONTROLLER.getY(Hand.kLeft));
+		//emma was here 3/12/2021
+		
+		//ServoMotor.getInstance().setServoSmartDashboard();
 	}
 
 	@Override
@@ -84,10 +85,11 @@ private boolean debugging = false;
 		
 		RobotMap.setDriveTalonsBrake();
 		RobotMap.resetEncoders();
-		//TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
 		basicAuto.resetAutoTime();
 		RobotMap.AutoBooleans.SHOOT_NOW = true;
-		TrajectoryContainer.getInstance().trajectoryFollowing.resetAll();
+		
+		TrajectoryContainer.getInstance().resetTimer();
+		
 
 		RobotMap.SensorMap.GYRO.zeroYaw();
 		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0.25, 2.29, new Rotation2d(0)), new Rotation2d(0));
@@ -100,22 +102,21 @@ private boolean debugging = false;
 
 		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 		
-		TrajectoryContainer.getInstance().trajectoryFollowing.auto();
+		//TrajectoryContainer.getInstance().trajectoryFollowing.auto();
 		IntakeIndex.getInstance().autoIntake();
-		//IntakeIndex.getInstance().index();
+		ChallengeAuto.getInstance().gsAPeriodic();
+
+		
 		Drivetrain.getInstance().updateOdometry();
-		System.out.println("Total Time Seconds"
+		System.out.println("Total Time Seconds: "
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
 		System.out.println(
-				"Total Time Seconds Robot" + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
+				"Total Time Seconds Robot: " + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		
 		
 		//basicAuto.trajectoryPeriodic();
 		//Shooter.getInstance().control();
-		//IntakeIndex.getInstance().index();
-
-		//MESSED WITH 2/1/2021
-		
+		//IntakeIndex.getInstance().index();		
 
 
 	}
@@ -129,10 +130,10 @@ private boolean debugging = false;
 	}
 	@Override
 	public void teleopPeriodic() {
-		//RobotMap.StateChooser.FIELD_RELATIVE = false;
+		RobotMap.StateChooser.FIELD_RELATIVE = false;
 
 		Drivetrain.getInstance().teleopDrive();
-		IntakeIndex.getInstance().twoBeltTwoBallIndex();
+		//IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
@@ -163,11 +164,14 @@ private boolean debugging = false;
 		// RobotMap.StateChooser.RPM = 1100;
 		//RobotMap.StateChooser.FIELD_RELATIVE = false;
 		// Shooter.getInstance().control();
-		Drivetrain.getInstance().teleopDrive();
+		//Drivetrain.getInstance().teleopDrive();
 		// IntakeIndex.getInstance().index();
 		// Climber.getInstance().climberPeriodic();
 
-		
+		//ServoMotor.getInstance().setServo(160);
+
+		//Chooser.getInstance().autoChooser(Chooser.RobotState.GALACTIC_SEARCH);
+
 
 		
 	}

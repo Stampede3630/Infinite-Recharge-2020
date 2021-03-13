@@ -34,7 +34,7 @@ public class Chooser {
 
     public static enum RobotState {
 
-        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB
+        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB, GALACTIC_SEARCH
     }
 
     private RobotState currentRobotState = RobotState.INTAKE;
@@ -61,6 +61,7 @@ public class Chooser {
         stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
         stateChooser.addOption("Right Climb", RobotState.RIGHT_CLIMB);
         stateChooser.addOption("Left Climb", RobotState.LEFT_CLIMB);
+        stateChooser.addOption("Glactic Search", RobotState.GALACTIC_SEARCH);
         //Shuffleboard.getTab("gameDay").add("Robot State", stateChooser);
       // Shuffleboard.getTab("gameDay").addBoolean("Reset Gyro", resetGyro).withWidget("Boolean Box")
        // .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"));
@@ -186,6 +187,13 @@ public class Chooser {
         RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
         RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
+        break;
+            
+        case GALACTIC_SEARCH:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.GALACTIC_SEARCH_SERVO_POS;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.GALACTIC_SEARCH_PIPELINE;
+        break;
+
         
         }
     }
@@ -251,6 +259,12 @@ public class Chooser {
         RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
         RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
+        break;
+            
+        case GALACTIC_SEARCH:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.GALACTIC_SEARCH_SERVO_POS;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.GALACTIC_SEARCH_PIPELINE;
+        break;
         
         }
 

@@ -24,9 +24,12 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
  */
 public class TrajectoryFollowing {
 
+	//universal timer!!!!!!!!!!
+	public static final Timer m_timer = new Timer();
+
+
 	private TrajectoryConfig config;
 	public Trajectory trajectory;
-	public final Timer m_timer = new Timer();
 	private Pose2d m_finalPose;
 	private Rotation2d angle;
 	private final PIDController m_xController;
@@ -56,7 +59,7 @@ public class TrajectoryFollowing {
 	public void resetAll(){
 		m_timer.reset();
 		angle = Drivetrain.getInstance().getAngle();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
+		//RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(3.05,-2.4, new Rotation2d(angle.getRadians())), angle);
 	}
 
 	public void auto() {
@@ -64,7 +67,7 @@ public class TrajectoryFollowing {
 		{
             Drivetrain.getInstance().drive(0, 0, 0, false);
             RobotMap.AutoBooleans.TRAJECTORY_DONE = true;
-			System.out.println("Triggered !!!!!!: "+ trajectory.getTotalTimeSeconds());
+			System.out.println("Triggered !!!!!!: " + trajectory.getTotalTimeSeconds() + "TIMER: " + m_timer.get());
 			System.out.println("i should be stopped!!!!!!!!!!!!");
 		}
 		else{
@@ -75,9 +78,6 @@ public class TrajectoryFollowing {
 
 	}
 
-	public void challengeAuto(){
-		
-	}
 
 	@SuppressWarnings("LocalVariableName")
 	public void updateAutoStates() {
