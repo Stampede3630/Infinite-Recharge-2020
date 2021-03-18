@@ -87,12 +87,14 @@ private boolean debugging = false;
 		RobotMap.resetEncoders();
 		basicAuto.resetAutoTime();
 		RobotMap.AutoBooleans.SHOOT_NOW = true;
+		RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
 		
 		TrajectoryContainer.getInstance().resetTimer();
+		ChallengeAuto.getInstance().resetPathStep();
 		
 
 		RobotMap.SensorMap.GYRO.zeroYaw();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0.25, 2.29, new Rotation2d(0)), new Rotation2d(0));
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0.36, 2.26, new Rotation2d(0)), new Rotation2d(0));
 		
 	}
 
@@ -103,8 +105,9 @@ private boolean debugging = false;
 		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 		
 		//TrajectoryContainer.getInstance().trajectoryFollowing.auto();
+
 		IntakeIndex.getInstance().autoIntake();
-		ChallengeAuto.getInstance().gsAPeriodic();
+		ChallengeAuto.getInstance().galacticSearchPeriodic();
 
 		
 		Drivetrain.getInstance().updateOdometry();

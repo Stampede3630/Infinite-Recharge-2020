@@ -70,4 +70,107 @@ public class ChallengeAuto {
         }
         
     }
+
+    public void gsBPeriodic(){
+
+        //0.36, 2.26
+        switch(pathStep)
+        {
+            case 0:
+                Chooser.getInstance().autoChooser(Chooser.RobotState.GALACTIC_SEARCH);
+                System.out.println("TX = " + Limelight.getTX());
+                if(Limelight.getTX() < 0) {
+                    pathStep = 1;
+                }
+                else if(Limelight.getTX() > 0) {
+                    pathStep = 2;
+                }
+                else {
+                    System.out.println(">>>>>> No update due to Limelight");
+                }
+            break;
+
+            case 1: //RUN BLUE TRAJ
+            TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
+            System.out.println("BLUE TRAJ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            break;
+
+            case 2: //RUN RED TRAJ
+            TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+            System.out.println("RED TRAJ+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            break;
+
+            default:
+            System.out.println("default==================================");
+            break;
+
+
+
+        }
+        
+    }
+
+    public void resetPathStep(){
+        pathStep = 0;
+    }
+    
+    public void galacticSearchPeriodic(){
+        switch(pathStep)
+        {
+            case 0:
+                Chooser.getInstance().autoChooser(Chooser.RobotState.GALACTIC_SEARCH);
+                System.out.println("TX IS " + Limelight.getTX());
+                if(Limelight.getTX() < -13) {
+                    System.out.println("TX IS " + Limelight.getTX());
+                    pathStep = 1; //GSA BLUE -17
+                }
+                else if(Limelight.getTX() < -4) {
+                    System.out.println("TX IS " + Limelight.getTX());
+
+                    pathStep = 3; //B BLUE -7
+                }
+                else if(Limelight.getTX() < 10) {
+                    System.out.println("TX IS " + Limelight.getTX());
+
+                    pathStep = 2; //GSA RED 0
+                }
+                else if(Limelight.getTX() > 10) {
+                    System.out.println("TX IS " + Limelight.getTX());
+
+                    pathStep = 4; //GSB RED 18
+                }
+                else {
+                    System.out.println(">>>>>> No update due to Limelight");
+                }
+            break;
+
+            case 1: //RUN A BLUE TRAJ
+            TrajectoryContainer.getInstance().trajectoryFollowingGSABlue.auto();
+            System.out.println("AAAAAA BLUE TRAJ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            break;
+
+            case 2: //RUN A RED TRAJ
+            TrajectoryContainer.getInstance().trajectoryFollowingGSARed.auto();
+            System.out.println("AAAAAAA RED TRAJ+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            break;
+
+            case 3: //RUN B BLUE TRAJ
+            TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
+            System.out.println("BBBBBBB BLUE TRAJ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            break;
+
+            case 4: //RUN B RED TRAJ
+            TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+            System.out.println("BBBBBBB RED TRAJ+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            break;
+
+            default:
+            System.out.println("default==================================");
+            break;
+
+
+
+        }
+
+    }
 }

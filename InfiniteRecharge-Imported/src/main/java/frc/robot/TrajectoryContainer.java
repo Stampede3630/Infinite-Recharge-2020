@@ -194,24 +194,24 @@ public class TrajectoryContainer {
 			new Translation2d(3.96, 3.66 ),
 			new Translation2d(8.00, 3.00 )
 		),
-		new Pose2d(8.76, 2.84, new Rotation2d(0)),
+		new Pose2d(9.02, 2.84, new Rotation2d(0)),
 		config
 	);
 
 
 	private Trajectory gsABlueTraj = TrajectoryGenerator.generateTrajectory( //SUBTRACT 30 IN OFF OF THESE !!!!!!1
-		new Pose2d(0.25, 2.29, new Rotation2d(0)),
-		List.of( 
-			new Translation2d(1.88, 1.91),
-			new Translation2d(2.90, 0.51),
-			new Translation2d(4.04, 0.51), // ball one
-			new Translation2d(4.78, 0.51),
-			new Translation2d(3.94, 2.29), //ball two
-			new Translation2d(5.33, 2.29),
-			new Translation2d(6.35, 1.70)
-		),
-		new Pose2d(8.71, 1.78, new Rotation2d(0)),
-		config
+	new Pose2d(0.25, 2.29, new Rotation2d(0)),
+	List.of(
+		new Translation2d(1.88, 1.91),
+		new Translation2d(2.90, 0.51),
+		new Translation2d(4.04, 0.51),
+		new Translation2d(4.78, 0.51),
+		new Translation2d(3.94, 2.60),
+		new Translation2d(5.33, 2.45),
+		new Translation2d(6.35, 1.90)
+	),
+	new Pose2d(8.71, 1.85, new Rotation2d(0)),
+	config
 	);
 
 
@@ -220,7 +220,7 @@ public class TrajectoryContainer {
 		List.of(
 			new Translation2d(1.73, 3.00),
 			new Translation2d(2.64, 2.97),
-			new Translation2d(3.38, 1.57),
+			new Translation2d(3.05, 1.40),
 			new Translation2d(4.34, 1.70),
 			new Translation2d(4.90, 2.95),
 			new Translation2d(5.71, 3.00)
@@ -232,15 +232,15 @@ public class TrajectoryContainer {
 	private Trajectory gsBBlueTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(0.36, 2.26, new Rotation2d(0)),
 		List.of(
-			new Translation2d(2.69, 2.24),
-			new Translation2d(4.06, 1.57),
-			new Translation2d(5.00, 1.63),
-			new Translation2d(5.69, 2.90),
+			new Translation2d(2.69, 2.24-.30),
+			new Translation2d(4.06, 1.57-.30-.30),
+			new Translation2d(5.00, 1.63-.30-.30),
+			new Translation2d(5.46, 2.90),
 			new Translation2d(6.55, 2.95),
-			new Translation2d(7.14, 1.63),
-			new Translation2d(8.13, 1.52)
+			new Translation2d(7.14, 1.63-.30-.30),
+			new Translation2d(8.13, 1.52-.30-.30)
 		),
-		new Pose2d(8.76, 1.50, new Rotation2d(0)),
+		new Pose2d(8.76, 1.50-.30, new Rotation2d(0)),
 		config
 	);
 
