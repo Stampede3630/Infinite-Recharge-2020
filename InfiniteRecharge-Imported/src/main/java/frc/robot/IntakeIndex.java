@@ -47,11 +47,11 @@ public class IntakeIndex {
 
 	private double beltForwardOne = -.2;  //TalonSRX speed = -.32;
 	private double beltBackwardsOne = .15;// TalonSRX speed = .32;
-	private double beltForwardTwo = -.4; //TalonSRX speed = -.5;
+	private double beltForwardTwo = -.65; //TalonSRX speed = -.5;
 	private double beltBackwardsTwo = .4; //TalonSRX speed = .5;
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
-	private double pinwheelForward = .35;
+	private double pinwheelForward = .65;
 	private int timeout = 999999999;
 
 	private boolean twoBalls = false;
@@ -251,7 +251,7 @@ public class IntakeIndex {
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 		}
-		/* else if(!topButton.get() && !middleButton.get())
+		/* else if(!topButton.get() && !middle.get())
 		{
 
 			RobotMap.IntakeMap.BELT.set(0);
@@ -510,10 +510,15 @@ public class IntakeIndex {
 		else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)){ //if right bumper, forward pinwheel
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 		}
+		else if(!topButton.get() && !bottomButton.get() && middleButton.get()){ //if top and bottom, move bottom to middle 
+			RobotMap.IntakeMap.BELT.set(0);
+			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
+		}
+		/*
 		else if(!topButton.get() && !bottomButton.get()){ //if top and bottom, stop completely 
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
+		}*/
 		else if (!topButton.get() && !middleButton.get()){ 
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0); //maybe have it stop or be slower ??????

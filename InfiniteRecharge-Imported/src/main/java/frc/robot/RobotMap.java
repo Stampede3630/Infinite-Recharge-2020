@@ -57,8 +57,8 @@ public class RobotMap {
 	 * TODO: What is this for?
 	 */
 	public static class AutoConstants { // Is this even being used?
-		public static final double MAX_SPEED_METERS_PER_SECOND = 3.5; //3 2/2/2021
-		public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3.5; //3 2/2/2021
+		public static final double MAX_SPEED_METERS_PER_SECOND = 4.90; //3 2/2/2021
+		public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 4; //3 2/2/2021
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
 
@@ -110,25 +110,26 @@ public class RobotMap {
 		public static final WPI_VictorSPX FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
 		public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
 		public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-		public static final double FRONT_RIGHT_ANGLE_OFFSET =  2.572186-0.05111283669824829 - Math.PI;
+		public static final double FRONT_RIGHT_ANGLE_OFFSET = 0.065 + Math.PI;
 
 		public static final WPI_VictorSPX BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
 		public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
 		public static final AnalogInput BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
-		public static final double BACK_LEFT_ANGLE_OFFSET = -0.925161-3.128168277531419;
+		public static final double BACK_LEFT_ANGLE_OFFSET = 4.22;
 
 		public static final WPI_VictorSPX BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
 		public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
 		public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-		public static final double BACK_RIGHT_ANGLE_OFFSET = -0.420229 - 0.8095408897871463-2.1448951380578576- Math.PI;
+		public static final double BACK_RIGHT_ANGLE_OFFSET = -1.05 + Math.PI;
 
 		public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
 		public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
 		public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-		public static final double FRONT_LEFT_ANGLE_OFFSET = -2.21-0.006645810835413712; // radians
+		public static final double FRONT_LEFT_ANGLE_OFFSET = -0.63;
 
-		public static final double MAX_SPEED = 4.1; // 3.627 2/2/2021 1.627
-		public static final double MAX_ANGULAR_SPEED = 4 * Math.PI;
+		public static final double MAX_SPEED = 4.90; //4.36; // 3.627 2/2/2021 1.627 HYPERDRIVE CHANGES APR 2021
+		public static final double MAX_ANGULAR_SPEED = 5 * Math.PI;
+		public static double MULTIPLIER = .6;
 	}
 
 	public static class DrivetrainMap {
@@ -161,7 +162,7 @@ public class RobotMap {
 	public static class IntakeMap {
 
 		public static final CANSparkMax INTAKE_WHEELS = new CANSparkMax(9, MotorType.kBrushless);// first spin wheel
-		public static final WPI_TalonSRX PINWHEEL = new WPI_TalonSRX(10); // from box to belt
+		public static final CANSparkMax PINWHEEL = new CANSparkMax(10, MotorType.kBrushless); // from box to belt
 		public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
 		public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6, 7);
 		//public static final Ultrasonic ULTRASONIC = new Ultrasonic(9, 8); // on the ground of the belt box
@@ -267,11 +268,11 @@ public class RobotMap {
         public static double INTAKE_ANGLE = 0;
         public static int INTAKE_PIPELINE = 1;
 
-		public static double INITIATION_LINE_SHOT_SERVO_ANGLE = 44; //real angle:30
+		public static double INITIATION_LINE_SHOT_SERVO_ANGLE = 36; //44 //real angle:30
         public static double INITIATION_LINE_SHOT_ANGLE = 999; //trig
         public static int INITIATION_LINE_SHOT_PIPELINE = 3;						//DONE
         public static double INITIATION_LINE_SHOT_KF = 0.055;
-		public static int INITIATION_LINE_SHOT_RPM = 3050;//(3350 -175);//3050; //top of range
+		public static int INITIATION_LINE_SHOT_RPM = 3300;//(3350 -175);//3050; //top of range
 		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
 		
 		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
@@ -333,7 +334,8 @@ public class RobotMap {
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 
-		IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
+		//IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
+		IntakeMap.PINWHEEL.setSmartCurrentLimit(20);
 		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(false);

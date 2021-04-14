@@ -73,7 +73,7 @@ private boolean debugging = false;
 
 		//INDEX DEBUGGING 1/20/2021
 		IntakeIndex.getInstance().showButtons();
-		SmartDashboard.putNumber("trajectory time", TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
+		//SmartDashboard.putNumber("trajectory time", TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
 
 		//emma was here 3/12/2021
 		
@@ -88,13 +88,16 @@ private boolean debugging = false;
 		basicAuto.resetAutoTime();
 		RobotMap.AutoBooleans.SHOOT_NOW = true;
 		RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
+
 		
 		TrajectoryContainer.getInstance().resetTimer();
 		ChallengeAuto.getInstance().resetPathStep();
 		
 
 		RobotMap.SensorMap.GYRO.zeroYaw();
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0.36, 2.26, new Rotation2d(0)), new Rotation2d(0));
+
+		//      						 GRAYSON PUT COORDS HERE  V     V
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(1, 2.8, new Rotation2d(0)), new Rotation2d(0));
 		
 	}
 
@@ -104,17 +107,28 @@ private boolean debugging = false;
 
 		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 		
-		//TrajectoryContainer.getInstance().trajectoryFollowing.auto();
+		//NAV CHALLENGE STUFF !!!!!!!
+		//TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto(); //1.19, 2.12
+		//TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72, 0.75
+		//TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto(); //1.19, 2.29
 
-		IntakeIndex.getInstance().autoIntake();
-		ChallengeAuto.getInstance().galacticSearchPeriodic();
+		//GA STUFF !!!!!!
+		//IntakeIndex.getInstance().autoIntake();
+		//ChallengeAuto.getInstance().galacticSearchPeriodic();
+		//TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
+		// TrajectoryContainer.getInstance().trajectoryFollowingGSABlue.auto();
+		// TrajectoryContainer.getInstance().trajectoryFollowingGSARed.auto();
+		TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+
 
 		
 		Drivetrain.getInstance().updateOdometry();
+		/*
 		System.out.println("Total Time Seconds: "
 				+ TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
 		System.out.println(
 				"Total Time Seconds Robot: " + TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
+				*/
 		
 		
 		//basicAuto.trajectoryPeriodic();
@@ -125,7 +139,7 @@ private boolean debugging = false;
 	}
 	@Override
 	public void teleopInit() {
-		
+		RobotMap.StateChooser.FIELD_RELATIVE = false;
 		super.teleopInit();
 		RobotMap.setDriveTalonsBrake();
 		RobotMap.AutoBooleans.SHOOT_NOW = false;
@@ -133,13 +147,13 @@ private boolean debugging = false;
 	}
 	@Override
 	public void teleopPeriodic() {
-		RobotMap.StateChooser.FIELD_RELATIVE = false;
 
+		
 		Drivetrain.getInstance().teleopDrive();
-		//IntakeIndex.getInstance().twoBeltTwoBallIndex();
+		IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
-		Climber.getInstance().climberPeriodic();
+		//Climber.getInstance().climberPeriodic();
 
 	}
 
@@ -174,6 +188,9 @@ private boolean debugging = false;
 		//ServoMotor.getInstance().setServo(160);
 
 		//Chooser.getInstance().autoChooser(Chooser.RobotState.GALACTIC_SEARCH);
+
+		//RobotMap.IntakeMap.PINWHEEL.set(.6);
+		RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);
 
 
 		
