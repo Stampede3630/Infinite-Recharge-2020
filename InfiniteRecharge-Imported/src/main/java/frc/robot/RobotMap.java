@@ -99,8 +99,8 @@ public class RobotMap {
 		public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(1);
 		public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(0);
 
-		public static final double ELEVATOR_SPEED = -0.7;//0.7
-		public static final double STRAFE_SPEED = 0.5;
+		public static final double ELEVATOR_SPEED = -9;//0.7
+		public static final double STRAFE_SPEED = .9;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class RobotMap {
 
 	public static class IntakeMap {
 
-		public static final CANSparkMax INTAKE_WHEELS = new CANSparkMax(9, MotorType.kBrushless);// first spin wheel
+		public static final WPI_TalonFX INTAKE_WHEELS = new WPI_TalonFX(9);// first spin wheel
 		public static final CANSparkMax PINWHEEL = new CANSparkMax(10, MotorType.kBrushless); // from box to belt
 		public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
 		public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6, 7);
@@ -286,7 +286,7 @@ public class RobotMap {
         public static double SHORT_TRENCH_ANGLE = 999; //ish
 		public static int SHORT_TRENCH_PIPELINE = 6;
         public static double SHORT_TRENCH_KF = 0.055;
-		public static int SHORT_TRENCH_RPM = 4100;//3800; //3825 for bad balls
+		public static int SHORT_TRENCH_RPM = 3300;//3800; //3825 for bad balls
         public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
 
         public static double LONG_SHOT_SERVO_POS = 40;
@@ -335,9 +335,9 @@ public class RobotMap {
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 
 		//IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
-		IntakeMap.PINWHEEL.setSmartCurrentLimit(20);
+		IntakeMap.PINWHEEL.setSmartCurrentLimit(30);
 		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
-
+		IntakeMap.INTAKE_WHEELS.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(false);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(false);
 		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(false);

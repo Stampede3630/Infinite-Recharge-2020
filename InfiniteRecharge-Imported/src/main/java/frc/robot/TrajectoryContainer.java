@@ -127,6 +127,18 @@ public class TrajectoryContainer {
 		config
 	);
 
+	private Trajectory basicdriveback = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(0, 0, new Rotation2d(0)),
+		List.of(
+			new Translation2d(1, 0),
+			new Translation2d(2, 0)
+		
+		),
+		new Pose2d(2.3, 0, new Rotation2d(0)),
+
+		// new Pose2d(6.858, 1.524, new Rotation2d(0)),
+		config
+	);
 
 	private Trajectory bounceTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(1.19, 2.29, new Rotation2d(0)),
@@ -265,8 +277,32 @@ public class TrajectoryContainer {
 		config
 	);
 
+
+	private Trajectory goBallTraj = TrajectoryGenerator.generateTrajectory(
+		new Pose2d(2.58, 2.02, new Rotation2d(0)),
+		List.of(
+			new Translation2d(4.38, 3.65),
+			new Translation2d(5.5, 3.7),
+			new Translation2d(6.21, 3.7)
+		),
+		new Pose2d(7,3.6, new Rotation2d(0)),
+		config);
+
+	private Trajectory goLineUpTraj = TrajectoryGenerator.generateTrajectory(
+		
+		new Pose2d(7, 3.6, new Rotation2d(0)),
+		List.of(
+			new Translation2d(6.21, 3.7),
+			new Translation2d(5.5, 3.7),
+			new Translation2d(4.38, 3.65)
+		),
+		new Pose2d(2.58, 2.02, new Rotation2d(0)),
+		config);
+
 	//CHANGE STARTING CRDS !!!!!!!!!!!!!!!!
 	public TrajectoryFollowing trajectoryFollowingBarrelRoll = new TrajectoryFollowing(BarrelRollTraj, xController, yController,
+			thetaController);
+	public TrajectoryFollowing trajectoryFollowingbasicdriveback = new TrajectoryFollowing(basicdriveback, xController, yController,
 			thetaController);
 	public TrajectoryFollowing trajectoryFollowingGSARed = new TrajectoryFollowing(gsARedTraj, xController, yController,
 			thetaController);
@@ -281,6 +317,10 @@ public class TrajectoryContainer {
 	public TrajectoryFollowing trajectoryFollowingBounce = new TrajectoryFollowing(bounceTraj, xController, yController,
 			thetaController);
 	public TrajectoryFollowing trajectoryFollowing = new TrajectoryFollowing(traj4, xController, yController,
+			thetaController);
+	public TrajectoryFollowing trajectoryFollowingGoBall = new TrajectoryFollowing(goBallTraj, xController, yController,
+			thetaController);	
+	public TrajectoryFollowing trajectoryFollowingGoLineUp = new TrajectoryFollowing(goLineUpTraj, xController, yController,
 			thetaController);
 
 	public void resetTimer(){

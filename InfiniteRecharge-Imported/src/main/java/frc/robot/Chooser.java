@@ -98,16 +98,7 @@ public class Chooser {
        if(RobotMap.CONTROLLER.getBButton())
        {
         RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
-       }
-       if(RobotMap.CONTROLLER.getBumper(Hand.kLeft))
-       {
-            RobotMap.DriveMap.MULTIPLIER = 0.5;
-       }
-       if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
-            RobotMap.DriveMap.MULTIPLIER = 1;
-       {
-
-    }
+       }            
        if(currentRobotState != pastRobotState)
        {
         RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
@@ -282,9 +273,16 @@ public class Chooser {
 
     public void fieldRelative()
     {
-        // RobotMap.StateChooser.FIELD_RELATIVE = SmartDashboard.getBoolean("Field Relative", true);
-      
-        RobotMap.StateChooser.FIELD_RELATIVE = false;
+        if(SmartDashboard.getBoolean("Field Relative", true))
+        {
+            RobotMap.StateChooser.FIELD_RELATIVE = true;
+        }
+        else
+        {  
+            RobotMap.StateChooser.FIELD_RELATIVE = false;
+        }
+        
+        // RobotMap.StateChooser.FIELD_RELATIVE = false;
     }
 
     
@@ -299,6 +297,7 @@ public class Chooser {
             IntakeIndex.getInstance().index();
         }
     }
+
     public void chooserPeriodic()
     {
         resetYaw();
