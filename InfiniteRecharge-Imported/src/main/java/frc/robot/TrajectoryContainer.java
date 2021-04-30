@@ -46,65 +46,6 @@ public class TrajectoryContainer {
 
 	private ProfiledPIDController thetaController = new ProfiledPIDController(RobotMap.AutoConstants.KP_THETA_CONTROLLER, 0, 0,
 	RobotMap.AutoConstants.kThetaControllerConstraints);
-    /*
-    private Trajectory traj = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)),
-			//List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)), config);
-			//List.of(new Translation2d(0.5, 0)), new Pose2d(1, 0, new Rotation2d(0)), config);
-            List.of(new Translation2d(0, 0.5)), new Pose2d(0, 1, new Rotation2d(Math.PI/6)), config);
-            */
-	private Trajectory traj2 = TrajectoryGenerator.generateTrajectory(new Pose2d (3.05, -2.4, new Rotation2d(0)),   //SETPOINTS FOR X INVERTED
-	List.of(
-		new Translation2d(6.166,-.704),//Trench ball 1
-		new Translation2d(7.08,-.704)),//Trench ball 2
-		//new Translation2d(7.99, .704)),//Trench ball 3
-        new Pose2d(7.99, -.704, new Rotation2d(0)), config); //intake logic path 2*/
-
-	private Trajectory traj4 =  TrajectoryGenerator.generateTrajectory(
-	List.of(
-		new Pose2d (3.05, -2.4, new Rotation2d(0)),
-		new Pose2d( 6.166,-.704, new Rotation2d(0)),
-		//new Pose2d( 7.08, -.704, new Rotation2d(0) ),
-		new Pose2d( 7.99, -.704, new Rotation2d(0))), config);
-     /*
-
-    private Trajectory traj3 = TrajectoryGenerator.generateTrajectory(new Pose2d ( 8.21,3.05, new Rotation2d(0)),
-	List.of(
-        new Translation2d(6.23, 6.36),//Trench 2 ball 1
-		new Translation2d(7.74, 6.36)),//Trench 2 ball 2
-		//new Translation2d(4.08, 3.05)),//back to line
-        new Pose2d(4.08, 3.05, new Rotation2d(45)), config); //intake logic path 2
-        
-	*/
-
-	/* OLD TRIES AT SLALOM
-	// x does not like negatives, 
-	private Trajectory slalomTraj1 = TrajectoryGenerator.generateTrajectory(
-		List.of(
-			new Pose2d(.3, .3, new Rotation2d(0)),
-			new Pose2d(.9, 0, new Rotation2d(0)),
-			new Pose2d(.9, .6, new Rotation2d(0)),
-			new Pose2d(1.8, 1.05, new Rotation2d(0))
-			), config);
-	
-	private Trajectory slalomTraj2 = TrajectoryGenerator.generateTrajectory(
-		new Pose2d(0, 0, new Rotation2d(0)),
-		// x is long, y is short
-		List.of(
-			new Translation2d(.1,.4), //cross
-			new Translation2d(.3, .5),
-			new Translation2d(.7, 1.4),
-			new Translation2d(2.3, 2),// cross 2
-			new Translation2d(3, 3.8),
-			new Translation2d(1.5, 4),
-			new Translation2d(2.3, 2.5),
-			new Translation2d(3, 2.2),
-			new Translation2d(2.5, -.3)
-			
-		),
-		new Pose2d(0,0 , new Rotation2d(0)),
-		//new Pose2d(-1, -2.5, new Rotation2d(0)),
-		config
-	); */
 
 	private Trajectory slalomTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(0.72, 0.75, new Rotation2d(0)),
@@ -209,16 +150,7 @@ public class TrajectoryContainer {
 		);
 
 	// GALACTIC SEARCH TRAJECTORIES
-	private Trajectory gsARedTrajQuintic = TrajectoryGenerator.generateTrajectory( //map A, red path
-		List.of(
-			new Pose2d(0.25, 2.54, new Rotation2d(0.00)),
-			new Pose2d(2.29, 2.29, new Rotation2d(30.00)),
-			new Pose2d(3.81, 1.52, new Rotation2d(-30.00)),
-			new Pose2d(4.57, 3.81, new Rotation2d(-25.00)),
-			new Pose2d(8.89, 2.5, new Rotation2d(0.00))
-		),
-		config
-	);
+
 
 	private Trajectory gsARedTraj = TrajectoryGenerator.generateTrajectory(
 		new Pose2d(1, 2.2, new Rotation2d(0) ),
