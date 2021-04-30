@@ -55,6 +55,7 @@ public class IntakeIndex {
 	private int timeout = 999999999;
 	private double intakeForward = .4;
 
+	private boolean ballStopper = false;
 	private boolean twoBalls = false;
 
 	private IntakeIndex() {
@@ -492,6 +493,8 @@ public class IntakeIndex {
 	}
 
 	public void twoBeltTwoBallIndex(){ //THE RIGHT INTAKE the one where it "bops up" when shooter is pressed 
+
+		setBallStopper();
 		
 		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) >.6 || RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
 			indexYes = true;
@@ -549,14 +552,16 @@ public class IntakeIndex {
 						RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 				RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 			}
-		}
 		// else {
 		// 	RobotMap.IntakeMap.BELT.set(0);
 		// 	RobotMap.IntakeMap.PINWHEEL.set(0);
 		// }
 
 		//INTAKE 
-		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
+		if(RobotMap.IntakeMap.INTAKE_WHEELS.getOutputCurrent() > 47){
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
+		}
+		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
@@ -623,6 +628,19 @@ public class IntakeIndex {
 		SmartDashboard.putBoolean("Bottom Button", bottomButton.get());
 		SmartDashboard.putBoolean("Spikey Button", spikeyButton.get());
 		SmartDashboard.putBoolean("twoballs", twoBalls);
+	}
+
+	public void setBallStopper(){
+		if(SmartDashboard.getBoolean("Intake Ball Stopper", true)){
+			ballStopper = true;
+		}
+		else{
+			ballStopper = false;
+		}
+	}
+
+	public void putBallStopper(){
+		SmartDashboard.putBoolean("Intake Ball Stopper", false);
 
 	}
 }

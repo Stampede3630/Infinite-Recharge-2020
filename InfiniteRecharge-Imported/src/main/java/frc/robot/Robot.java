@@ -166,6 +166,7 @@ public class Robot extends TimedRobot {
 		RobotMap.setDriveTalonsBrake();
 		RobotMap.AutoBooleans.SHOOT_NOW = false;
 		RobotMap.AutoBooleans.INTAKE_NOW = false;
+		IntakeIndex.getInstance().putBallStopper();
 
 
 	}
