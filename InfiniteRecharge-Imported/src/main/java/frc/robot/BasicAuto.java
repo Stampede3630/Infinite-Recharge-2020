@@ -291,14 +291,15 @@ public class BasicAuto {
             if(autoTime.get() > timeThreshold)
             {
                 //AFTER 4 sec, stop shooting and start intaking
-                RobotMap.AutoBooleans.SHOOT_NOW = false;
-                RobotMap.AutoBooleans.INTAKE_NOW = true;
-                TrajectoryContainer.getInstance().trajectoryFollowingbasicdriveback.auto();
-                //trajStep++;
+                
+                trajStep++;
 
 
             }
             break;
+            case 2:
+                 TrajectoryContainer.getInstance().trajectoryFollowingGoBall.auto();
+            break; 
         }
     }
 }
