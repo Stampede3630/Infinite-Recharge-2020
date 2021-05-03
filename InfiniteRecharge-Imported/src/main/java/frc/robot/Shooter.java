@@ -36,10 +36,14 @@ public class Shooter {
     public void control() {
         double targetVelocity_UnitsPer100ms = rpmToRotatPer100Mili(RobotMap.StateChooser.RPM)/*RobotMap.ShooterMap.RPM)*/
                 * RobotMap.ShooterMap.ENCODER_UNITS_PER_REV;
+
+        
         /* 500 RPM in either direction */
         if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) {
+
             RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
             // belt.set(-.6);
+            System.out.println("******************************SHOOTER SHOULD BE SHOOTING");
         } else {
             RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.set(0);
         }
