@@ -120,25 +120,25 @@ public class ChallengeAuto {
             case 0:
                 Chooser.getInstance().autoChooser(Chooser.RobotState.GALACTIC_SEARCH);
                 System.out.println("TX IS " + Limelight.getTX());
-                if(Limelight.getTX() < -13) {
+                if((Limelight.getTX() < 0) && (Limelight.getTX() > -12)) {
                     System.out.println("TX IS " + Limelight.getTX());
-                    pathStep = 1; //GSA BLUE -17
+                    pathStep = 1; //GSA BLUE -8
                 }
-                else if(Limelight.getTX() < -4) {
+                else if((Limelight.getTX() > 0) && (Limelight.getTX() < 10)) {
+                    System.out.println("TX IS " + Limelight.getTX()); 
+
+                    pathStep = 3; //B BLUE +3
+                }/*
+                else if(Limelight.getTX() < 0) {
                     System.out.println("TX IS " + Limelight.getTX());
 
-                    pathStep = 3; //B BLUE -7
+                    pathStep = 2; //GSA RED 0 ------15
                 }
-                else if(Limelight.getTX() < 10) {
+                else if(Limelight.getTX() > 0) {
                     System.out.println("TX IS " + Limelight.getTX());
 
-                    pathStep = 2; //GSA RED 0
-                }
-                else if(Limelight.getTX() > 10) {
-                    System.out.println("TX IS " + Limelight.getTX());
-
-                    pathStep = 4; //GSB RED 18
-                }
+                    pathStep = 4; //GSB RED 18 ++++15
+                }*/
                 else {
                     System.out.println(">>>>>> No update due to Limelight");
                 }

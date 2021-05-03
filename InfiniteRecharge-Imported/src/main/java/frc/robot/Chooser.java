@@ -12,6 +12,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -97,7 +98,7 @@ public class Chooser {
        if(RobotMap.CONTROLLER.getBButton())
        {
         RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
-       }
+       }            
        if(currentRobotState != pastRobotState)
        {
         RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
@@ -272,9 +273,16 @@ public class Chooser {
 
     public void fieldRelative()
     {
-        // RobotMap.StateChooser.FIELD_RELATIVE = SmartDashboard.getBoolean("Field Relative", true);
-      
-        RobotMap.StateChooser.FIELD_RELATIVE = true;
+        if(SmartDashboard.getBoolean("Field Relative", true))
+        {
+            RobotMap.StateChooser.FIELD_RELATIVE = true;
+        }
+        else
+        {  
+            RobotMap.StateChooser.FIELD_RELATIVE = false;
+        }
+        
+        // RobotMap.StateChooser.FIELD_RELATIVE = false;
     }
 
     
@@ -289,6 +297,7 @@ public class Chooser {
             IntakeIndex.getInstance().index();
         }
     }
+
     public void chooserPeriodic()
     {
         resetYaw();
