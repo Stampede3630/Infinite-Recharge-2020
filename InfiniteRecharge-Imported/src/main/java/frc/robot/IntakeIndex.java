@@ -558,10 +558,7 @@ public class IntakeIndex {
 		// }
 
 		//INTAKE 
-		if(RobotMap.IntakeMap.INTAKE_WHEELS.getOutputCurrent() > 47){
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
-		}
-		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
+		 if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
