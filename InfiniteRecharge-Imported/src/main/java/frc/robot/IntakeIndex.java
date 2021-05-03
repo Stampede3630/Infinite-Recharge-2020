@@ -23,9 +23,9 @@ public class IntakeIndex {
 
 	private static IntakeIndex instance;
 	private DigitalInput topButton = new DigitalInput(9); // port 1
-	private DigitalInput middleButton = new DigitalInput(7); // 
-	private DigitalInput bottomButton = new DigitalInput(8); //port 2 ?
-	private DigitalInput spikeyButton = new DigitalInput(6); //DNE
+	private DigitalInput middleButton = new DigitalInput(7); //
+	private DigitalInput bottomButton = new DigitalInput(8); // port 2 ?
+	private DigitalInput spikeyButton = new DigitalInput(6); // DNE
 
 	static {
 		instance = new IntakeIndex();
@@ -38,17 +38,18 @@ public class IntakeIndex {
 	private SendableChooser<Integer> intakeChooser;
 	private Timer timer;
 	private Shooter shoot;
-	private boolean bottom, middle, top, weakTop, weakBottom, none, weakMiddle, limbo, bottomToMiddle, bottomMiddleToTop, middleTopRefine;
+	private boolean bottom, middle, top, weakTop, weakBottom, none, weakMiddle, limbo, bottomToMiddle,
+			bottomMiddleToTop, middleTopRefine;
 	private boolean indexYes;
 
 	private BreakBeam breakBeam;
 	private boolean newMattyState = false;
 	private boolean hoodNewMattyState = false;
 
-	private double beltForwardOne = -.2;  //TalonSRX speed = -.32;
+	private double beltForwardOne = -.2; // TalonSRX speed = -.32;
 	private double beltBackwardsOne = .15;// TalonSRX speed = .32;
-	private double beltForwardTwo = -.6; //TalonSRX speed = -.5;
-	private double beltBackwardsTwo = .5; //TalonSRX speed = .5;
+	private double beltForwardTwo = -.7; // TalonSRX speed = -.5;
+	private double beltBackwardsTwo = .5; // TalonSRX speed = .5;
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
 	private double pinwheelForward = -.6;
@@ -90,8 +91,8 @@ public class IntakeIndex {
 
 	public void manualControl() {
 		if (RobotMap.CONTROLLER.getAButton()) {
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);//.75
-			RobotMap.IntakeMap.PINWHEEL.set(.2); //was .2 - Andy
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5);// .75
+			RobotMap.IntakeMap.PINWHEEL.set(.2); // was .2 - Andy
 		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
@@ -115,88 +116,68 @@ public class IntakeIndex {
 			// System.out.println("tester");
 			timer.reset();
 			timer.start();
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); // was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
-		}
-		else {
+		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			// System.out.print(timer.get());
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
 
 		}
-		
-		if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
-		{
+
+		if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
 			RobotMap.IntakeMap.PINWHEEL.set(-.6);
-		}
-		else if (BreakBeam.getInstance().detectSpikyBottomBall())
-		{
+		} else if (BreakBeam.getInstance().detectSpikyBottomBall()) {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else if (BreakBeam.getInstance().detectSpikyBottomBall()){
+		} else if (BreakBeam.getInstance().detectSpikyBottomBall()) {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else if (bottomButton.get() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) //Andy was here
+		} else if (bottomButton.get()
+				&& (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) // Andy was
+																												// here
 		{
-			RobotMap.IntakeMap.PINWHEEL.set(.1); //was .375 // was 0.5 and it was .6 - Andy
+			RobotMap.IntakeMap.PINWHEEL.set(.1); // was .375 // was 0.5 and it was .6 - Andy
 		}
-		// else if (BreakBeam.getInstance().getRampBeam()) 
+		// else if (BreakBeam.getInstance().getRampBeam())
 		// {
-		// 	RobotMap.IntakeMap.PINWHEEL.set(.4);
-		// 	timer.reset();
-		// 	timer.start();
+		// RobotMap.IntakeMap.PINWHEEL.set(.4);
+		// timer.reset();
+		// timer.start();
 		// }
-		else /*if (timer.get() > .5)*/ {
+		else /* if (timer.get() > .5) */ {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
 		/*
-		else if (!bottom && breakBeam.getVeryBottom())
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.45);
-		}
-		*/
+		 * else if (!bottom && breakBeam.getVeryBottom()) {
+		 * RobotMap.IntakeMap.PINWHEEL.set(.45); }
+		 */
 		/*
-		else if (timer.get() > 1 || BreakBeam.getInstance().detectSpikyBottomBall() || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
-			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else {
-			RobotMap.IntakeMap.PINWHEEL.set(.55); //was .375
-		}
-		*/
-		
-		
-		//RUNS ON BREAKBEAMS - DEPRECATED
-		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
-		
-		) //.9 for short shot
+		 * else if (timer.get() > 1 || BreakBeam.getInstance().detectSpikyBottomBall()
+		 * || timer.get() == 0) { // if its been 1.5 sec or there's something in the
+		 * bottom RobotMap.IntakeMap.PINWHEEL.set(0); } else {
+		 * RobotMap.IntakeMap.PINWHEEL.set(.55); //was .375 }
+		 */
+
+		// RUNS ON BREAKBEAMS - DEPRECATED
+		if ((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) // if shooter up to
+																										// speed
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM * .97 // * 0.90
+
+		) // .9 for short shot
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft))
-		{
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) {
 			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
-		}
-		else if (breakBeam.getVeryTop())
-		{
+		} else if (breakBeam.getVeryTop()) {
 			RobotMap.IntakeMap.BELT.set(0);
-		}
-		else if (middleTopRefine)
-		{
+		} else if (middleTopRefine) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
-		}
-		else if(bottomToMiddle)
-		{
+		} else if (bottomToMiddle) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
-		}
-		else if(bottomMiddleToTop)
-		{
+		} else if (bottomMiddleToTop) {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
-		}
-		else
-		{
+		} else {
 			RobotMap.IntakeMap.BELT.set(0);
 		}
 
@@ -210,91 +191,81 @@ public class IntakeIndex {
 			}
 
 		}
-		if(RobotMap.StateChooser.HOOD_ANGLE) //MAKE SURE NOT BAD
+		if (RobotMap.StateChooser.HOOD_ANGLE) // MAKE SURE NOT BAD
 		{
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kForward);
-		}
-		else
-		{
+		} else {
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
 		}
 	}
 
 	public void buttonIndex() // LESS OLD BUT STILL OLD
 	{
-		//Andy was kind of all over here :/ twoBalls
-		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
-		
-		) //.9 for short shot
+		// Andy was kind of all over here :/ twoBalls
+		if ((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) // if shooter up to
+																										// speed
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM * .97 // * 0.90
+
+		) // .9 for short shot
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) //if left bumper, backwards belt
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) // if left bumper, backwards belt
 		{
 			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
-		}
-		else if(!topButton.get()) //if ball at top, stop
+		} else if (!topButton.get()) // if ball at top, stop
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 			twoBalls = false;
-		}
-		else if(!bottomButton.get() && !middleButton.get()) //if balls middle and bottom, go
+		} else if (!bottomButton.get() && !middleButton.get()) // if balls middle and bottom, go
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 			twoBalls = true;
-		}
-		else if(!topButton.get() && !middleButton.get()) //if ball at bottom, go
+		} else if (!topButton.get() && !middleButton.get()) // if ball at bottom, go
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else if(!middleButton.get() && !twoBalls) //if ball at middle, stop
+		} else if (!middleButton.get() && !twoBalls) // if ball at middle, stop
 		{
 			RobotMap.IntakeMap.BELT.set(0);
 		}
-		/* else if(!topButton.get() && !middle.get())
-		{
-
-			RobotMap.IntakeMap.BELT.set(0);
-		
-		}
-			*/
+		/*
+		 * else if(!topButton.get() && !middle.get()) {
+		 * 
+		 * RobotMap.IntakeMap.BELT.set(0);
+		 * 
+		 * }
+		 */
 
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
 		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
 			// System.out.println("tester");
 			timer.reset();
 			timer.start();
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); // was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
-		}
-		else {
+		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			// System.out.print(timer.get());
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
 
 		}
 
-		
-		if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
-		{
+		if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
 			RobotMap.IntakeMap.PINWHEEL.set(-.6);
-		}
-		else if (bottomButton.get() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) //Andy was here
+		} else if (bottomButton.get()
+				&& (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) // Andy was
+																												// here
 		{
-			RobotMap.IntakeMap.PINWHEEL.set(.1); //was .375 // was 0.5 and it was .6 - Andy
-		}
-		else if ((timer.get() > 1 || timer.get() == 0 ) &&(!spikeyButton.get() && !topButton.get()) && !bottomButton.get()) { // if its been 1.5 sec or there's something in the bottom
+			RobotMap.IntakeMap.PINWHEEL.set(.1); // was .375 // was 0.5 and it was .6 - Andy
+		} else if ((timer.get() > 1 || timer.get() == 0) && (!spikeyButton.get() && !topButton.get())
+				&& !bottomButton.get()) { // if its been 1.5 sec or there's something in the bottom
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else {
-			RobotMap.IntakeMap.PINWHEEL.set(.5); //1/20/2021 WAS .5
-		}//was .375
-		
-		
+		} else {
+			RobotMap.IntakeMap.PINWHEEL.set(.5); // 1/20/2021 WAS .5
+		} // was .375
+
 		if (RobotMap.CONTROLLER.getXButtonPressed()) {
 
 			if (RobotMap.StateChooser.HOOD_ANGLE == false) {
@@ -305,101 +276,82 @@ public class IntakeIndex {
 			}
 
 		}
-		if(RobotMap.StateChooser.HOOD_ANGLE) //MAKE SURE NOT BAD
+		if (RobotMap.StateChooser.HOOD_ANGLE) // MAKE SURE NOT BAD
 		{
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kForward);
-		}
-		else
-		{
+		} else {
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
 		}
 
 	}
 
-
-	public void intakeBaby()
-	{
+	public void intakeBaby() {
 		updateBooleans();
 		// System.out.println(RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getSelectedSensorVelocity());
 		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
 			// System.out.println("tester");
 			timer.reset();
 			timer.start();
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); // was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
-		}
-		else {
+		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			// System.out.print(timer.get());
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
 
 		}
 
-		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
-		
-		) //.9 for short shot
+		if ((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) // if shooter up to
+																										// speed
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM * .97 // * 0.90
+
+		) // .9 for short shot
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-		}
-		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6)
-		{
+		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
 			RobotMap.IntakeMap.BELT.set(0);
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft))
-		{
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) {
 			RobotMap.IntakeMap.BELT.set(-beltForwardTwo);
-		}
-		else if(BreakBeam.getInstance().detectWeakTop())
-		{
+		} else if (BreakBeam.getInstance().detectWeakTop()) {
 			RobotMap.IntakeMap.BELT.set(0);
-		}
-		else if (breakBeam.noBalls())
-		{
+		} else if (breakBeam.noBalls()) {
 			RobotMap.IntakeMap.BELT.set(0);
-		}
-		else
-		{
+		} else {
 			RobotMap.IntakeMap.BELT.set(beltForwardOne);
 		}
 
-		
-		if(RobotMap.CONTROLLER.getBumper(Hand.kRight))
-		{
+		if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) {
 			RobotMap.IntakeMap.PINWHEEL.set(-.6);
-		}
-		else if (BreakBeam.getInstance().detectSpikyBottomBall())
-		{
+		} else if (BreakBeam.getInstance().detectSpikyBottomBall()) {
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else if (!BreakBeam.getInstance().detectSpikyBottomBall() && (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW))
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.6); //was .375 // was 0.5
-		}
-		else if (timer.get() > 1 || BreakBeam.getInstance().detectSpikyBottomBall() || timer.get() == 0) { // if its been 1.5 sec or there's something in the bottom
-		RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else 
-		{
+		} else if (!BreakBeam.getInstance().detectSpikyBottomBall()
+				&& (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW)) {
+			RobotMap.IntakeMap.PINWHEEL.set(.6); // was .375 // was 0.5
+		} else if (timer.get() > 1 || BreakBeam.getInstance().detectSpikyBottomBall() || timer.get() == 0) { // if its
+																												// been
+																												// 1.5
+																												// sec
+																												// or
+																												// there's
+																												// something
+																												// in
+																												// the
+																												// bottom
+			RobotMap.IntakeMap.PINWHEEL.set(0);
+		} else {
 			RobotMap.IntakeMap.PINWHEEL.set(.55);
 		}
-		
-		//was .375
+
+		// was .375
 		/*
-		else if (BreakBeam.getInstance().getRampBeam())
-		{
-			RobotMap.IntakeMap.PINWHEEL.set(.55);
-			timer.reset();
-			timer.start();
-		}
-		*/
+		 * else if (BreakBeam.getInstance().getRampBeam()) {
+		 * RobotMap.IntakeMap.PINWHEEL.set(.55); timer.reset(); timer.start(); }
+		 */
 		/*
-		else if (timer.get() > .5) {
-			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		*/
+		 * else if (timer.get() > .5) { RobotMap.IntakeMap.PINWHEEL.set(0); }
+		 */
 		if (RobotMap.CONTROLLER.getXButtonPressed()) {
 
 			if (RobotMap.StateChooser.HOOD_ANGLE == false) {
@@ -410,12 +362,10 @@ public class IntakeIndex {
 			}
 
 		}
-		if(RobotMap.StateChooser.HOOD_ANGLE) //MAKE SURE NOT BAD
+		if (RobotMap.StateChooser.HOOD_ANGLE) // MAKE SURE NOT BAD
 		{
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kForward);
-		}
-		else
-		{
+		} else {
 			RobotMap.IntakeMap.HOOD_ANGLE.set(Value.kReverse);
 		}
 
@@ -436,193 +386,170 @@ public class IntakeIndex {
 		}
 	}
 
-	public void twoBeltIndex(){ //old 2021 intake
+	public void twoBeltIndex() { // old 2021 intake
 
-		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if left trigger is pressed and shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
-		){
+		if ((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) // if left trigger
+																										// is pressed
+																										// and shooter
+																										// up to speed
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM * .97 // * 0.90
+		) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 			twoBalls = false;
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) //if left bumper, forwards belt
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) // if left bumper, forwards belt
 		{
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)){ //if right bumper, pinwheel forwards
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) { // if right bumper, pinwheel forwards
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else if(!topButton.get() && !bottomButton.get() && !middleButton.get()){ //if all three buttons, stop completely 
+		} else if (!topButton.get() && !bottomButton.get() && !middleButton.get()) { // if all three buttons, stop
+																						// completely
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
 		}
-		// else if(!bottomButton.get() && !topButton.get()){ //if ball is at the bottom, stop
-		// 	twoBalls = true;
+		// else if(!bottomButton.get() && !topButton.get()){ //if ball is at the bottom,
+		// stop
+		// twoBalls = true;
 		// }
-		else if (!topButton.get() && !middleButton.get()){ 
+		else if (!topButton.get() && !middleButton.get()) {
 			RobotMap.IntakeMap.BELT.set(0);
-			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward); //maybe have it stop or be slower ??????
-		}
-		else if(!topButton.get()) 
-		{
+			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward); // maybe have it stop or be slower ??????
+		} else if (!topButton.get()) {
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else{
+		} else {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 		}
 		// else {
-		// 	RobotMap.IntakeMap.BELT.set(0);
-		// 	RobotMap.IntakeMap.PINWHEEL.set(0);
+		// RobotMap.IntakeMap.BELT.set(0);
+		// RobotMap.IntakeMap.PINWHEEL.set(0);
 		// }
 
-		//INTAKE 
+		// INTAKE
 		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); // was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
-		}
-		else {
+		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
 		}
-		
 
 	}
 
-	public void twoBeltTwoBallIndex(){ //THE RIGHT INTAKE the one where it "bops up" when shooter is pressed 
+	public void twoBeltTwoBallIndex() { // THE RIGHT INTAKE the one where it "bops up" when shooter is pressed
 
 		setBallStopper();
-		
-		if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) >.6 || RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
+
+		if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > .6
+				|| RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6) {
 			indexYes = true;
 			timer.reset();
 			timer.start();
-		} else if( timer.get() > 5) {
+		} else if (timer.get() > 5) {
 			indexYes = false;
 		}
 
-		
-		
-		if((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 ||  RobotMap.AutoBooleans.SHOOT_NOW)  // if left trigger is pressed and shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.97 //* 0.90
-		){
+		if ((RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) // if left trigger
+																										// is pressed
+																										// and shooter
+																										// up to speed
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM * .97 // * 0.90
+		) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else if(RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 && RobotMap.CONTROLLER.getYButton())
-		{
+		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 && RobotMap.CONTROLLER.getYButton()) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-		}
-		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 && !topButton.get() && !bottomButton.get()){
+		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 && !topButton.get() && !bottomButton.get()) {
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) //if left bumper, forwards belt
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kLeft)) // if left bumper, forwards belt
 		{
 			RobotMap.IntakeMap.PINWHEEL.set(-pinwheelForward);
-		}
-		else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)){ //if right bumper, forward pinwheel
+		} else if (RobotMap.CONTROLLER.getBumper(Hand.kRight)) { // if right bumper, forward pinwheel
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else if(!topButton.get() && !bottomButton.get() && middleButton.get()){ //if top and bottom, move bottom to middle 
+		} else if (!topButton.get() && !bottomButton.get() && middleButton.get()) { // if top and bottom, move bottom to
+																					// middle
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 		}
 		/*
-		else if(!topButton.get() && !bottomButton.get()){ //if top and bottom, stop completely 
+		 * else if(!topButton.get() && !bottomButton.get()){ //if top and bottom, stop
+		 * completely RobotMap.IntakeMap.BELT.set(0);
+		 * RobotMap.IntakeMap.PINWHEEL.set(0); }
+		 */
+		else if (!topButton.get() && !middleButton.get()) {
 			RobotMap.IntakeMap.BELT.set(0);
-			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}*/
-		else if (!topButton.get() && !middleButton.get()){ 
+			RobotMap.IntakeMap.PINWHEEL.set(0); // maybe have it stop or be slower ??????
+		} else if (!topButton.get()) {
+
 			RobotMap.IntakeMap.BELT.set(0);
-			RobotMap.IntakeMap.PINWHEEL.set(0); //maybe have it stop or be slower ??????
-		}
-		else if(!topButton.get()) 
-		{
-			
-				RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-			
+
+		} else {
+
+			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
+			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 		}
-		else{
-			
-						RobotMap.IntakeMap.BELT.set(beltForwardTwo);
-				RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-			}
 		// else {
-		// 	RobotMap.IntakeMap.BELT.set(0);
-		// 	RobotMap.IntakeMap.PINWHEEL.set(0);
+		// RobotMap.IntakeMap.BELT.set(0);
+		// RobotMap.IntakeMap.PINWHEEL.set(0);
 		// }
 
-		//INTAKE 
-		if(RobotMap.IntakeMap.INTAKE_WHEELS.getOutputCurrent() > 47){
+		// INTAKE
+		if (RobotMap.IntakeMap.INTAKE_WHEELS.getOutputCurrent() > 45 && (ballStopper == true)) {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
-		}
-		else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.5); //was .375
+		} else if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kRight) > 0.6 || RobotMap.AutoBooleans.INTAKE_NOW) {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(intakeForward); // was .375
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
 			beltBackwardTriggered = 0;
 			beltForwardTriggered = 0;
-		}
-		else if(RobotMap.CONTROLLER.getStickButton(Hand.kRight))
-		{
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);
-		}
-		else if(RobotMap.CONTROLLER.getStickButton(Hand.kLeft))
-		{
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(-.8);
-		}
-		else {
+		} else if (RobotMap.CONTROLLER.getStickButton(Hand.kRight)) {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(intakeForward);
+		} else if (RobotMap.CONTROLLER.getStickButton(Hand.kLeft)) {
+			RobotMap.IntakeMap.INTAKE_WHEELS.set(-intakeForward);
+		} else {
 			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
 			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
 		}
-		
+
 	}
 
-	public void autoIntake(){ //the one where it "bops up" when shooter is pressed, but for auto
+	public void autoIntake() { // the one where it "bops up" when shooter is pressed, but for auto
 
-		if(RobotMap.AutoBooleans.SHOOT_NOW  // if left trigger is pressed and shooter up to speed 
-		&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM*.87 //* 0.90
-		)
-		{
+		if (RobotMap.AutoBooleans.SHOOT_NOW // if left trigger is pressed and shooter up to speed
+				&& Math.abs(Shooter.getRPM()) >= RobotMap.StateChooser.RPM * .87 // * 0.90
+		) {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else if(!topButton.get() && !bottomButton.get()){ //if top and bottom, stop completely 
+		} else if (!topButton.get() && !bottomButton.get()) { // if top and bottom, stop completely
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(0);
-		}
-		else if (!topButton.get() && !middleButton.get()){ 
+		} else if (!topButton.get() && !middleButton.get()) {
 			RobotMap.IntakeMap.BELT.set(0);
-			RobotMap.IntakeMap.PINWHEEL.set(0); //maybe have it stop or be slower ??????
-		}
-		else if(!topButton.get()) 
-		{
+			RobotMap.IntakeMap.PINWHEEL.set(0); // maybe have it stop or be slower ??????
+		} else if (!topButton.get()) {
 			RobotMap.IntakeMap.BELT.set(0);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
-		}
-		else{
+		} else {
 			RobotMap.IntakeMap.BELT.set(beltForwardTwo);
 			RobotMap.IntakeMap.PINWHEEL.set(pinwheelForward);
 		}
 		/*
-		if(RobotMap.AutoBooleans.INTAKE_NOW = true){
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(.8); //was .375
-			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse);
-		}
-		else if(RobotMap.AutoBooleans.INTAKE_NOW = false){
-			RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
-			RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward);
-		}*/
+		 * if(RobotMap.AutoBooleans.INTAKE_NOW = true){
+		 * RobotMap.IntakeMap.INTAKE_WHEELS.set(.8); //was .375
+		 * RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kReverse); } else
+		 * if(RobotMap.AutoBooleans.INTAKE_NOW = false){
+		 * RobotMap.IntakeMap.INTAKE_WHEELS.set(0);
+		 * RobotMap.IntakeMap.ARMS_SOLENOID.set(DoubleSolenoid.Value.kForward); }
+		 */
 
-	
-}
-	
-	//DEBUGGING 1/20/2021
-	public void showButtons(){
+	}
+
+	// DEBUGGING 1/20/2021
+	public void showButtons() {
 		SmartDashboard.putBoolean("Top Button", topButton.get());
 		SmartDashboard.putBoolean("Middle Button", middleButton.get());
 		SmartDashboard.putBoolean("Bottom Button", bottomButton.get());
@@ -630,16 +557,15 @@ public class IntakeIndex {
 		SmartDashboard.putBoolean("twoballs", twoBalls);
 	}
 
-	public void setBallStopper(){
-		if(SmartDashboard.getBoolean("Intake Ball Stopper", true)){
+	public void setBallStopper() {
+		if (SmartDashboard.getBoolean("Intake Ball Stopper", true)) {
 			ballStopper = true;
-		}
-		else{
+		} else {
 			ballStopper = false;
 		}
 	}
 
-	public void putBallStopper(){
+	public void putBallStopper() {
 		SmartDashboard.putBoolean("Intake Ball Stopper", false);
 
 	}
