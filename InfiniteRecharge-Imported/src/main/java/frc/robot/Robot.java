@@ -156,7 +156,6 @@ public class Robot extends TimedRobot {
 		IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		//IntakeIndex.getInstance().index();
 
-		 //TrajectoryContainer.getInstance().trajectoryFollowingGoBall.auto();
 	}
 
 	@Override
