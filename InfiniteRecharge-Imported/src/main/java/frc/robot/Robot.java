@@ -76,7 +76,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Trolley current output", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
 
 		SmartDashboard.putNumber("Left Shooter current output", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getOutputCurrent());
-		SmartDashboard.putNumber("Right Shooter current output", RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
+		SmartDashboard.putNumber("Right Shooter current output",
+				RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
 
 		SmartDashboard.putNumber("BR Drive current output", RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
 		SmartDashboard.putNumber("FR Drive current output", RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
@@ -86,10 +87,9 @@ public class Robot extends TimedRobot {
 		// INDEX DEBUGGING 1/20/2021
 		IntakeIndex.getInstance().showButtons();
 
-				SmartDashboard.putNumber("Pinwheel current output", RobotMap.IntakeMap.PINWHEEL.getOutputCurrent());
-				SmartDashboard.putNumber("Belt current output", RobotMap.IntakeMap.BELT.getOutputCurrent());
-				SmartDashboard.putNumber("Intake current output", RobotMap.IntakeMap.INTAKE_WHEELS.getOutputCurrent());
-				
+		SmartDashboard.putNumber("Pinwheel current output", RobotMap.IntakeMap.PINWHEEL.getOutputCurrent());
+		SmartDashboard.putNumber("Belt current output", RobotMap.IntakeMap.BELT.getOutputCurrent());
+		SmartDashboard.putNumber("Intake current output", RobotMap.IntakeMap.INTAKE_WHEELS.getOutputCurrent());
 
 		// SmartDashboard.putNumber("trajectory time",
 		// TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.getTotalTimeSeconds());
@@ -113,25 +113,28 @@ public class Robot extends TimedRobot {
 
 		RobotMap.SensorMap.GYRO.zeroYaw();
 
-		// 								GRAYSON PUT COORDS HERE  V   V
+		// GRAYSON PUT COORDS HERE V V
 		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0, 0, new Rotation2d(0)), new Rotation2d(0));
-				//ChallengeAuto.getInstance().resetPathStep();
+		// ChallengeAuto.getInstance().resetPathStep();
 
 	}
 
 	@Override
 	public void autonomousPeriodic() {
 		RobotMap.StateChooser.FIELD_RELATIVE = false;
-
+		// TrajectoryContainer.getInstance().trajectoryFollowingGoBall.auto();
 		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 
-		//TrajectoryContainer.getInstance().trajectoryFollowingbasicdriveback.auto();
+		// TrajectoryContainer.getInstance().trajectoryFollowingbasicdriveback.auto();
 
 		// NAV CHALLENGE STUFF !!!!!!!
-		//TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto(); //1.19, 2.12
-		// TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72, 0.75
-		// TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto(); //1.19, 2.29
- 
+		// TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto();
+		// //1.19, 2.12
+		// TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72,
+		// 0.75
+		// TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto(); //1.19,
+		// 2.29
+
 		// GA STUFF !!!!!!
 		// ChallengeAuto.getInstance().galacticSearchPeriodic();
 		// TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
@@ -140,7 +143,7 @@ public class Robot extends TimedRobot {
 		// TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
 
 		Drivetrain.getInstance().updateOdometry();
-		
+
 		/*
 		 * System.out.println("Total Time Seconds: " +
 		 * TrajectoryContainer.getInstance().trajectoryFollowing.trajectory.
@@ -148,13 +151,13 @@ public class Robot extends TimedRobot {
 		 * TrajectoryContainer.getInstance().trajectoryFollowing.m_timer.get());
 		 */
 
-		//REGULAR AUTO STUFF
+		// REGULAR AUTO STUFF
 		// basicAuto.sixBallAuto(); //2.58, 2.02
-		//basicAuto.trajectoryPeriodic();
+		// basicAuto.trajectoryPeriodic();
 		basicAuto.threeBall();
 		Shooter.getInstance().control();
 		IntakeIndex.getInstance().twoBeltTwoBallIndex();
-		//IntakeIndex.getInstance().index();
+		// IntakeIndex.getInstance().index();
 
 	}
 
@@ -166,7 +169,6 @@ public class Robot extends TimedRobot {
 		RobotMap.AutoBooleans.SHOOT_NOW = false;
 		RobotMap.AutoBooleans.INTAKE_NOW = false;
 		IntakeIndex.getInstance().putBallStopper();
-
 
 	}
 

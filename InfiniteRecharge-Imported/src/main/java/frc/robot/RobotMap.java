@@ -40,8 +40,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
  * Add your docs here.
  */
 public class RobotMap {
-	
-	
+
 	/**
 	 * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For now
 	 * we just want the primary one.
@@ -57,16 +56,14 @@ public class RobotMap {
 	 * TODO: What is this for?
 	 */
 	public static class AutoConstants { // Is this even being used?
-		public static final double MAX_SPEED_METERS_PER_SECOND = 4.90; //3 2/2/2021
-		public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 4; //3 2/2/2021
+		public static final double MAX_SPEED_METERS_PER_SECOND = 4.90; // 3 2/2/2021
+		public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 4; // 3 2/2/2021
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
 		public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
 
 		public static final double KPX_CONTROLLER = 1;
 		public static final double KPY_CONTROLLER = 1;
 		public static final double KP_THETA_CONTROLLER = 1.5;
-
-
 
 		// Constraint for the motion profilied robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
@@ -99,7 +96,7 @@ public class RobotMap {
 		public static final DigitalInput MAX_LIMIT_SWITCH = new DigitalInput(1);
 		public static final DigitalInput MIN_LIMIT_SWITCH = new DigitalInput(0);
 
-		public static final double ELEVATOR_SPEED = -9;//0.7
+		public static final double ELEVATOR_SPEED = -9;// 0.7
 		public static final double STRAFE_SPEED = .9;
 	}
 
@@ -127,7 +124,7 @@ public class RobotMap {
 		public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
 		public static final double FRONT_LEFT_ANGLE_OFFSET = -0.63;
 
-		public static final double MAX_SPEED = 4.90; //4.36; // 3.627 2/2/2021 1.627 HYPERDRIVE CHANGES APR 2021
+		public static final double MAX_SPEED = 4.90; // 4.36; // 3.627 2/2/2021 1.627 HYPERDRIVE CHANGES APR 2021
 		public static final double MAX_ANGULAR_SPEED = 5 * Math.PI;
 		public static double MULTIPLIER = .6;
 	}
@@ -137,12 +134,12 @@ public class RobotMap {
 		public static final Translation2d FRONT_RIGHT_LOCATION = new Translation2d(0.3556, -0.3556);
 		public static final Translation2d BACK_LEFT_LOCATION = new Translation2d(-0.3556, 0.3556);
 		public static final Translation2d BACK_RIGHT_LOCATION = new Translation2d(-0.3556, -0.3556);
-	
+
 		public static final SwerveModule FRONT_LEFT = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
 		public static final SwerveModule FRONT_RIGHT = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
-				RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR,RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
+				RobotMap.DriveMap.FRONT_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_RIGHT_ANGLE_ENCODER,
 				RobotMap.DriveMap.FRONT_RIGHT_ANGLE_OFFSET);
 		public static final SwerveModule BACK_LEFT = new SwerveModule(RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR,
 				RobotMap.DriveMap.BACK_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_LEFT_ANGLE_ENCODER,
@@ -150,10 +147,10 @@ public class RobotMap {
 		public static final SwerveModule BACK_RIGHT = new SwerveModule(RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR,
 				RobotMap.DriveMap.BACK_RIGHT_ANGLE_MOTOR, RobotMap.DriveMap.BACK_RIGHT_ANGLE_ENCODER,
 				RobotMap.DriveMap.BACK_RIGHT_ANGLE_OFFSET);
-	
+
 		public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(FRONT_LEFT_LOCATION,
 				FRONT_RIGHT_LOCATION, BACK_LEFT_LOCATION, BACK_RIGHT_LOCATION);
-	
+
 		public static final SwerveDriveOdometry ODOMETRY = new SwerveDriveOdometry(KINEMATICS,
 				Rotation2d.fromDegrees(-SensorMap.GYRO.getAngle()));
 
@@ -165,7 +162,8 @@ public class RobotMap {
 		public static final CANSparkMax PINWHEEL = new CANSparkMax(10, MotorType.kBrushless); // from box to belt
 		public static final DoubleSolenoid ARMS_SOLENOID = new DoubleSolenoid(0, 1); // lowers the arms
 		public static final DoubleSolenoid HOOD_ANGLE = new DoubleSolenoid(6, 7);
-		//public static final Ultrasonic ULTRASONIC = new Ultrasonic(9, 8); // on the ground of the belt box
+		// public static final Ultrasonic ULTRASONIC = new Ultrasonic(9, 8); // on the
+		// ground of the belt box
 		public static final WPI_TalonFX BELT = new WPI_TalonFX(11);
 		// public static final ColorSensorV3 COLOR_SENSOR_MID = new
 		// ColorSensorV3(I2C.Port.kOnboard);
@@ -215,8 +213,8 @@ public class RobotMap {
 	public static class ShooterMap {
 		public static final WPI_TalonFX LEFT_SHOOTER_FALCON = new WPI_TalonFX(13);
 		public static final WPI_TalonFX RIGHT_SHOOTER_FALCON = new WPI_TalonFX(12);
-		
-		public static final double RPM = SmartDashboard.getNumber("RPM", 3600); //Renamed from rotpm
+
+		public static final double RPM = SmartDashboard.getNumber("RPM", 3600); // Renamed from rotpm
 		/**
 		 * Which PID slot to pull gains from. Starting 2018, you can choose from 0,1,2
 		 * or 3. Only the first two (0,1) are visible in web-based configuration.
@@ -242,11 +240,10 @@ public class RobotMap {
 		public static final int ENCODER_RESOLUTION = 2048;
 		public static double MODULE_MAX_ANGULAR_VELOCITY = Math.PI * 2 * 2.6;
 		public static double MODULE_MAX_ANGULAR_ACCELERATION = 6 * Math.PI; // radians per second squared //4
-	
+
 	}
 
-	public static class StateChooser
-	{
+	public static class StateChooser {
 		public static double LIMELIGHT_ANGLE;
 		public static double kF = 0.055;
 		public static double kP = 1;
@@ -254,64 +251,62 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE = true; //andy was here
+		public static boolean FIELD_RELATIVE = true; // andy was here
 	}
 
-	public static class StateConstants
-	{
+	public static class StateConstants {
 		public static final double CLIMBER_SERVO_POS = 90;
-		public static final double LEFT_CLIMBER_ANGLE = 28 * (Math.PI/180);
-		public static final double RIGHT_CLIMBER_ANGLE = (28 - 180) * (Math.PI/180);
+		public static final double LEFT_CLIMBER_ANGLE = 28 * (Math.PI / 180);
+		public static final double RIGHT_CLIMBER_ANGLE = (28 - 180) * (Math.PI / 180);
 		public static final int CLIMBER_PIPELINE = 5;
 
 		public static double INTAKE_SERVO_POS = 165;
-        public static double INTAKE_ANGLE = 0;
-        public static int INTAKE_PIPELINE = 1;
+		public static double INTAKE_ANGLE = 0;
+		public static int INTAKE_PIPELINE = 1;
 
-		public static double INITIATION_LINE_SHOT_SERVO_ANGLE = 36; //44 //real angle:30
-        public static double INITIATION_LINE_SHOT_ANGLE = 999; //trig
-        public static int INITIATION_LINE_SHOT_PIPELINE = 3;						//DONE
-        public static double INITIATION_LINE_SHOT_KF = 0.055;
-		public static int INITIATION_LINE_SHOT_RPM = 3300;//(3350 -175);//3050; //top of range
-		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; //false is high angle
-		
-		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;//real angle:20
-        public static double SHORT_TRENCH_AUTO_ANGLE = 999;//TRIG
-        public static int SHORT_TRENCH_AUTOT_PIPELINE = 6;
-        public static double SHORT_TRENCH_AUTOT_KF = 0.055;							//DONE except trig
-		public static int SHORT_TRENCH_AUTO_RPM = 3800;//3500; //top of range
-        public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; //false is high angle
+		public static double INITIATION_LINE_SHOT_SERVO_ANGLE = 36; // 44 //real angle:30
+		public static double INITIATION_LINE_SHOT_ANGLE = 999; // trig
+		public static int INITIATION_LINE_SHOT_PIPELINE = 3; // DONE
+		public static double INITIATION_LINE_SHOT_KF = 0.055;
+		public static int INITIATION_LINE_SHOT_RPM = 3300;// (3350 -175);//3050; //top of range
+		public static boolean INITIATION_LINE_SHOT_HOOD_ANGLE = false; // false is high angle
 
-        public static double SHORT_TRENCH_SERVO_ANGLE = 40;
-        public static double SHORT_TRENCH_ANGLE = 999; //ish
+		public static double SHORT_TRENCH_AUTO_SERVO_ANGLE = 40;// real angle:20
+		public static double SHORT_TRENCH_AUTO_ANGLE = 999;// TRIG
+		public static int SHORT_TRENCH_AUTOT_PIPELINE = 6;
+		public static double SHORT_TRENCH_AUTOT_KF = 0.055; // DONE except trig
+		public static int SHORT_TRENCH_AUTO_RPM = 3800;// 3500; //top of range
+		public static boolean SHORT_TRENCH_AUTO_HOOD_ANGLE = true; // false is high angle
+
+		public static double SHORT_TRENCH_SERVO_ANGLE = 40;
+		public static double SHORT_TRENCH_ANGLE = 999; // ish
 		public static int SHORT_TRENCH_PIPELINE = 6;
-        public static double SHORT_TRENCH_KF = 0.055;
-		public static int SHORT_TRENCH_RPM = 3300;//3800; //3825 for bad balls
-        public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
+		public static double SHORT_TRENCH_KF = 0.055;
+		public static int SHORT_TRENCH_RPM = 3300;// 3800; //3825 for bad balls
+		public static boolean SHORT_TRENCH_HOOD_ANGLE = true;
 
-        public static double LONG_SHOT_SERVO_POS = 40;
-		public static double LONG_SHOT_ANGLE = 11 * (Math.PI/180);
+		public static double LONG_SHOT_SERVO_POS = 40;
+		public static double LONG_SHOT_ANGLE = 11 * (Math.PI / 180);
 		public static int LONG_SHOT_PIPELINE = 4;
-        public static double LONG_SHOT_KF = 0.06;
-		public static int LONG_SHOT_RPM = 5100; //4000, 4800
+		public static double LONG_SHOT_KF = 0.06;
+		public static int LONG_SHOT_RPM = 5100; // 4000, 4800
 		public static boolean LONG_SHOT_HOOD_ANGLE = true;
-		
+
 		public static double NO_MANS_LAND_SERVO_POS = 40;
-		public static double NO_MANS_LAND_ANGLE = 999; 
+		public static double NO_MANS_LAND_ANGLE = 999;
 		public static int NO_MANS_LAND_PIPELINE = 3;
-        public static double NO_MANS_LAND_KF = 0.055;
-		public static int NO_MANS_LAND_RPM = 4100; //3800
+		public static double NO_MANS_LAND_KF = 0.055;
+		public static int NO_MANS_LAND_RPM = 4100; // 3800
 		public static boolean NO_MANS_LAND_HOOD_ANGLE = true;
 
-		public static boolean ALLOW_AUTOMATED_CONTROL = true; //true
+		public static boolean ALLOW_AUTOMATED_CONTROL = true; // true
 
 		public static int GALACTIC_SEARCH_PIPELINE = 7;
 		public static double GALACTIC_SEARCH_SERVO_POS = 160;
 
 	}
 
-	public static class AutoBooleans
-	{
+	public static class AutoBooleans {
 		public static boolean INTAKE_NOW = false;
 		public static boolean SHOOT_NOW = false;
 		public static boolean TRAJECTORY_DONE = false;
@@ -321,37 +316,35 @@ public class RobotMap {
 
 	static {
 		// DriveMap
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);//f
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);//f
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);//t
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);//t
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setInverted(false);// f
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.setInverted(false);// f
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setInverted(false);// t
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);// t
 
+		// Current limiting for motors
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
 
-
-		//Current limiting for motors
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
-
-		//IntakeMap.PINWHEEL.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
-		IntakeMap.PINWHEEL.setSmartCurrentLimit(30);
-		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
+		// IntakeMap.PINWHEEL.configSupplyCurrentLimit(new
+		// SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
+		IntakeMap.PINWHEEL.setSmartCurrentLimit(40);
+		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
 		IntakeMap.INTAKE_WHEELS.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(false);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(false);
 		DriveMap.BACK_RIGHT_ANGLE_MOTOR.setInverted(false);
 		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setInverted(false);
 
-
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
-		kTimeoutMs); // setting to integrated sensor
+				kTimeoutMs); // setting to integrated sensor
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
-		kTimeoutMs);
+				kTimeoutMs);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
-		kTimeoutMs);
+				kTimeoutMs);
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
-		kTimeoutMs);
+				kTimeoutMs);
 
 		// Shooter
 
@@ -363,12 +356,13 @@ public class RobotMap {
 		ShooterMap.LEFT_SHOOTER_FALCON.setInverted(false);
 		ShooterMap.RIGHT_SHOOTER_FALCON.set(ControlMode.Follower, ShooterMap.LEFT_SHOOTER_FALCON.getDeviceID());
 		ShooterMap.RIGHT_SHOOTER_FALCON.setInverted(InvertType.OpposeMaster);
-		
+
 		ShooterMap.LEFT_SHOOTER_FALCON.enableVoltageCompensation(true);
 		ShooterMap.LEFT_SHOOTER_FALCON.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx,
 				kTimeoutMs);
 		ShooterMap.LEFT_SHOOTER_FALCON.setSensorPhase(true);
-		//ShooterMap.LEFT_SHOOTER_FALCON.setSelectedSensorPosition(1);  THE INTENT WAS TO SET TO INTEGRATED SENSOR
+		// ShooterMap.LEFT_SHOOTER_FALCON.setSelectedSensorPosition(1); THE INTENT WAS
+		// TO SET TO INTEGRATED SENSOR
 
 		/* Config the peak and nominal outputs */
 		ShooterMap.LEFT_SHOOTER_FALCON.configNominalOutputForward(0, kTimeoutMs);
@@ -382,14 +376,14 @@ public class RobotMap {
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kI(kPIDLoopIdx, 0, kTimeoutMs);
 		ShooterMap.LEFT_SHOOTER_FALCON.config_kD(kPIDLoopIdx, 0, kTimeoutMs);
 
-		//Climber
+		// Climber
 		ClimberMap.TROLLEY_SPARK.setIdleMode(IdleMode.kBrake);
 		ClimberMap.ELEVATOR_SPARK.setIdleMode(IdleMode.kBrake);
-		
+
 		// Intake
 
-		//IntakeMap.ULTRASONIC.setAutomaticMode(true);
-		//IntakeMap.ULTRASONIC.setDistanceUnits(Ultrasonic.Unit.kInches);
+		// IntakeMap.ULTRASONIC.setAutomaticMode(true);
+		// IntakeMap.ULTRASONIC.setDistanceUnits(Ultrasonic.Unit.kInches);
 		// IntakeMap.COLOR_SENSOR_MID.setAutomaticMode(true);
 		// IntakeMap.COLOR_SENSOR_MID.setDistanceUnits(Ultrasonic.Unit.kInches);
 	}
@@ -401,8 +395,7 @@ public class RobotMap {
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setSelectedSensorPosition(0);
 	}
 
-	public static void setDriveTalonsBrake()
-	{
+	public static void setDriveTalonsBrake() {
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Brake);
@@ -414,8 +407,7 @@ public class RobotMap {
 		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Brake);
 	}
 
-	public static void setDriveTalonsCoast()
-	{
+	public static void setDriveTalonsCoast() {
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
 		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.setNeutralMode(NeutralMode.Coast);
@@ -427,10 +419,4 @@ public class RobotMap {
 		DriveMap.FRONT_RIGHT_ANGLE_MOTOR.setNeutralMode(NeutralMode.Coast);
 	}
 
-	
-	
-	
-	
-
-	
 }
