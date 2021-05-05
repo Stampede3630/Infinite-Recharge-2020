@@ -72,22 +72,24 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
 		Drivetrain.getInstance().updateOdometry();
 
-		SmartDashboard.putNumber("Climber current output", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
-		SmartDashboard.putNumber("Trolley current output", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
+		{ // smartdahsboard current limiting
+			SmartDashboard.putNumber("Climber current output", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
+			SmartDashboard.putNumber("Trolley current output", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
 
-		SmartDashboard.putNumber("Left Shooter current output",
-				RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getOutputCurrent());
-		SmartDashboard.putNumber("Right Shooter current output",
-				RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
+			SmartDashboard.putNumber("Left Shooter current output",
+					RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getOutputCurrent());
+			SmartDashboard.putNumber("Right Shooter current output",
+					RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
 
-		SmartDashboard.putNumber("BR Drive current output",
-				RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
-		SmartDashboard.putNumber("FR Drive current output",
-				RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
-		SmartDashboard.putNumber("BL Drive current output", RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR.getOutputCurrent());
-		SmartDashboard.putNumber("FL Drive current output",
-				RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR.getOutputCurrent());
-
+			SmartDashboard.putNumber("BR Drive current output",
+					RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("FR Drive current output",
+					RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("BL Drive current output",
+					RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("FL Drive current output",
+					RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR.getOutputCurrent());
+		}
 		// INDEX DEBUGGING 1/20/2021
 		IntakeIndex.getInstance().showButtons();
 

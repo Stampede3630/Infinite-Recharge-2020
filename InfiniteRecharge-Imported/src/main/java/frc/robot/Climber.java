@@ -131,6 +131,8 @@ public class Climber {
             } else if (sClimber.getSelected() == sClimberState.DOWN) {
                 retract();
             } else if (sClimber.getSelected() == sClimberState.STOPPED) {
+                RobotMap.ClimberMap.ELEVATOR_SPARK.set(0);
+                RobotMap.ClimberMap.TROLLEY_SPARK.set(0);
 
             }
         } else {
