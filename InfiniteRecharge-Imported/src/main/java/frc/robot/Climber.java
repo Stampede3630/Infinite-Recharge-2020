@@ -32,6 +32,8 @@ public class Climber {
     private Climber() // private to make sure it isn't instantiated elsewhere
     {
         sClimber = new SendableChooser<sClimberState>();
+        SmartDashboard.putData(sClimber);
+
         sClimber.setDefaultOption("Stopped", sClimberState.STOPPED);
         sClimber.addOption("Left", sClimberState.LEFT);
         sClimber.addOption("Right", sClimberState.RIGHT);

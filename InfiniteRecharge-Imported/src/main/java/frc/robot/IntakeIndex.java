@@ -48,13 +48,13 @@ public class IntakeIndex {
 
 	private double beltForwardOne = -.2; // TalonSRX speed = -.32;
 	private double beltBackwardsOne = .15;// TalonSRX speed = .32;
-	private double beltForwardTwo = -.7; // TalonSRX speed = -.5;
+	private double beltForwardTwo = -.6; // TalonSRX speed = -.5;
 	private double beltBackwardsTwo = .5; // TalonSRX speed = .5;
 	private int beltForwardTriggered = 0;
 	private int beltBackwardTriggered = 0;
-	private double pinwheelForward = -.6;
+	private double pinwheelForward = -.5;
 	private int timeout = 999999999;
-	private double intakeForward = .4;
+	private double intakeForward = .47;
 
 	private boolean ballStopper = false;
 	private boolean twoBalls = false;

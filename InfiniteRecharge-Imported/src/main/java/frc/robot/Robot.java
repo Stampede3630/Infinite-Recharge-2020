@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
 		RobotMap.SensorMap.GYRO.zeroYaw();
 
 		// GRAYSON PUT COORDS HERE V V
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0, 0, new Rotation2d(0)), new Rotation2d(0));
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(2.5, 0, new Rotation2d(0)), new Rotation2d(0));
 		// ChallengeAuto.getInstance().resetPathStep();
 
 	}
@@ -131,20 +131,20 @@ public class Robot extends TimedRobot {
 
 		// TrajectoryContainer.getInstance().trajectoryFollowingbasicdriveback.auto();
 
-		// NAV CHALLENGE STUFF !!!!!!!
-		// TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto();
-		// //1.19, 2.12
-		// TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72,
-		// 0.75
-		// TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto(); //1.19,
-		// 2.29
-
-		// GA STUFF !!!!!!
-		// ChallengeAuto.getInstance().galacticSearchPeriodic();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSABlue.auto();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSARed.auto();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+		/*
+		 * FRC AT HOME STUFF NAV CHALLENGE STUFF !!!!!!!
+		 * TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto();
+		 * //1.19, 2.12
+		 * TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72,
+		 * 0.75 TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto();
+		 * //1.19,2.29
+		 * 
+		 * GA STUFF !!!!!! ChallengeAuto.getInstance().galacticSearchPeriodic();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSABlue.auto();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSARed.auto();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+		 */
 
 		Drivetrain.getInstance().updateOdometry();
 
@@ -158,12 +158,14 @@ public class Robot extends TimedRobot {
 		// REGULAR AUTO STUFF
 		// basicAuto.sixBallAuto(); //2.58, 2.02
 		// basicAuto.trajectoryPeriodic();
-		basicAuto.threeBall();
+		// basicAuto.threeBall();
+		basicAuto.thiefAuto();
 		Shooter.getInstance().control();
 		IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		// IntakeIndex.getInstance().index();
 
 		// TrajectoryContainer.getInstance().trajectoryFollowingGoBall.auto();
+
 	}
 
 	@Override
@@ -193,6 +195,7 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		// Sets up the limelight pipeline
 		// BallFollowDrive.initLimelight();
+		Climber.getInstance().shuffleboardClimberOn = true;
 
 	}
 
@@ -222,6 +225,7 @@ public class Robot extends TimedRobot {
 
 		// RobotMap.IntakeMap.PINWHEEL.set(.6);
 		// RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);
+		Climber.getInstance().shuffleboardClimber();
 
 	}
 
