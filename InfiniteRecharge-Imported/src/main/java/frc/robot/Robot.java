@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		RobotMap.StateChooser.FIELD_RELATIVE = false;
-
+		// TrajectoryContainer.getInstance().trajectoryFollowingGoBall.auto();
 		System.out.println(RobotMap.DrivetrainMap.ODOMETRY.getPoseMeters());
 
 		// TrajectoryContainer.getInstance().trajectoryFollowingbasicdriveback.auto();

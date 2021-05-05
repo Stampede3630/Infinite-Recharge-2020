@@ -331,7 +331,7 @@ public class RobotMap {
 		// IntakeMap.PINWHEEL.configSupplyCurrentLimit(new
 		// SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
 		IntakeMap.PINWHEEL.setSmartCurrentLimit(40);
-		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));
+		IntakeMap.BELT.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
 		IntakeMap.INTAKE_WHEELS.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
 		DriveMap.BACK_LEFT_ANGLE_MOTOR.setInverted(false);
 		DriveMap.FRONT_LEFT_ANGLE_MOTOR.setInverted(false);
