@@ -135,7 +135,7 @@ public class RobotMap {
 		public static final Translation2d BACK_LEFT_LOCATION = new Translation2d(-0.3556, 0.3556);
 		public static final Translation2d BACK_RIGHT_LOCATION = new Translation2d(-0.3556, -0.3556);
 
-		public static final SwerveModule FRONT_LEFT = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
+		public static final SwerveModule 	FRONT_LEFT = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
 		public static final SwerveModule FRONT_RIGHT = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
