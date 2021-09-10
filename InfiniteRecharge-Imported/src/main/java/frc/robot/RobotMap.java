@@ -322,10 +322,11 @@ public class RobotMap {
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.setInverted(false);// t
 
 		// Current limiting for motors
-		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
-		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
-		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 0, 0.1));
+		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR
+				.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
+		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
+		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 
 		// IntakeMap.PINWHEEL.configSupplyCurrentLimit(new
 		// SupplyCurrentLimitConfiguration(true, 20, 0, 0.1));

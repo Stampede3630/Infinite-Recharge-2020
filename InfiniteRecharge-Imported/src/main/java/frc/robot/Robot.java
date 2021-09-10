@@ -72,18 +72,24 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("RPM", -Shooter.getRPM());
 		Drivetrain.getInstance().updateOdometry();
 
-		SmartDashboard.putNumber("Climber current output", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
-		SmartDashboard.putNumber("Trolley current output", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
+		{ // smartdahsboard current limiting
+			SmartDashboard.putNumber("Climber current output", RobotMap.ClimberMap.ELEVATOR_SPARK.getOutputCurrent());
+			SmartDashboard.putNumber("Trolley current output", RobotMap.ClimberMap.TROLLEY_SPARK.getOutputCurrent());
 
-		SmartDashboard.putNumber("Left Shooter current output", RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getOutputCurrent());
-		SmartDashboard.putNumber("Right Shooter current output",
-				RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
+			SmartDashboard.putNumber("Left Shooter current output",
+					RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.getOutputCurrent());
+			SmartDashboard.putNumber("Right Shooter current output",
+					RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
 
-		SmartDashboard.putNumber("BR Drive current output", RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
-		SmartDashboard.putNumber("FR Drive current output", RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
-		SmartDashboard.putNumber("BL Drive current output", RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR.getOutputCurrent());
-		SmartDashboard.putNumber("FL Drive current output", RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR.getOutputCurrent());
-
+			SmartDashboard.putNumber("BR Drive current output",
+					RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("FR Drive current output",
+					RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("BL Drive current output",
+					RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("FL Drive current output",
+					RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR.getOutputCurrent());
+		}
 		// INDEX DEBUGGING 1/20/2021
 		IntakeIndex.getInstance().showButtons();
 
@@ -114,7 +120,7 @@ public class Robot extends TimedRobot {
 		RobotMap.SensorMap.GYRO.zeroYaw();
 
 		// GRAYSON PUT COORDS HERE V V
-		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(0, 0, new Rotation2d(0)), new Rotation2d(0));
+		RobotMap.DrivetrainMap.ODOMETRY.resetPosition(new Pose2d(2.5, 0, new Rotation2d(0)), new Rotation2d(0));
 		// ChallengeAuto.getInstance().resetPathStep();
 
 	}
@@ -127,20 +133,20 @@ public class Robot extends TimedRobot {
 
 		// TrajectoryContainer.getInstance().trajectoryFollowingbasicdriveback.auto();
 
-		// NAV CHALLENGE STUFF !!!!!!!
-		// TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto();
-		// //1.19, 2.12
-		// TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72,
-		// 0.75
-		// TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto(); //1.19,
-		// 2.29
-
-		// GA STUFF !!!!!!
-		// ChallengeAuto.getInstance().galacticSearchPeriodic();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSABlue.auto();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSARed.auto();
-		// TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+		/*
+		 * FRC AT HOME STUFF NAV CHALLENGE STUFF !!!!!!!
+		 * TrajectoryContainer.getInstance().trajectoryFollowingBarrelRoll.auto();
+		 * //1.19, 2.12
+		 * TrajectoryContainer.getInstance().trajectoryFollowingSlalom.auto(); //0.72,
+		 * 0.75 TrajectoryContainer.getInstance().trajectoryFollowingBounce.auto();
+		 * //1.19,2.29
+		 * 
+		 * GA STUFF !!!!!! ChallengeAuto.getInstance().galacticSearchPeriodic();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSBBlue.auto();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSABlue.auto();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSARed.auto();
+		 * TrajectoryContainer.getInstance().trajectoryFollowingGSBRed.auto();
+		 */
 
 		Drivetrain.getInstance().updateOdometry();
 
@@ -154,10 +160,13 @@ public class Robot extends TimedRobot {
 		// REGULAR AUTO STUFF
 		// basicAuto.sixBallAuto(); //2.58, 2.02
 		// basicAuto.trajectoryPeriodic();
-		basicAuto.threeBall();
+		// basicAuto.threeBall();
+		basicAuto.thiefAuto();
 		Shooter.getInstance().control();
 		IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		// IntakeIndex.getInstance().index();
+
+		// TrajectoryContainer.getInstance().trajectoryFollowingGoBall.auto();
 
 	}
 
@@ -169,6 +178,7 @@ public class Robot extends TimedRobot {
 		RobotMap.AutoBooleans.SHOOT_NOW = false;
 		RobotMap.AutoBooleans.INTAKE_NOW = false;
 		IntakeIndex.getInstance().putBallStopper();
+		Climber.getInstance().putClimberOn();
 
 	}
 
@@ -180,13 +190,14 @@ public class Robot extends TimedRobot {
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		Climber.getInstance().climberPeriodic();
-
+		Climber.getInstance().shuffleboardClimber();
 	}
 
 	@Override
 	public void testInit() {
 		// Sets up the limelight pipeline
 		// BallFollowDrive.initLimelight();
+		Climber.getInstance().shuffleboardClimberOn = true;
 
 	}
 
@@ -216,6 +227,7 @@ public class Robot extends TimedRobot {
 
 		// RobotMap.IntakeMap.PINWHEEL.set(.6);
 		// RobotMap.IntakeMap.INTAKE_WHEELS.set(.8);
+		Climber.getInstance().shuffleboardClimber();
 
 	}
 
