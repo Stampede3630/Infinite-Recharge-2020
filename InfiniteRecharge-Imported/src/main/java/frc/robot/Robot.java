@@ -217,7 +217,7 @@ public class Robot extends TimedRobot {
 		// RobotMap.StateChooser.RPM = 1100;
 		// RobotMap.StateChooser.FIELD_RELATIVE = false;
 		// Shooter.getInstance().control();
-		// Drivetrain.getInstance().teleopDrive();
+		Drivetrain.getInstance().teleopDrive();
 		// IntakeIndex.getInstance().index();
 		// Climber.getInstance().climberPeriodic();
 
