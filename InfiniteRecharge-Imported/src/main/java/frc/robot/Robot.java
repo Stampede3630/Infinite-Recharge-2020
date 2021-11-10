@@ -81,10 +81,14 @@ public class Robot extends TimedRobot {
 			SmartDashboard.putNumber("Right Shooter current output",
 					RobotMap.ShooterMap.RIGHT_SHOOTER_FALCON.getOutputCurrent());
 
-			SmartDashboard.putNumber("BR Drive current output", RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
-			SmartDashboard.putNumber("FR Drive current output", RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
-			SmartDashboard.putNumber("BL Drive current output", RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR.getOutputCurrent());
-			SmartDashboard.putNumber("FL Drive current output", RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("BR Drive current output",
+					RobotMap.DriveMap.BACK_RIGHT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("FR Drive current output",
+					RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("BL Drive current output",
+					RobotMap.DriveMap.BACK_LEFT_DRIVE_MOTOR.getOutputCurrent());
+			SmartDashboard.putNumber("FL Drive current output",
+					RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR.getOutputCurrent());
 		}
 		// INDEX DEBUGGING 1/20/2021
 		IntakeIndex.getInstance().showButtons();
@@ -182,11 +186,11 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		// IntakeIndex.getInstance().twoBeltTwoBallIndex();
-		// Shooter.getInstance().control();
+		IntakeIndex.getInstance().twoBeltTwoBallIndex();
+		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
-		// Climber.getInstance().climberPeriodic();
-		// Climber.getInstance().shuffleboardClimber();
+		Climber.getInstance().climberPeriodic();
+		Climber.getInstance().shuffleboardClimber();
 	}
 
 	@Override
