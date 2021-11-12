@@ -107,26 +107,27 @@ public class RobotMap {
 		public static final WPI_VictorSPX FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
 		public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
 		public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-		public static final double FRONT_RIGHT_ANGLE_OFFSET = 0.065 + Math.PI;
+		public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.134 + Math.PI;
 
 		public static final WPI_VictorSPX BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
 		public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
 		public static final AnalogInput BACK_LEFT_ANGLE_ENCODER = new AnalogInput(1);
-		public static final double BACK_LEFT_ANGLE_OFFSET = 4.22;
+		public static final double BACK_LEFT_ANGLE_OFFSET = 2.187;
 
 		public static final WPI_VictorSPX BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
 		public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
 		public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-		public static final double BACK_RIGHT_ANGLE_OFFSET = -1.05 + Math.PI;
+		public static final double BACK_RIGHT_ANGLE_OFFSET = 0.474 + Math.PI;
 
 		public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
 		public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);
 		public static final AnalogInput FRONT_LEFT_ANGLE_ENCODER = new AnalogInput(3);
-		public static final double FRONT_LEFT_ANGLE_OFFSET = -0.63;
+		public static final double FRONT_LEFT_ANGLE_OFFSET = 2.413;
 
 		public static final double MAX_SPEED = 4.90; // 4.36; // 3.627 2/2/2021 1.627 HYPERDRIVE CHANGES APR 2021
 		public static final double MAX_ANGULAR_SPEED = 5 * Math.PI;
-		public static double MULTIPLIER = .6;
+		public static double MULTIPLIER = 0;
+
 	}
 
 	public static class DrivetrainMap {
@@ -135,7 +136,7 @@ public class RobotMap {
 		public static final Translation2d BACK_LEFT_LOCATION = new Translation2d(-0.3556, 0.3556);
 		public static final Translation2d BACK_RIGHT_LOCATION = new Translation2d(-0.3556, -0.3556);
 
-		public static final SwerveModule 	FRONT_LEFT = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
+		public static final SwerveModule FRONT_LEFT = new SwerveModule(RobotMap.DriveMap.FRONT_LEFT_DRIVE_MOTOR,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_MOTOR, RobotMap.DriveMap.FRONT_LEFT_ANGLE_ENCODER,
 				RobotMap.DriveMap.FRONT_LEFT_ANGLE_OFFSET);
 		public static final SwerveModule FRONT_RIGHT = new SwerveModule(RobotMap.DriveMap.FRONT_RIGHT_DRIVE_MOTOR,
@@ -251,7 +252,7 @@ public class RobotMap {
 		public static boolean HOOD_ANGLE;
 		public static int PIPELINE;
 		public static double DRIVE_ANGLE;
-		public static boolean FIELD_RELATIVE = true; // andy was here
+		public static boolean FIELD_RELATIVE = false; // andy was here
 	}
 
 	public static class StateConstants {
@@ -323,8 +324,7 @@ public class RobotMap {
 
 		// Current limiting for motors
 		DriveMap.FRONT_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
-		DriveMap.FRONT_RIGHT_DRIVE_MOTOR
-				.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
+		DriveMap.FRONT_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_LEFT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 		DriveMap.BACK_RIGHT_DRIVE_MOTOR.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 0, 0.1));
 
