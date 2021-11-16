@@ -182,8 +182,8 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		Drivetrain.getInstance().teleopDrive();
-		// IntakeIndex.getInstance().twoBeltTwoBallIndex();
-		// Shooter.getInstance().control();
+		IntakeIndex.getInstance().twoBeltTwoBallIndex();
+		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
 		// Climber.getInstance().climberPeriodic();
 		// Climber.getInstance().shuffleboardClimber();

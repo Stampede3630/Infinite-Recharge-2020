@@ -40,7 +40,6 @@ public class Shooter {
 
         /* 500 RPM in either direction */
         if (RobotMap.CONTROLLER.getTriggerAxis(Hand.kLeft) > .6 || RobotMap.AutoBooleans.SHOOT_NOW) {
-
             RobotMap.ShooterMap.LEFT_SHOOTER_FALCON.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
             // belt.set(-.6);
             System.out.println("******************************SHOOTER SHOULD BE SHOOTING");
