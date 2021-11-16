@@ -107,7 +107,7 @@ public class RobotMap {
 		public static final WPI_VictorSPX FRONT_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(2);
 		public static final WPI_TalonFX FRONT_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(1);
 		public static final AnalogInput FRONT_RIGHT_ANGLE_ENCODER = new AnalogInput(0);
-		public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.134 + Math.PI;
+		public static final double FRONT_RIGHT_ANGLE_OFFSET = 2.134;
 
 		public static final WPI_VictorSPX BACK_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(6);
 		public static final WPI_TalonFX BACK_LEFT_DRIVE_MOTOR = new WPI_TalonFX(5);
@@ -117,7 +117,7 @@ public class RobotMap {
 		public static final WPI_VictorSPX BACK_RIGHT_ANGLE_MOTOR = new WPI_VictorSPX(4);
 		public static final WPI_TalonFX BACK_RIGHT_DRIVE_MOTOR = new WPI_TalonFX(3);
 		public static final AnalogInput BACK_RIGHT_ANGLE_ENCODER = new AnalogInput(2);
-		public static final double BACK_RIGHT_ANGLE_OFFSET = 0.474 + Math.PI;
+		public static final double BACK_RIGHT_ANGLE_OFFSET = 0.474;
 
 		public static final WPI_VictorSPX FRONT_LEFT_ANGLE_MOTOR = new WPI_VictorSPX(8);
 		public static final WPI_TalonFX FRONT_LEFT_DRIVE_MOTOR = new WPI_TalonFX(7);

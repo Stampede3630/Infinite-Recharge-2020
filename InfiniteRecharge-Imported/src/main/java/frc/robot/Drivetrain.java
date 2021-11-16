@@ -154,7 +154,7 @@ public class Drivetrain {
 
     double xSpeed = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getY(Hand.kLeft)), 2)
         * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
-    if (Math.abs(xSpeed) < 0.5) {
+    if (Math.abs(xSpeed) < 0.2) {
       xSpeed = 0;
     } else { // this is the right way to type else
       xSpeed = (Math.abs(xSpeed) - .2) * (1 / .8) * Math.signum(RobotMap.CONTROLLER.getY(Hand.kLeft));
@@ -164,7 +164,7 @@ public class Drivetrain {
     // return positive values when you pull to the right by default.
     double ySpeed = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kLeft)), 2)
         * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
-    if (Math.abs(ySpeed) < 0.5) {
+    if (Math.abs(ySpeed) < 0.2) {
       ySpeed = 0;
     } else {
       ySpeed = (Math.abs(ySpeed) - .2) * (1 / .8) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kLeft));
@@ -172,10 +172,10 @@ public class Drivetrain {
 
     double rot = -1 * Math.pow(Math.abs(RobotMap.CONTROLLER.getX(Hand.kRight)), 2)
         * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
-    if (Math.abs(rot) < 0.5) {
+    if (Math.abs(rot) < 0.2) {
       rot = 0;
     } else {
-      rot = (Math.abs(rot) - .2) * (1 / 1.9) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
+      rot = -1 * (Math.abs(rot) - .2) * (1 / 1.9) * Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
       // rot = (Math.abs(rot)-.2) * (1/.8) *
       // Math.signum(RobotMap.CONTROLLER.getX(Hand.kRight));
     }
