@@ -185,8 +185,8 @@ public class Robot extends TimedRobot {
 		IntakeIndex.getInstance().twoBeltTwoBallIndex();
 		Shooter.getInstance().control();
 		Drivetrain.getInstance().updateOdometry();
-		// Climber.getInstance().climberPeriodic();
-		// Climber.getInstance().shuffleboardClimber();
+		Climber.getInstance().climberPeriodic();
+		Climber.getInstance().shuffleboardClimber();
 	}
 
 	@Override
