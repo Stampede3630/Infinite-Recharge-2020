@@ -12,6 +12,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,7 +35,7 @@ public class Chooser {
 
     public static enum RobotState {
 
-        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB
+        INTAKE, INITIATION_LINE_SHOT, SHORT_TRENCH, LONG_SHOT, NO_MANS_LAND, RIGHT_CLIMB, LEFT_CLIMB, GALACTIC_SEARCH
     }
 
     private RobotState currentRobotState = RobotState.INTAKE;
@@ -51,7 +52,7 @@ public class Chooser {
     private Chooser() {
         stateChooser = new SendableChooser<RobotState>();
         SmartDashboard.putBoolean("Reset Gyro", false);
-        SmartDashboard.putBoolean("Field Relative", true);
+        SmartDashboard.putBoolean("Field Relative", false);
         SmartDashboard.putData(stateChooser);
         resetGyroBoolean = false;
         stateChooser.setDefaultOption("Initiation Line Shot", RobotState.INITIATION_LINE_SHOT);
@@ -61,6 +62,7 @@ public class Chooser {
         stateChooser.addOption("No Mans Land", RobotState.NO_MANS_LAND);
         stateChooser.addOption("Right Climb", RobotState.RIGHT_CLIMB);
         stateChooser.addOption("Left Climb", RobotState.LEFT_CLIMB);
+        stateChooser.addOption("Glactic Search", RobotState.GALACTIC_SEARCH);
         //Shuffleboard.getTab("gameDay").add("Robot State", stateChooser);
       // Shuffleboard.getTab("gameDay").addBoolean("Reset Gyro", resetGyro).withWidget("Boolean Box")
        // .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"));
@@ -87,9 +89,7 @@ public class Chooser {
         }
     }
 //
-    public void driveChooser() 
-
-    {
+    public void driveChooser() {
        
        if(RobotMap.CONTROLLER.getAButton())
        {
@@ -98,7 +98,7 @@ public class Chooser {
        if(RobotMap.CONTROLLER.getBButton())
        {
         RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
-       }
+       }            
        if(currentRobotState != pastRobotState)
        {
         RobotMap.StateConstants.ALLOW_AUTOMATED_CONTROL = true;
@@ -188,6 +188,13 @@ public class Chooser {
         RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
         RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
+        break;
+            
+        case GALACTIC_SEARCH:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.GALACTIC_SEARCH_SERVO_POS;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.GALACTIC_SEARCH_PIPELINE;
+        break;
+
         
         }
     }
@@ -253,6 +260,12 @@ public class Chooser {
         RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.CLIMBER_SERVO_POS;
         RobotMap.StateChooser.DRIVE_ANGLE = RobotMap.StateConstants.LEFT_CLIMBER_ANGLE;
         RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.CLIMBER_PIPELINE;
+        break;
+            
+        case GALACTIC_SEARCH:
+        RobotMap.StateChooser.LIMELIGHT_ANGLE = RobotMap.StateConstants.GALACTIC_SEARCH_SERVO_POS;
+        RobotMap.StateChooser.PIPELINE = RobotMap.StateConstants.GALACTIC_SEARCH_PIPELINE;
+        break;
         
         }
 
@@ -268,6 +281,8 @@ public class Chooser {
         {  
             RobotMap.StateChooser.FIELD_RELATIVE = false;
         }
+        
+        // RobotMap.StateChooser.FIELD_RELATIVE = false;
     }
 
     
@@ -282,6 +297,7 @@ public class Chooser {
             IntakeIndex.getInstance().index();
         }
     }
+
     public void chooserPeriodic()
     {
         resetYaw();
